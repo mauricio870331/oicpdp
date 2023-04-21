@@ -4,6 +4,8 @@
  */
 package Views;
 
+import OICApi.OicRestApi;
+
 /**
  *
  * @author mherrera
@@ -16,6 +18,8 @@ public class MainForm extends javax.swing.JFrame {
     public MainForm() {
         initComponents();
         setLocationRelativeTo(null);
+        setTitle("Benvenido: " + OicRestApi.user);
+        hideElemnets();
     }
 
     /**
@@ -27,6 +31,9 @@ public class MainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jpContent = new javax.swing.JLayeredPane();
+        jpIntegrations = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuConfig = new javax.swing.JMenu();
         itemCredenciales = new javax.swing.JMenuItem();
@@ -34,6 +41,38 @@ public class MainForm extends javax.swing.JFrame {
         itemList = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Integraciones");
+
+        javax.swing.GroupLayout jpIntegrationsLayout = new javax.swing.GroupLayout(jpIntegrations);
+        jpIntegrations.setLayout(jpIntegrationsLayout);
+        jpIntegrationsLayout.setHorizontalGroup(
+            jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpIntegrationsLayout.createSequentialGroup()
+                .addGap(326, 326, 326)
+                .addComponent(jLabel1)
+                .addContainerGap(623, Short.MAX_VALUE))
+        );
+        jpIntegrationsLayout.setVerticalGroup(
+            jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpIntegrationsLayout.createSequentialGroup()
+                .addGap(153, 153, 153)
+                .addComponent(jLabel1)
+                .addContainerGap(352, Short.MAX_VALUE))
+        );
+
+        jpContent.setLayer(jpIntegrations, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout jpContentLayout = new javax.swing.GroupLayout(jpContent);
+        jpContent.setLayout(jpContentLayout);
+        jpContentLayout.setHorizontalGroup(
+            jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jpIntegrations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jpContentLayout.setVerticalGroup(
+            jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jpIntegrations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         mnuConfig.setText("Configuración");
 
@@ -60,22 +99,20 @@ public class MainForm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1065, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jpContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 530, Short.MAX_VALUE)
+            .addComponent(jpContent)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void itemListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemListActionPerformed
-        this.dispose();
-        Integraciones intgraciones = new Integraciones();
-
-        intgraciones.setVisible(true);
-
+        jpIntegrations.setVisible(true);
     }//GEN-LAST:event_itemListActionPerformed
 
     /**
@@ -116,8 +153,15 @@ public class MainForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem itemCredenciales;
     private javax.swing.JMenuItem itemList;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JLayeredPane jpContent;
+    private javax.swing.JPanel jpIntegrations;
     private javax.swing.JMenu mnuConfig;
     private javax.swing.JMenu mnuOicApi;
     // End of variables declaration//GEN-END:variables
+
+    private void hideElemnets() {
+        jpIntegrations.setVisible(false);
+    }
 }

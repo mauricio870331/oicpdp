@@ -22,7 +22,8 @@ public class test {
 //        System.out.println(ct.all());
 //        ct.disconnect();
         OicRestApi ora = new OicRestApi();
-        ora.listIntegraciones();
+//        ora.listIntegraciones();
+        ora.login("mherrera@redclay.com", "Welcome@123_", "TST2");
 
     }
 }

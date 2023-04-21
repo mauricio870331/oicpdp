@@ -5,6 +5,7 @@
 package OICApi;
 
 import Models.Model;
+import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +13,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -19,8 +22,79 @@ import java.util.Base64;
  */
 public class OicRestApi extends Model {
 
+    public static String user;
+    public static String pass;
+    public static String enviroment;
+
     public OicRestApi() {
         setTable("APP_CREDENTIALS");
+    }
+
+    public Map<String, Object> login(String user, String pass, String enviroment) {
+        if (OicRestApi.user == null && OicRestApi.pass == null && OicRestApi.enviroment == null) {
+            System.out.println("nulos");
+            OicRestApi.user = user;
+            OicRestApi.pass = pass;
+            OicRestApi.enviroment = enviroment;
+        }
+        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(OicRestApi.enviroment) + "/integration/v1/connections?orderBy=name&offset=0&limit=1", "GET", null);
+        return respuesta;
+    }
+
+    public Object apiOIC(String route, String method, Map<String, String> data) {
+        Map<String, Object> resp = new HashMap<>();
+        try {
+            URL url = new URL(route);
+            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setRequestProperty("User-Agent", "insomnia/2023.1.0");
+            httpCon.setRequestProperty("Acept", "*/*");
+            httpCon.setRequestProperty("Content-Type", "application/json");
+            httpCon.setDoOutput(true);
+            httpCon.setRequestMethod(method);
+            String userCredentials = OicRestApi.user + ":" + OicRestApi.pass;
+            String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
+            httpCon.setRequestProperty("Authorization", basicAuth);
+            if (data != null) {
+                Gson gsonObj = new Gson();
+                try (OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
+                    out.write(gsonObj.toJson(data));
+                }
+            }
+//            System.out.println("Mauricio");
+            resp.put("response_code", httpCon.getResponseCode());
+//            System.out.println("Response Code: " + httpCon.getResponseCode());
+            StringBuilder respuesta;
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+                String linea;
+                respuesta = new StringBuilder();
+                while ((linea = in.readLine()) != null) {
+                    respuesta.append(linea);
+                }
+            }
+            httpCon.disconnect();
+            resp.put("response", respuesta.toString());
+//            System.out.println(respuesta.toString());
+        } catch (IOException e) {
+//            System.out.println("Error " + e.getLocalizedMessage());
+            resp.put("error", e.getMessage());
+        }
+        return resp;
+    }
+
+    public String getEnviromentUrl(String env) {
+        String url = "";
+        switch (env) {
+            case "TST2":
+                url = "https://tst2oic-epsainfraestructura-px.integration.ocp.oraclecloud.com/ic/api";
+                break;
+            case "UAT2":
+                url = "https://uat2oic-epsainfraestructura-px.integration.ocp.oraclecloud.com/ic/api";
+                break;
+            case "PRD":
+                url = "https://prdoic-epsainfraestructura.integration.ocp.oraclecloud.com//ic/api";
+                break;
+        }
+        return url;
     }
 
     public void listIntegraciones() {
