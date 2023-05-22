@@ -6,6 +6,9 @@ package OICApi;
 
 import Models.Model;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,14 +23,14 @@ import java.util.Map;
  *
  * @author mherrera
  */
-public class OicRestApi extends Model {
+public class OicRestApi {
 
     public static String user;
     public static String pass;
     public static String enviroment;
 
     public OicRestApi() {
-        setTable("APP_CREDENTIALS");
+
     }
 
     public Map<String, Object> login(String user, String pass, String enviroment) {
@@ -41,7 +44,18 @@ public class OicRestApi extends Model {
         return respuesta;
     }
 
-    public Object apiOIC(String route, String method, Map<String, String> data) {
+    public Map<String, Object> integrationsList(String env) {
+        JsonParser parser = new JsonParser();
+        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + "/integration/v1/integrations/?q=%7Bstatus%20%3A'ACTIVATED'%7D", "GET", null);
+        Map<String, Object> resp = new HashMap<>();
+        JsonElement element = (JsonElement) parser.parse((String) respuesta.get("response"));
+        JsonObject jsonObject = element.getAsJsonObject();
+        resp.put("integraciones", jsonObject.get("items").getAsJsonArray());
+        resp.put("total", jsonObject.get("totalResults").getAsInt());
+        return resp;
+    }
+
+    public Object apiOIC(String route, String method, Map<String, String> data) {      
         Map<String, Object> resp = new HashMap<>();
         try {
             URL url = new URL(route);
@@ -56,7 +70,7 @@ public class OicRestApi extends Model {
             httpCon.setRequestProperty("Authorization", basicAuth);
             if (data != null) {
                 Gson gsonObj = new Gson();
-                try (OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
+                try ( OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
                     out.write(gsonObj.toJson(data));
                 }
             }
@@ -64,7 +78,7 @@ public class OicRestApi extends Model {
             resp.put("response_code", httpCon.getResponseCode());
 //            System.out.println("Response Code: " + httpCon.getResponseCode());
             StringBuilder respuesta;
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
                 while ((linea = in.readLine()) != null) {
@@ -118,7 +132,7 @@ public class OicRestApi extends Model {
 
             StringBuilder respuesta;
 
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
 
