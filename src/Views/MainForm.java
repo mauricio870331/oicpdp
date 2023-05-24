@@ -6,20 +6,15 @@ package Views;
 
 import Models.IntegrationModel;
 import OICApi.OicRestApi;
-import Utils.IntegrationsUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTable;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -36,7 +31,7 @@ public class MainForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setTitle("Benvenido: " + OicRestApi.user);
         hideElemnets();
-
+        
     }
 
     /**
@@ -48,6 +43,9 @@ public class MainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mnuTblTst2 = new javax.swing.JPopupMenu();
+        itemMigrar_uat2 = new javax.swing.JMenuItem();
+        itemMigrar_prd = new javax.swing.JMenuItem();
         jpContent = new javax.swing.JLayeredPane();
         jpIntegrations = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -56,16 +54,31 @@ public class MainForm extends javax.swing.JFrame {
         tbl_integraciones = new javax.swing.JTable();
         pb_tst2 = new javax.swing.JProgressBar();
         lblIntegraTST2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        lblinfotst2 = new javax.swing.JLabel();
         jPanelUAT2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_int_uat2 = new javax.swing.JTable();
         pb_uat2 = new javax.swing.JProgressBar();
         lblIntegraUAT2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        lblinfoUat2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuConfig = new javax.swing.JMenu();
         itemCredenciales = new javax.swing.JMenuItem();
         mnuOicApi = new javax.swing.JMenu();
         itemList = new javax.swing.JMenuItem();
+
+        itemMigrar_uat2.setText("Migrar a: UAT2");
+        itemMigrar_uat2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMigrar_uat2ActionPerformed(evt);
+            }
+        });
+        mnuTblTst2.add(itemMigrar_uat2);
+
+        itemMigrar_prd.setText("Migrar a: PRD");
+        mnuTblTst2.add(itemMigrar_prd);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,11 +100,19 @@ public class MainForm extends javax.swing.JFrame {
 
             }
         ));
+        tbl_integraciones.setComponentPopupMenu(mnuTblTst2);
         jScrollPane1.setViewportView(tbl_integraciones);
 
         pb_tst2.setIndeterminate(true);
 
         lblIntegraTST2.setText("Total Integraciones: 0");
+
+        jButton1.setText("Cargar Datos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1TST2Layout = new javax.swing.GroupLayout(jPanel1TST2);
         jPanel1TST2.setLayout(jPanel1TST2Layout);
@@ -108,13 +129,24 @@ public class MainForm extends javax.swing.JFrame {
                         .addContainerGap(372, Short.MAX_VALUE))
                     .addGroup(jPanel1TST2Layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(jPanel1TST2Layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1TST2Layout.setVerticalGroup(
             jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1TST2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+                .addGroup(jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1TST2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pb_tst2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -145,6 +177,13 @@ public class MainForm extends javax.swing.JFrame {
 
         lblIntegraUAT2.setText("Total Integraciones: 0");
 
+        jButton2.setText("Cargar Datos");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelUAT2Layout = new javax.swing.GroupLayout(jPanelUAT2);
         jPanelUAT2.setLayout(jPanelUAT2Layout);
         jPanelUAT2Layout.setHorizontalGroup(
@@ -160,13 +199,24 @@ public class MainForm extends javax.swing.JFrame {
                         .addContainerGap(372, Short.MAX_VALUE))
                     .addGroup(jPanelUAT2Layout.createSequentialGroup()
                         .addComponent(jScrollPane2)
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(jPanelUAT2Layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblinfoUat2, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanelUAT2Layout.setVerticalGroup(
             jPanelUAT2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelUAT2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+                .addGroup(jPanelUAT2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelUAT2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblinfoUat2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelUAT2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pb_uat2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -252,25 +302,56 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_itemListActionPerformed
 
     private void jPanel1TST2ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1TST2ComponentShown
-        if (hiloOcupado) {
-            jTabbedPane1.setSelectedComponent(currentPanel);
-            JOptionPane.showMessageDialog(null, "Espere a que el proceso termine para inicar otro");
-        } else {
-            MiHilo miHilo = new MiHilo("TST2", tbl_integraciones, lblIntegraTST2, pb_tst2, jPanel1TST2);
-            miHilo.start();
+        if (tbl_integraciones.getRowCount() == 0) {
+            if (hiloOcupado) {
+                jTabbedPane1.setSelectedComponent(currentPanel);
+                lblinfotst2.setText("Espere a que el proceso termine para inicar otro");
+            } else {
+                MiHilo miHilo = new MiHilo("TST2", tbl_integraciones, lblIntegraTST2, pb_tst2, jPanel1TST2);
+                miHilo.start();
+            }
         }
+
     }//GEN-LAST:event_jPanel1TST2ComponentShown
 
     private void jPanelUAT2ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanelUAT2ComponentShown
         // TODO add your handling code here:
-        if (hiloOcupado) {
-            jTabbedPane1.setSelectedComponent(currentPanel);
-            JOptionPane.showMessageDialog(null, "Espere a que el proceso termine para inicar otro");
-        } else {
-            MiHilo miHilo = new MiHilo("UAT2", tbl_int_uat2, lblIntegraUAT2, pb_uat2, jPanelUAT2);
-            miHilo.start();
+        if (tbl_int_uat2.getRowCount() == 0) {
+            if (hiloOcupado) {
+                jTabbedPane1.setSelectedComponent(currentPanel);
+                lblinfoUat2.setText("Espere a que el proceso termine para inicar otro");
+            } else {
+                MiHilo miHilo = new MiHilo("UAT2", tbl_int_uat2, lblIntegraUAT2, pb_uat2, jPanelUAT2);
+                miHilo.start();
+            }
         }
     }//GEN-LAST:event_jPanelUAT2ComponentShown
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        MiHilo miHilo = new MiHilo("TST2", tbl_integraciones, lblIntegraTST2, pb_tst2, jPanel1TST2);
+        miHilo.start();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        MiHilo miHilo = new MiHilo("UAT2", tbl_int_uat2, lblIntegraUAT2, pb_uat2, jPanelUAT2);
+        miHilo.start();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void itemMigrar_uat2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMigrar_uat2ActionPerformed
+        int row = tbl_integraciones.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+            return;
+        }
+        String value = tbl_integraciones.getModel().getValueAt(row, 0).toString();
+        String name = tbl_integraciones.getModel().getValueAt(row, 1).toString() + ".iar";
+        tbl_integraciones.clearSelection();
+        OicRestApi oic = new OicRestApi();
+//        oic.exportIntegration(value, name.replaceAll(" ", "_"), "TST2");
+        oic.importIntegration("UAT2");
+
+
+    }//GEN-LAST:event_itemMigrar_uat2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -310,6 +391,10 @@ public class MainForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem itemCredenciales;
     private javax.swing.JMenuItem itemList;
+    private javax.swing.JMenuItem itemMigrar_prd;
+    private javax.swing.JMenuItem itemMigrar_uat2;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1TST2;
     private javax.swing.JPanel jPanelUAT2;
@@ -320,8 +405,11 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel jpIntegrations;
     private javax.swing.JLabel lblIntegraTST2;
     private javax.swing.JLabel lblIntegraUAT2;
+    private javax.swing.JLabel lblinfoUat2;
+    private javax.swing.JLabel lblinfotst2;
     private javax.swing.JMenu mnuConfig;
     private javax.swing.JMenu mnuOicApi;
+    private javax.swing.JPopupMenu mnuTblTst2;
     private javax.swing.JProgressBar pb_tst2;
     private javax.swing.JProgressBar pb_uat2;
     private javax.swing.JTable tbl_int_uat2;
@@ -331,21 +419,21 @@ public class MainForm extends javax.swing.JFrame {
     //CustomVars
     boolean hiloOcupado = false;
     JPanel currentPanel;
-
+    
     private void hideElemnets() {
         jpIntegrations.setVisible(false);
         pb_tst2.setVisible(false);
         pb_uat2.setVisible(false);
     }
-
+    
     public class MiHilo extends Thread {
-
+        
         private String ambiente;
         private JTable table;
         private JLabel lbl;
         private JProgressBar pb;
         private JPanel curPanel;
-
+        
         public MiHilo(String ambiente, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel) {
             this.ambiente = ambiente;
             this.table = table;
@@ -353,59 +441,59 @@ public class MainForm extends javax.swing.JFrame {
             this.pb = pb;
             this.curPanel = curPanel;
         }
-
+        
         @Override
         public void run() {
-
+            
             cargarIntegraciones(ambiente, table, lbl, pb, curPanel);
-
+            
         }
-
+        
         public String getAmbiente() {
             return ambiente;
         }
-
+        
         public void setAmbiente(String ambiente) {
             this.ambiente = ambiente;
         }
-
+        
         public JTable getTable() {
             return table;
         }
-
+        
         public void setTable(JTable table) {
             this.table = table;
         }
-
+        
         public JLabel getLbl() {
             return lbl;
         }
-
+        
         public void setLbl(JLabel lbl) {
             this.lbl = lbl;
         }
-
+        
         public JProgressBar getPb() {
             return pb;
         }
-
+        
         public void setPb(JProgressBar pb) {
             this.pb = pb;
         }
     }
-
+    
     private void cargarIntegraciones(String env, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel) {
         hiloOcupado = true;
         if (currentPanel == null) {
             currentPanel = curPanel;
         }
-
+        
         pb.setVisible(true);
         IntegrationModel im = new IntegrationModel();
         Map<String, Object> respuesta = im.getIntegrations(env);
         int total = (int) respuesta.get("total");
         lbl.setText("Total Integraciones: " + total);
-
+        
         JsonArray list = (JsonArray) respuesta.get("integraciones");
         DefaultTableModel modeloTabla = new DefaultTableModel();
         // Agregar columnas a nuestro modelo de tabla
@@ -429,10 +517,17 @@ public class MainForm extends javax.swing.JFrame {
         table.getColumnModel().getColumn(0).setPreferredWidth(0);
         table.getColumnModel().getColumn(0).setMaxWidth(0);
         table.getColumnModel().getColumn(0).setMinWidth(0);
+        table.getColumnModel().getColumn(3).setMaxWidth(100);
+        table.getColumnModel().getColumn(3).setMinWidth(100);
+        table.getColumnModel().getColumn(4).setMaxWidth(120);
+        table.getColumnModel().getColumn(4).setMinWidth(120);
+        
         table.setModel(modeloTabla);
         pb.setVisible(false);
         hiloOcupado = false;
         currentPanel = null;
-
+        lblinfoUat2.setText("");
+        lblinfotst2.setText("");
+        
     }
 }
