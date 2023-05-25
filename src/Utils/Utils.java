@@ -41,7 +41,7 @@ public class Utils {
                 }
             }
             if (componente instanceof JPasswordField) {
-                boolean equals =  String.valueOf(((JPasswordField) componente).getPassword()).equals("");
+                boolean equals = String.valueOf(((JPasswordField) componente).getPassword()).equals("");
                 if (equals) {
                     countErrors++;
                     ((JPasswordField) componente).setBorder(BorderFactory.createLineBorder(Color.decode("#EE1313")));  //2C6791                  
@@ -51,6 +51,23 @@ public class Utils {
             }
         }
         return countErrors;
+    }
+
+    public static int getErrorHttpImport(String error) {
+        int response = 200;
+        if (error.contains("400")) {
+            //No file is uploaded
+            response = 400;
+        }
+        if (error.contains("409")) {
+            //Integration already exists
+            response = 409;
+        }
+        if (error.contains("500")) {
+            //Server error
+            response = 500;
+        }
+        return response;
     }
 
 }

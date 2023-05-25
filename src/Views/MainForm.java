@@ -31,7 +31,7 @@ public class MainForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setTitle("Benvenido: " + OicRestApi.user);
         hideElemnets();
-        
+
     }
 
     /**
@@ -56,6 +56,7 @@ public class MainForm extends javax.swing.JFrame {
         lblIntegraTST2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         lblinfotst2 = new javax.swing.JLabel();
+        lblPreloaderExport = new javax.swing.JLabel();
         jPanelUAT2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_int_uat2 = new javax.swing.JTable();
@@ -114,6 +115,8 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
+        lblPreloaderExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1495 (5).gif"))); // NOI18N
+
         javax.swing.GroupLayout jPanel1TST2Layout = new javax.swing.GroupLayout(jPanel1TST2);
         jPanel1TST2.setLayout(jPanel1TST2Layout);
         jPanel1TST2Layout.setHorizontalGroup(
@@ -134,7 +137,9 @@ public class MainForm extends javax.swing.JFrame {
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblPreloaderExport)
+                        .addGap(84, 84, 84))))
         );
         jPanel1TST2Layout.setVerticalGroup(
             jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,7 +149,8 @@ public class MainForm extends javax.swing.JFrame {
                     .addGroup(jPanel1TST2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblPreloaderExport, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -345,12 +351,10 @@ public class MainForm extends javax.swing.JFrame {
         }
         String value = tbl_integraciones.getModel().getValueAt(row, 0).toString();
         String name = tbl_integraciones.getModel().getValueAt(row, 1).toString() + ".iar";
+        String version = tbl_integraciones.getModel().getValueAt(row, 4).toString();
         tbl_integraciones.clearSelection();
-        OicRestApi oic = new OicRestApi();
-//        oic.exportIntegration(value, name.replaceAll(" ", "_"), "TST2");
-        oic.importIntegration("UAT2");
-
-
+        ExportarIntegracion hexportar = new ExportarIntegracion(value, name.replaceAll(" ", "_"), "TST2", version);
+        hexportar.start();
     }//GEN-LAST:event_itemMigrar_uat2ActionPerformed
 
     /**
@@ -405,6 +409,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JPanel jpIntegrations;
     private javax.swing.JLabel lblIntegraTST2;
     private javax.swing.JLabel lblIntegraUAT2;
+    private javax.swing.JLabel lblPreloaderExport;
     private javax.swing.JLabel lblinfoUat2;
     private javax.swing.JLabel lblinfotst2;
     private javax.swing.JMenu mnuConfig;
@@ -419,81 +424,26 @@ public class MainForm extends javax.swing.JFrame {
     //CustomVars
     boolean hiloOcupado = false;
     JPanel currentPanel;
-    
+
     private void hideElemnets() {
         jpIntegrations.setVisible(false);
         pb_tst2.setVisible(false);
         pb_uat2.setVisible(false);
+        lblPreloaderExport.setVisible(false);
     }
-    
-    public class MiHilo extends Thread {
-        
-        private String ambiente;
-        private JTable table;
-        private JLabel lbl;
-        private JProgressBar pb;
-        private JPanel curPanel;
-        
-        public MiHilo(String ambiente, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel) {
-            this.ambiente = ambiente;
-            this.table = table;
-            this.lbl = lbl;
-            this.pb = pb;
-            this.curPanel = curPanel;
-        }
-        
-        @Override
-        public void run() {
-            
-            cargarIntegraciones(ambiente, table, lbl, pb, curPanel);
-            
-        }
-        
-        public String getAmbiente() {
-            return ambiente;
-        }
-        
-        public void setAmbiente(String ambiente) {
-            this.ambiente = ambiente;
-        }
-        
-        public JTable getTable() {
-            return table;
-        }
-        
-        public void setTable(JTable table) {
-            this.table = table;
-        }
-        
-        public JLabel getLbl() {
-            return lbl;
-        }
-        
-        public void setLbl(JLabel lbl) {
-            this.lbl = lbl;
-        }
-        
-        public JProgressBar getPb() {
-            return pb;
-        }
-        
-        public void setPb(JProgressBar pb) {
-            this.pb = pb;
-        }
-    }
-    
+
     private void cargarIntegraciones(String env, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel) {
         hiloOcupado = true;
         if (currentPanel == null) {
             currentPanel = curPanel;
         }
-        
+
         pb.setVisible(true);
         IntegrationModel im = new IntegrationModel();
         Map<String, Object> respuesta = im.getIntegrations(env);
         int total = (int) respuesta.get("total");
         lbl.setText("Total Integraciones: " + total);
-        
+
         JsonArray list = (JsonArray) respuesta.get("integraciones");
         DefaultTableModel modeloTabla = new DefaultTableModel();
         // Agregar columnas a nuestro modelo de tabla
@@ -521,13 +471,108 @@ public class MainForm extends javax.swing.JFrame {
         table.getColumnModel().getColumn(3).setMinWidth(100);
         table.getColumnModel().getColumn(4).setMaxWidth(120);
         table.getColumnModel().getColumn(4).setMinWidth(120);
-        
+
         table.setModel(modeloTabla);
         pb.setVisible(false);
         hiloOcupado = false;
         currentPanel = null;
         lblinfoUat2.setText("");
         lblinfotst2.setText("");
-        
+
+    }
+
+    //Hilos
+    public class MiHilo extends Thread {
+
+        String ambiente;
+        JTable table;
+        JLabel lbl;
+        JProgressBar pb;
+        JPanel curPanel;
+
+        public MiHilo(String ambiente, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel) {
+            this.ambiente = ambiente;
+            this.table = table;
+            this.lbl = lbl;
+            this.pb = pb;
+            this.curPanel = curPanel;
+        }
+
+        @Override
+        public void run() {
+            cargarIntegraciones(ambiente, table, lbl, pb, curPanel);
+        }
+    }
+
+    public class ExportarIntegracion extends Thread {
+
+        String ambiente;
+        String id;
+        String nombre;
+        String version;
+
+        public ExportarIntegracion(String id, String nombre, String ambiente, String version) {
+            this.ambiente = ambiente;
+            this.id = id;
+            this.nombre = nombre;
+            this.version = version;
+        }
+
+        @Override
+        public void run() {
+            lblPreloaderExport.setVisible(true);
+            OicRestApi oic = new OicRestApi();
+            boolean r = oic.exportIntegration(id, nombre, ambiente);
+            System.out.println("respuesta r " + r);
+            lblPreloaderExport.setVisible(false);
+            if (r) {
+                ImportarIntegracion hiloImportar = new ImportarIntegracion(id, nombre, ambiente, version);
+                hiloImportar.start();
+            }
+        }
+    }
+
+    public class ImportarIntegracion extends Thread {
+
+        String ambiente;
+        String id;
+        String nombre;
+        String version;
+
+        public ImportarIntegracion(String id, String nombre, String ambiente, String version) {
+            this.ambiente = ambiente;
+            this.id = id;
+            this.nombre = nombre;
+            this.version = version;
+            System.out.println("importando");
+        }
+
+        @Override
+        public void run() {
+            lblPreloaderExport.setVisible(true);
+            OicRestApi oic = new OicRestApi();
+            int response = oic.importIntegration(nombre, "UAT2", "POST");
+            System.out.println("response 2 " + response);
+            //poner logica para response 200
+            if (response == 409) {
+                int result = JOptionPane.showConfirmDialog(MainForm.this, "¿La integración " + nombre + " V(" + version + ") ya existe, desea reemplazarla?",
+                        "Confirmación..!",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    response = oic.importIntegration(nombre, "UAT2", "PUT");
+                    if (response == 200) {
+                        JOptionPane.showMessageDialog(MainForm.this, "Integración importada, actualizada y activada correctamente..!");
+                    }
+                    //Poner resto de logica
+                } else if (result == JOptionPane.NO_OPTION) {
+                    System.out.println("No option");
+                } else {
+                    System.out.println("No seleccionado");
+                }
+            }
+            lblPreloaderExport.setVisible(false);
+        }
+
     }
 }

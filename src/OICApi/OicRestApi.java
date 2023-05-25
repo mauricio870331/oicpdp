@@ -23,19 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.FileEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-
-import org.apache.http.util.EntityUtils;
 
 /**
  *
@@ -88,14 +75,14 @@ public class OicRestApi {
             httpCon.setRequestProperty("Authorization", basicAuth);
             if (data != null) {
                 Gson gsonObj = new Gson();
-                try (OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
+                try ( OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
                     out.write(gsonObj.toJson(data));
                 }
             }
             resp.put("response_code", httpCon.getResponseCode());
 //            System.out.println("Response Code: " + httpCon.getResponseCode());
             StringBuilder respuesta;
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
                 while ((linea = in.readLine()) != null) {
@@ -133,7 +120,7 @@ public class OicRestApi {
 
             StringBuilder respuesta;
 
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
 
@@ -198,11 +185,11 @@ public class OicRestApi {
         return response;
     }
 
-    public boolean importIntegration(String env) {
+    public int importIntegration(String intg, String env, String method) {
 
         String userCredentials = OicRestApi.user + ":" + OicRestApi.pass;
         String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
-        String filePath = "src/downloads/ESFERA-INT17_C2M-OSC_SINCRONIZACION.iar";
+        String filePath = "src/downloads/" + intg;
         String requestUrl = getEnviromentUrl(env) + "/integration/v1/integrations/archive";
 
         String fileFieldName = "file";
@@ -210,12 +197,12 @@ public class OicRestApi {
         HttpURLConnection connection = null;
         DataOutputStream outputStream = null;
         BufferedReader reader = null;
-        String responsecode = "";
+        int responsecode = 200;
 
         try {
             URL url = new URL(requestUrl);
             connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
+            connection.setRequestMethod(method);
             connection.setDoOutput(true);
             connection.setRequestProperty("Authorization", basicAuth);
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=---------------------------1234567890");
@@ -229,7 +216,7 @@ public class OicRestApi {
             outputStream.writeBytes("\r\n");
 
             File file = new File(filePath);
-            try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            try ( FileInputStream fileInputStream = new FileInputStream(file)) {
                 byte[] buffer = new byte[4096];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {
@@ -251,34 +238,28 @@ public class OicRestApi {
 
             System.out.println(response.toString());
         } catch (IOException e) {
-            String error = e.getMessage();
-            int indexInit = error.indexOf("code: ")+6;
-            System.out.println(error.substring(indexInit, indexInit+3));
-
-            System.out.println("error " + e.getMessage());
-//            System.out.println("responsecode " + e);
+            responsecode = Utils.Utils.getErrorHttpImport(e.getMessage());
         } finally {
             // Cerrar las conexiones y recursos
             if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (IOException e) {
+                    System.out.println("error " + e.getMessage());
                 }
             }
-
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
+                    System.out.println("error " + e.getMessage());
                 }
             }
-
             if (connection != null) {
                 connection.disconnect();
             }
         }
-
-        return false;
+        return responsecode;
     }
 
     public String getEnviromentUrl(String env) {
