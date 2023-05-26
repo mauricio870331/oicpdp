@@ -45,13 +45,13 @@ public class OicRestApi {
             OicRestApi.pass = pass;
             OicRestApi.enviroment = enviroment;
         }
-        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(OicRestApi.enviroment) + "/integration/v1/connections?orderBy=name&offset=0&limit=1", "GET", null);
+        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(OicRestApi.enviroment) + "/integration/v1/connections?orderBy=name&offset=0&limit=1", "GET", null, null);
         return respuesta;
     }
 
     public Map<String, Object> integrationsList(String env) {
         JsonParser parser = new JsonParser();
-        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + "/integration/v1/integrations/?q=%7Bstatus%20%3A'ACTIVATED'%7D", "GET", null);
+        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + "/integration/v1/integrations/?q=%7Bstatus%20%3A'ACTIVATED'%7D", "GET", null, null);
         Map<String, Object> resp = new HashMap<>();
         JsonElement element = (JsonElement) parser.parse((String) respuesta.get("response"));
         JsonObject jsonObject = element.getAsJsonObject();
@@ -60,7 +60,18 @@ public class OicRestApi {
         return resp;
     }
 
-    public Object apiOIC(String route, String method, Map<String, String> data) {
+    public Map<String, Object> activateDeactivateIntg(String intg, String env) {
+        JsonParser parser = new JsonParser();
+        Map<String, String> headers = new HashMap<>();
+        headers.put("X-HTTP-Method-Override", "PATCH");
+        //Data
+        Map<String, String> data = new HashMap<>();
+        data.put("status", "ACTIVATED");
+        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + "/integration/v1/integrations/" + intg, "POST", data, headers);
+        return respuesta;
+    }
+
+    public Object apiOIC(String route, String method, Map<String, String> data, Map<String, String> headers) {
         Map<String, Object> resp = new HashMap<>();
         try {
             URL url = new URL(route);
@@ -68,6 +79,11 @@ public class OicRestApi {
             httpCon.setRequestProperty("User-Agent", "insomnia/2023.1.0");
             httpCon.setRequestProperty("Acept", "*/*");
             httpCon.setRequestProperty("Content-Type", "application/json");
+            if (headers != null) {
+                for (Map.Entry<String, String> entry : headers.entrySet()) {
+                    httpCon.setRequestProperty(entry.getKey().toString(), entry.getValue().toString());
+                }
+            }
             httpCon.setDoOutput(true);
             httpCon.setRequestMethod(method);
             String userCredentials = OicRestApi.user + ":" + OicRestApi.pass;
@@ -75,8 +91,8 @@ public class OicRestApi {
             httpCon.setRequestProperty("Authorization", basicAuth);
             if (data != null) {
                 Gson gsonObj = new Gson();
-                try ( OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
-                    out.write(gsonObj.toJson(data));
+                try ( OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {        
+                    out.write(gsonObj.toJson(data));                    
                 }
             }
             resp.put("response_code", httpCon.getResponseCode());
@@ -117,9 +133,7 @@ public class OicRestApi {
 //            System.out.println("Mauricio");
             System.out.println("Response Code: " + httpCon.getResponseCode());
 //        System.out.print("Response Code: " + httpCon.getResponseMessage());
-
             StringBuilder respuesta;
-
             try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
@@ -128,7 +142,6 @@ public class OicRestApi {
                     respuesta.append(linea);
                 }
             }
-
             httpCon.disconnect();
 //        System.exit(0);
             System.out.println(respuesta.toString());
@@ -155,10 +168,10 @@ public class OicRestApi {
                 String disposition = httpConn.getHeaderField("Content-Disposition");
                 String contentType = httpConn.getContentType();
                 int contentLength = httpConn.getContentLength();
-                System.out.println("Content-Type = " + contentType);
-                System.out.println("Content-Disposition = " + disposition);
-                System.out.println("Content-Length = " + contentLength);
-                System.out.println("fileName = " + fileName);
+//                System.out.println("Content-Type = " + contentType);
+//                System.out.println("Content-Disposition = " + disposition);
+//                System.out.println("Content-Length = " + contentLength);
+//                System.out.println("fileName = " + fileName);
                 // opens input stream from the HTTP connection
                 InputStream inputStream = httpConn.getInputStream();
                 String saveFilePath = "src/downloads/" + File.separator + fileName;
@@ -171,7 +184,7 @@ public class OicRestApi {
                 }
                 outputStream.close();
                 inputStream.close();
-                System.out.println("File downloaded");
+//                System.out.println("File downloaded");
                 response = true;
             } else {
                 System.out.println("No file to download. Server replied HTTP code: " + responseCode);

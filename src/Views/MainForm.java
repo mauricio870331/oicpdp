@@ -136,7 +136,7 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
-        lblPreloaderExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1495 (5).gif"))); // NOI18N
+        lblPreloaderExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1494.gif"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1TST2Layout = new javax.swing.GroupLayout(jPanel1TST2);
         jPanel1TST2.setLayout(jPanel1TST2Layout);
@@ -145,20 +145,21 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(jPanel1TST2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel1TST2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(lblIntegraTST2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(166, 166, 166)
-                        .addComponent(pb_tst2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(372, Short.MAX_VALUE))
-                    .addGroup(jPanel1TST2Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblPreloaderExport)
-                        .addGap(84, 84, 84))
-                    .addComponent(jScrollPane1)))
+                        .addGroup(jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1TST2Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(lblIntegraTST2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(166, 166, 166)
+                                .addComponent(pb_tst2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1TST2Layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblPreloaderExport)))
+                        .addContainerGap(372, Short.MAX_VALUE))))
         );
         jPanel1TST2Layout.setVerticalGroup(
             jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,8 +271,8 @@ public class MainForm extends javax.swing.JFrame {
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        jpContent.setLayer(jPanel1, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jpContent.setLayer(jpIntegrations, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jpContent.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jpContent.setLayer(jpIntegrations, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         javax.swing.GroupLayout jpContentLayout = new javax.swing.GroupLayout(jpContent);
         jpContent.setLayout(jpContentLayout);
@@ -333,7 +334,6 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_itemListActionPerformed
 
     private void jPanel1TST2ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1TST2ComponentShown
-        System.out.println("jPanel1TST2ComponentShown");
         if (tbl_integraciones.getRowCount() == 0) {
             if (hiloOcupado) {
                 jTabbedPane1.setSelectedComponent(currentPanel);
@@ -462,8 +462,6 @@ public class MainForm extends javax.swing.JFrame {
 
     private void cargarIntegraciones(String env, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel) {
 
-        System.out.println("cargando");
-
         hiloOcupado = true;
         if (currentPanel == null) {
             currentPanel = curPanel;
@@ -551,11 +549,12 @@ public class MainForm extends javax.swing.JFrame {
 
         @Override
         public void run() {
+            lblinfotst2.setText("Exportando integración..");
             lblPreloaderExport.setVisible(true);
             OicRestApi oic = new OicRestApi();
             boolean r = oic.exportIntegration(id, nombre, ambiente);
-            System.out.println("respuesta r " + r);
             lblPreloaderExport.setVisible(false);
+            lblinfotst2.setText("");
             if (r) {
                 ImportarIntegracion hiloImportar = new ImportarIntegracion(id, nombre, ambiente, version);
                 hiloImportar.start();
@@ -575,7 +574,7 @@ public class MainForm extends javax.swing.JFrame {
             this.id = id;
             this.nombre = nombre;
             this.version = version;
-            System.out.println("importando");
+
         }
 
         @Override
@@ -583,11 +582,17 @@ public class MainForm extends javax.swing.JFrame {
 
             //Refrescar el copnector con las credenciales
             //Activar integarcione
+            lblinfotst2.setText("Importando integración...");
             lblPreloaderExport.setVisible(true);
             OicRestApi oic = new OicRestApi();
             int response = oic.importIntegration(nombre, "UAT2", "POST");
-            System.out.println("response 2 " + response);
-            //poner logica para response 200
+            Map<String, Object> r;
+            if (response == 200) {
+                lblinfotst2.setText("Activando integración...");
+                r = oic.activateDeactivateIntg(id, "UAT2");
+                responseMessage((int) (r.get("response_code")), r.get("response"));
+            }
+
             if (response == 409) {
                 int result = JOptionPane.showConfirmDialog(MainForm.this, "¿La integración " + nombre + " V(" + version + ") ya existe, desea reemplazarla?",
                         "Confirmación..!",
@@ -596,16 +601,41 @@ public class MainForm extends javax.swing.JFrame {
                 if (result == JOptionPane.YES_OPTION) {
                     response = oic.importIntegration(nombre, "UAT2", "PUT");
                     if (response == 200) {
-                        JOptionPane.showMessageDialog(MainForm.this, "Integración importada, actualizada y activada correctamente..!");
+                        lblinfotst2.setText("Activando integración...");
+                        r = oic.activateDeactivateIntg(id, "UAT2");
+                        responseMessage((int) (r.get("response_code")), r.get("response"));
                     }
-                    //Poner resto de logica
                 }
-                if (result == JOptionPane.NO_OPTION) {
-                    System.out.println("No option");
-                }
+
             }
+            lblinfotst2.setText("");
             lblPreloaderExport.setVisible(false);
         }
 
+    }
+
+    public void responseMessage(int code, Object response) {
+        String message = "";
+        switch (code) {
+            case 200:
+                message = "Integración activada correctamente";
+                break;
+            case 404:
+                message = "Integración no encontrada";
+                break;
+            case 412:
+                message = "La integración ya esta activada o desactivada";
+                break;
+            case 500:
+                message = "Ocurio un error al tratar de activar la integarció";
+                break;
+        }
+        lblinfotst2.setText("");
+        lblPreloaderExport.setVisible(false);
+        if (code == 500) {
+            
+        } else {
+            JOptionPane.showMessageDialog(MainForm.this, message);
+        }
     }
 }
