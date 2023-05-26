@@ -61,7 +61,6 @@ public class OicRestApi {
     }
 
     public Map<String, Object> activateDeactivateIntg(String intg, String env) {
-        JsonParser parser = new JsonParser();
         Map<String, String> headers = new HashMap<>();
         headers.put("X-HTTP-Method-Override", "PATCH");
         //Data
@@ -81,7 +80,7 @@ public class OicRestApi {
             httpCon.setRequestProperty("Content-Type", "application/json");
             if (headers != null) {
                 for (Map.Entry<String, String> entry : headers.entrySet()) {
-                    httpCon.setRequestProperty(entry.getKey().toString(), entry.getValue().toString());
+                    httpCon.setRequestProperty(entry.getKey(), entry.getValue());
                 }
             }
             httpCon.setDoOutput(true);
@@ -91,14 +90,14 @@ public class OicRestApi {
             httpCon.setRequestProperty("Authorization", basicAuth);
             if (data != null) {
                 Gson gsonObj = new Gson();
-                try ( OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {        
-                    out.write(gsonObj.toJson(data));                    
+                try (OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
+                    out.write(gsonObj.toJson(data));
                 }
             }
             resp.put("response_code", httpCon.getResponseCode());
 //            System.out.println("Response Code: " + httpCon.getResponseCode());
             StringBuilder respuesta;
-            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
                 while ((linea = in.readLine()) != null) {
@@ -115,6 +114,7 @@ public class OicRestApi {
         return resp;
     }
 
+    //Integracion d eprueba
     public void listIntegraciones() {
         try {
             URL url = new URL("https://tst2oic-epsainfraestructura-px.integration.ocp.oraclecloud.com/ic/api/integration/v1/integrations/");
@@ -134,7 +134,7 @@ public class OicRestApi {
             System.out.println("Response Code: " + httpCon.getResponseCode());
 //        System.out.print("Response Code: " + httpCon.getResponseMessage());
             StringBuilder respuesta;
-            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
 
@@ -165,9 +165,9 @@ public class OicRestApi {
             // always check HTTP response code first
             if (responseCode == HttpURLConnection.HTTP_OK) {
 //                String fileName = "";
-                String disposition = httpConn.getHeaderField("Content-Disposition");
-                String contentType = httpConn.getContentType();
-                int contentLength = httpConn.getContentLength();
+//                String disposition = httpConn.getHeaderField("Content-Disposition");
+//                String contentType = httpConn.getContentType();
+//                int contentLength = httpConn.getContentLength();
 //                System.out.println("Content-Type = " + contentType);
 //                System.out.println("Content-Disposition = " + disposition);
 //                System.out.println("Content-Length = " + contentLength);
@@ -229,7 +229,7 @@ public class OicRestApi {
             outputStream.writeBytes("\r\n");
 
             File file = new File(filePath);
-            try ( FileInputStream fileInputStream = new FileInputStream(file)) {
+            try (FileInputStream fileInputStream = new FileInputStream(file)) {
                 byte[] buffer = new byte[4096];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {
