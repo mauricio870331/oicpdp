@@ -47,6 +47,8 @@ public class MainForm extends javax.swing.JFrame {
         itemMigrar_uat2 = new javax.swing.JMenuItem();
         itemMigrar_prd = new javax.swing.JMenuItem();
         jpContent = new javax.swing.JLayeredPane();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jpIntegrations = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1TST2 = new javax.swing.JPanel();
@@ -82,6 +84,25 @@ public class MainForm extends javax.swing.JFrame {
         mnuTblTst2.add(itemMigrar_prd);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("HELLO WORDL");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(384, 384, 384)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(157, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(186, 186, 186)
+                .addComponent(jLabel1)
+                .addContainerGap(358, Short.MAX_VALUE))
+        );
 
         jTabbedPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -131,15 +152,13 @@ public class MainForm extends javax.swing.JFrame {
                         .addComponent(pb_tst2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(372, Short.MAX_VALUE))
                     .addGroup(jPanel1TST2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())
-                    .addGroup(jPanel1TST2Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblPreloaderExport)
-                        .addGap(84, 84, 84))))
+                        .addGap(84, 84, 84))
+                    .addComponent(jScrollPane1)))
         );
         jPanel1TST2Layout.setVerticalGroup(
             jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,27 +260,32 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(jpIntegrationsLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 991, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
         jpIntegrationsLayout.setVerticalGroup(
             jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpIntegrationsLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
+        jpContent.setLayer(jPanel1, javax.swing.JLayeredPane.PALETTE_LAYER);
         jpContent.setLayer(jpIntegrations, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jpContentLayout = new javax.swing.GroupLayout(jpContent);
         jpContent.setLayout(jpContentLayout);
         jpContentLayout.setHorizontalGroup(
             jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpIntegrations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jpIntegrations, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpContentLayout.setVerticalGroup(
             jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpIntegrations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jpIntegrations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mnuConfig.setText("Configuración");
@@ -291,7 +315,7 @@ public class MainForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jpContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 4, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -302,12 +326,14 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void itemListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemListActionPerformed
+        jPanel1.setVisible(false);
         jpIntegrations.setVisible(true);
 //        MiHilo miHilo = new MiHilo("TST2", tbl_integraciones, lblIntegraTST2, pb_tst2);
 //        miHilo.start();      
     }//GEN-LAST:event_itemListActionPerformed
 
     private void jPanel1TST2ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1TST2ComponentShown
+        System.out.println("jPanel1TST2ComponentShown");
         if (tbl_integraciones.getRowCount() == 0) {
             if (hiloOcupado) {
                 jTabbedPane1.setSelectedComponent(currentPanel);
@@ -399,7 +425,9 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemMigrar_uat2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel1TST2;
     private javax.swing.JPanel jPanelUAT2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -433,6 +461,9 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     private void cargarIntegraciones(String env, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel) {
+
+        System.out.println("cargando");
+
         hiloOcupado = true;
         if (currentPanel == null) {
             currentPanel = curPanel;
@@ -549,6 +580,9 @@ public class MainForm extends javax.swing.JFrame {
 
         @Override
         public void run() {
+
+            //Refrescar el copnector con las credenciales
+            //Activar integarcione
             lblPreloaderExport.setVisible(true);
             OicRestApi oic = new OicRestApi();
             int response = oic.importIntegration(nombre, "UAT2", "POST");
@@ -565,10 +599,9 @@ public class MainForm extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(MainForm.this, "Integración importada, actualizada y activada correctamente..!");
                     }
                     //Poner resto de logica
-                } else if (result == JOptionPane.NO_OPTION) {
+                }
+                if (result == JOptionPane.NO_OPTION) {
                     System.out.println("No option");
-                } else {
-                    System.out.println("No seleccionado");
                 }
             }
             lblPreloaderExport.setVisible(false);
