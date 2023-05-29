@@ -31,7 +31,7 @@ public class MainForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setTitle("Benvenido: " + OicRestApi.user);
         hideElemnets();
-
+        
     }
 
     /**
@@ -69,6 +69,7 @@ public class MainForm extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuConfig = new javax.swing.JMenu();
         itemCredenciales = new javax.swing.JMenuItem();
+        itemUrlOic = new javax.swing.JMenuItem();
         mnuOicApi = new javax.swing.JMenu();
         itemList = new javax.swing.JMenuItem();
 
@@ -292,7 +293,20 @@ public class MainForm extends javax.swing.JFrame {
         mnuConfig.setText("Configuración");
 
         itemCredenciales.setText("Configurar credenciales de aplicación");
+        itemCredenciales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCredencialesActionPerformed(evt);
+            }
+        });
         mnuConfig.add(itemCredenciales);
+
+        itemUrlOic.setText("Configurar Url´s de OIC");
+        itemUrlOic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemUrlOicActionPerformed(evt);
+            }
+        });
+        mnuConfig.add(itemUrlOic);
 
         jMenuBar1.add(mnuConfig);
 
@@ -383,6 +397,15 @@ public class MainForm extends javax.swing.JFrame {
         hexportar.start();
     }//GEN-LAST:event_itemMigrar_uat2ActionPerformed
 
+    private void itemUrlOicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemUrlOicActionPerformed
+        ConfigUrlOic cuo = new ConfigUrlOic();
+        cuo.setVisible(true);        
+    }//GEN-LAST:event_itemUrlOicActionPerformed
+
+    private void itemCredencialesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCredencialesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_itemCredencialesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -423,6 +446,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemList;
     private javax.swing.JMenuItem itemMigrar_prd;
     private javax.swing.JMenuItem itemMigrar_uat2;
+    private javax.swing.JMenuItem itemUrlOic;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -452,27 +476,27 @@ public class MainForm extends javax.swing.JFrame {
     //CustomVars
     boolean hiloOcupado = false;
     JPanel currentPanel;
-
+    
     private void hideElemnets() {
         jpIntegrations.setVisible(false);
         pb_tst2.setVisible(false);
         pb_uat2.setVisible(false);
         lblPreloaderExport.setVisible(false);
     }
-
+    
     private void cargarIntegraciones(String env, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel) {
-
+        
         hiloOcupado = true;
         if (currentPanel == null) {
             currentPanel = curPanel;
         }
-
+        
         pb.setVisible(true);
         IntegrationModel im = new IntegrationModel();
         Map<String, Object> respuesta = im.getIntegrations(env);
         int total = (int) respuesta.get("total");
         lbl.setText("Total Integraciones: " + total);
-
+        
         JsonArray list = (JsonArray) respuesta.get("integraciones");
         DefaultTableModel modeloTabla = new DefaultTableModel();
         // Agregar columnas a nuestro modelo de tabla
@@ -500,25 +524,25 @@ public class MainForm extends javax.swing.JFrame {
         table.getColumnModel().getColumn(3).setMinWidth(100);
         table.getColumnModel().getColumn(4).setMaxWidth(120);
         table.getColumnModel().getColumn(4).setMinWidth(120);
-
+        
         table.setModel(modeloTabla);
         pb.setVisible(false);
         hiloOcupado = false;
         currentPanel = null;
         lblinfoUat2.setText("");
         lblinfotst2.setText("");
-
+        
     }
 
     //Hilos
     public class MiHilo extends Thread {
-
+        
         String ambiente;
         JTable table;
         JLabel lbl;
         JProgressBar pb;
         JPanel curPanel;
-
+        
         public MiHilo(String ambiente, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel) {
             this.ambiente = ambiente;
             this.table = table;
@@ -526,27 +550,27 @@ public class MainForm extends javax.swing.JFrame {
             this.pb = pb;
             this.curPanel = curPanel;
         }
-
+        
         @Override
         public void run() {
             cargarIntegraciones(ambiente, table, lbl, pb, curPanel);
         }
     }
-
+    
     public class ExportarIntegracion extends Thread {
-
+        
         String ambiente;
         String id;
         String nombre;
         String version;
-
+        
         public ExportarIntegracion(String id, String nombre, String ambiente, String version) {
             this.ambiente = ambiente;
             this.id = id;
             this.nombre = nombre;
             this.version = version;
         }
-
+        
         @Override
         public void run() {
             lblinfotst2.setText("Exportando integración..");
@@ -561,22 +585,22 @@ public class MainForm extends javax.swing.JFrame {
             }
         }
     }
-
+    
     public class ImportarIntegracion extends Thread {
-
+        
         String ambiente;
         String id;
         String nombre;
         String version;
-
+        
         public ImportarIntegracion(String id, String nombre, String ambiente, String version) {
             this.ambiente = ambiente;
             this.id = id;
             this.nombre = nombre;
             this.version = version;
-
+            
         }
-
+        
         @Override
         public void run() {
 
@@ -592,7 +616,7 @@ public class MainForm extends javax.swing.JFrame {
                 r = oic.activateDeactivateIntg(id, "UAT2");
                 responseMessage((int) (r.get("response_code")), r.get("response"));
             }
-
+            
             if (response == 409) {
                 int result = JOptionPane.showConfirmDialog(MainForm.this, "¿La integración " + nombre + " V(" + version + ") ya existe, desea reemplazarla?",
                         "Confirmación..!",
@@ -606,14 +630,14 @@ public class MainForm extends javax.swing.JFrame {
                         responseMessage((int) (r.get("response_code")), r.get("response"));
                     }
                 }
-
+                
             }
             lblinfotst2.setText("");
             lblPreloaderExport.setVisible(false);
         }
-
+        
     }
-
+    
     public void responseMessage(int code, Object response) {
         String message = "";
         switch (code) {

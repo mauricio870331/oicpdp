@@ -90,14 +90,14 @@ public class OicRestApi {
             httpCon.setRequestProperty("Authorization", basicAuth);
             if (data != null) {
                 Gson gsonObj = new Gson();
-                try (OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
+                try ( OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
                     out.write(gsonObj.toJson(data));
                 }
             }
             resp.put("response_code", httpCon.getResponseCode());
 //            System.out.println("Response Code: " + httpCon.getResponseCode());
             StringBuilder respuesta;
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
                 while ((linea = in.readLine()) != null) {
@@ -134,7 +134,7 @@ public class OicRestApi {
             System.out.println("Response Code: " + httpCon.getResponseCode());
 //        System.out.print("Response Code: " + httpCon.getResponseMessage());
             StringBuilder respuesta;
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
 
@@ -229,7 +229,7 @@ public class OicRestApi {
             outputStream.writeBytes("\r\n");
 
             File file = new File(filePath);
-            try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            try ( FileInputStream fileInputStream = new FileInputStream(file)) {
                 byte[] buffer = new byte[4096];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {
@@ -276,19 +276,7 @@ public class OicRestApi {
     }
 
     public String getEnviromentUrl(String env) {
-        String url = "";
-        switch (env) {
-            case "TST2":
-                url = "https://tst2oic-epsainfraestructura-px.integration.ocp.oraclecloud.com/ic/api";
-                break;
-            case "UAT2":
-                url = "https://uat2oic-epsainfraestructura-px.integration.ocp.oraclecloud.com/ic/api";
-                break;
-            case "PRD":
-                url = "https://prdoic-epsainfraestructura.integration.ocp.oraclecloud.com//ic/api";
-                break;
-        }
-        return url;
+        return Utils.Utils.leerProperties(env);
     }
 
 }

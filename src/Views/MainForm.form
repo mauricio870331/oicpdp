@@ -34,6 +34,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Configurar credenciales de aplicaci&#xf3;n"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemCredencialesActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="itemUrlOic">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Configurar Url&#xb4;s de OIC"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemUrlOicActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
