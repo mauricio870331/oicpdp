@@ -29,6 +29,7 @@ public class ConfigCredentials extends javax.swing.JFrame {
     public ConfigCredentials() {
         initComponents();
         this.setLocationRelativeTo(null);
+        loadCombo();
         cargarTabla();
     }
 
@@ -56,7 +57,7 @@ public class ConfigCredentials extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_credencials = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0))));
 
@@ -77,7 +78,6 @@ public class ConfigCredentials extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Agregar Credenciales de Aplicación");
 
         jLabel5.setText("Ambiente:");
@@ -283,5 +283,20 @@ public class ConfigCredentials extends javax.swing.JFrame {
         txt_pass.setText("");
         cboAmbiente.setSelectedIndex(0);
         cboApp.setSelectedIndex(0);
+    }
+
+    private void loadCombo() {
+        AppCredentialsModel ct = new AppCredentialsModel();
+        JsonArray list = ct.all();
+        String[] items = new String[list.size() + 1];
+        items[0] = "SELECCIONE";
+        cboAmbiente.setModel(new javax.swing.DefaultComboBoxModel<>(items));
+        int index = 1;
+        Map<String, String> urlsMap = Utils.Utils.leerArchivoProperties();
+        for (Map.Entry<String, String> entry : urlsMap.entrySet()) {
+            items[index] = entry.getKey();
+            index++;
+        }
+        cboAmbiente.setModel(new javax.swing.DefaultComboBoxModel<>(items));
     }
 }

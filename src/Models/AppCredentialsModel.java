@@ -41,6 +41,8 @@ public final class AppCredentialsModel extends Model {
         System.out.println(create(data));
         disconnect();
     }
+    
+    
 
     public void getFirst() {
         super.query("select * from APP_CREDENTIALS where id = '1681412959'").first();

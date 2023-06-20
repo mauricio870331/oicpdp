@@ -17,7 +17,7 @@ public class IntegrationsUtils implements Runnable{
     public void run() {
         IntegrationModel im = new IntegrationModel();
         im.addTable("INTEGRATIONS_TST2");
-        im.getIntegrations("TST2");
+        im.getIntegrations("TST2", "");
     }
     
 }

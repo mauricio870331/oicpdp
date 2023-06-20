@@ -49,9 +49,16 @@ public class OicRestApi {
         return respuesta;
     }
 
-    public Map<String, Object> integrationsList(String env) {
+    public Map<String, Object> integrationsList(String env, String status) {
         JsonParser parser = new JsonParser();
-        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + "/integration/v1/integrations/?q=%7Bstatus%20%3A'ACTIVATED'%7D", "GET", null, null);
+        StringBuilder sb = new StringBuilder();
+        sb.append("/integration/v1/integrations/");
+        if (!status.equals("Seleccione Estado")) {
+            sb.append("?q=%7Bstatus%20%3A'");
+            sb.append(status);
+            sb.append("'%7D");
+        }
+        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + sb.toString(), "GET", null, null);
         Map<String, Object> resp = new HashMap<>();
         JsonElement element = (JsonElement) parser.parse((String) respuesta.get("response"));
         JsonObject jsonObject = element.getAsJsonObject();
@@ -60,6 +67,17 @@ public class OicRestApi {
         return resp;
     }
 
+    
+     public Map<String, Object> updateCredentialsConector(String intg, String env) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("X-HTTP-Method-Override", "PATCH");
+        //Data
+        Map<String, String> data = new HashMap<>();
+        data.put("status", "ACTIVATED");
+        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + "/integration/v1/integrations/" + intg, "POST", data, headers);
+        return respuesta;
+    }
+    
     public Map<String, Object> activateDeactivateIntg(String intg, String env) {
         Map<String, String> headers = new HashMap<>();
         headers.put("X-HTTP-Method-Override", "PATCH");
@@ -90,14 +108,14 @@ public class OicRestApi {
             httpCon.setRequestProperty("Authorization", basicAuth);
             if (data != null) {
                 Gson gsonObj = new Gson();
-                try ( OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
+                try (OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
                     out.write(gsonObj.toJson(data));
                 }
             }
             resp.put("response_code", httpCon.getResponseCode());
 //            System.out.println("Response Code: " + httpCon.getResponseCode());
             StringBuilder respuesta;
-            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
                 while ((linea = in.readLine()) != null) {
@@ -134,7 +152,7 @@ public class OicRestApi {
             System.out.println("Response Code: " + httpCon.getResponseCode());
 //        System.out.print("Response Code: " + httpCon.getResponseMessage());
             StringBuilder respuesta;
-            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
 
@@ -229,7 +247,7 @@ public class OicRestApi {
             outputStream.writeBytes("\r\n");
 
             File file = new File(filePath);
-            try ( FileInputStream fileInputStream = new FileInputStream(file)) {
+            try (FileInputStream fileInputStream = new FileInputStream(file)) {
                 byte[] buffer = new byte[4096];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {
