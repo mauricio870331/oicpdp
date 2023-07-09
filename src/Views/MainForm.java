@@ -9,12 +9,18 @@ import OICApi.OicRestApi;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Map;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JTable;
+import javax.swing.MenuElement;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,6 +37,7 @@ public class MainForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setTitle("Benvenido: " + OicRestApi.user);
         hideElemnets();
+
         cargarTablaAmbientes();
 
     }
@@ -46,9 +53,6 @@ public class MainForm extends javax.swing.JFrame {
 
         mnuTblAmbiente = new javax.swing.JPopupMenu();
         itemSeletedEnv = new javax.swing.JMenuItem();
-        mnuTblTst2 = new javax.swing.JPopupMenu();
-        itemMigrar_uat2 = new javax.swing.JMenuItem();
-        itemMigrar_prd = new javax.swing.JMenuItem();
         jpContent = new javax.swing.JLayeredPane();
         jpIntegrations = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -97,17 +101,6 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuTblAmbiente.add(itemSeletedEnv);
 
-        itemMigrar_uat2.setText("Migrar a: UAT2");
-        itemMigrar_uat2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemMigrar_uat2ActionPerformed(evt);
-            }
-        });
-        mnuTblTst2.add(itemMigrar_uat2);
-
-        itemMigrar_prd.setText("Migrar a: PRD");
-        mnuTblTst2.add(itemMigrar_prd);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         tblEnvironment.setModel(new javax.swing.table.DefaultTableModel(
@@ -129,7 +122,6 @@ public class MainForm extends javax.swing.JFrame {
 
             }
         ));
-        tbl_integraciones.setComponentPopupMenu(mnuTblTst2);
         jScrollPane1.setViewportView(tbl_integraciones);
 
         pb_tst2.setIndeterminate(true);
@@ -232,7 +224,6 @@ public class MainForm extends javax.swing.JFrame {
 
             }
         ));
-        tblConectTST2.setComponentPopupMenu(mnuTblTst2);
         jScrollPane3.setViewportView(tblConectTST2);
 
         pb_tst2_con.setIndeterminate(true);
@@ -498,20 +489,6 @@ public class MainForm extends javax.swing.JFrame {
 //        miHilo.start();      
     }//GEN-LAST:event_itemListActionPerformed
 
-    private void itemMigrar_uat2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMigrar_uat2ActionPerformed
-        int row = tbl_integraciones.getSelectedRow();
-        if (row == -1) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
-            return;
-        }
-        String value = tbl_integraciones.getModel().getValueAt(row, 0).toString();
-        String name = tbl_integraciones.getModel().getValueAt(row, 1).toString() + ".iar";
-        String version = tbl_integraciones.getModel().getValueAt(row, 4).toString();
-        tbl_integraciones.clearSelection();
-        ExportarIntegracion hexportar = new ExportarIntegracion(value, name.replaceAll(" ", "_"), selectedEnv, version);
-        hexportar.start();
-    }//GEN-LAST:event_itemMigrar_uat2ActionPerformed
-
     private void itemUrlOicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemUrlOicActionPerformed
         ConfigUrlOic cuo = new ConfigUrlOic();
         cuo.setVisible(true);
@@ -553,6 +530,18 @@ public class MainForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Debes seleccionar un ambiente..!");
             return;
         }
+
+        for (MenuElement menuItem : mnuTblTst2.getSubElements()) {
+            if (menuItem instanceof MenuElement) {
+                JMenuItem item = (JMenuItem) menuItem;
+                if (item.getText().equals(selectedEnv)) {
+                    item.setVisible(false);
+                } else {
+                    item.setVisible(true);
+                }
+            }
+        }
+
         String status = cboStatusIntg.getSelectedItem().toString();
         System.out.println("Boton presionado");
         MiHilo miHilo = new MiHilo(selectedEnv + "", tbl_integraciones, lblIntegraTST2, pb_tst2, status);
@@ -610,8 +599,6 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemConnections;
     private javax.swing.JMenuItem itemCredenciales;
     private javax.swing.JMenuItem itemList;
-    private javax.swing.JMenuItem itemMigrar_prd;
-    private javax.swing.JMenuItem itemMigrar_uat2;
     private javax.swing.JMenuItem itemSeletedEnv;
     private javax.swing.JMenuItem itemUrlOic;
     private javax.swing.JButton jButton1;
@@ -641,7 +628,6 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu mnuConfig;
     private javax.swing.JMenu mnuOicApi;
     private javax.swing.JPopupMenu mnuTblAmbiente;
-    private javax.swing.JPopupMenu mnuTblTst2;
     private javax.swing.JProgressBar pb_tst2;
     private javax.swing.JProgressBar pb_tst2_con;
     private javax.swing.JProgressBar pb_uat3;
@@ -654,15 +640,31 @@ public class MainForm extends javax.swing.JFrame {
 
     //CustomVars
     private String selectedEnv = "";
+    JPopupMenu mnuTblTst2 = new JPopupMenu();
+
+    class PopupMenuListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JMenuItem menuItem = (JMenuItem) e.getSource();
+            System.out.println("texto menu " + menuItem.getText());
+        }
+    }
 
     private void cargarTablaAmbientes() {
+        PopupMenuListener listener = new PopupMenuListener();
+
         DefaultTableModel modeloTabla = new DefaultTableModel();
 // Agregar columnas a nuestro modelo de tabla
         modeloTabla.addColumn("AMBIENTE");
         Map<String, String> urlsMap = Utils.Utils.leerArchivoProperties();
         for (Map.Entry<String, String> entry : urlsMap.entrySet()) {
             modeloTabla.addRow(new Object[]{entry.getKey()});
+            JMenuItem elemento = new JMenuItem(entry.getKey());
+            elemento.addActionListener(listener);
+            mnuTblTst2.add(elemento);
         }
+        tbl_integraciones.setComponentPopupMenu(mnuTblTst2);
 // Asignar el modelo de tabla a nuestro JTable
         tblEnvironment.setModel(modeloTabla);
     }
@@ -684,7 +686,7 @@ public class MainForm extends javax.swing.JFrame {
         lbl.setText("Total Integraciones: " + total);
 
         JsonArray list = (JsonArray) respuesta.get("integraciones");
-        System.out.println("list " + list);
+//        System.out.println("list " + list);
         DefaultTableModel modeloTabla = new DefaultTableModel();
         // Agregar columnas a nuestro modelo de tabla
         modeloTabla.addColumn("ID");
