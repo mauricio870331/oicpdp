@@ -31,6 +31,7 @@ public class MainForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setTitle("Benvenido: " + OicRestApi.user);
         hideElemnets();
+        cargarTablaAmbientes();
 
     }
 
@@ -43,10 +44,24 @@ public class MainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mnuTblAmbiente = new javax.swing.JPopupMenu();
+        itemSeletedEnv = new javax.swing.JMenuItem();
         mnuTblTst2 = new javax.swing.JPopupMenu();
         itemMigrar_uat2 = new javax.swing.JMenuItem();
         itemMigrar_prd = new javax.swing.JMenuItem();
         jpContent = new javax.swing.JLayeredPane();
+        jpIntegrations = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblEnvironment = new javax.swing.JTable();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_integraciones = new javax.swing.JTable();
+        pb_tst2 = new javax.swing.JProgressBar();
+        lblIntegraTST2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        lblinfotst2 = new javax.swing.JLabel();
+        lblPreloaderExport = new javax.swing.JLabel();
+        cboStatusIntg = new javax.swing.JComboBox<>();
+        lblCurEnv = new javax.swing.JLabel();
         jpConectores = new javax.swing.JPanel();
         tabPaneConectoresEnv = new javax.swing.JTabbedPane();
         jPanel1TST3 = new javax.swing.JPanel();
@@ -66,25 +81,6 @@ public class MainForm extends javax.swing.JFrame {
         lblinfoUat3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jpIntegrations = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1TST2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_integraciones = new javax.swing.JTable();
-        pb_tst2 = new javax.swing.JProgressBar();
-        lblIntegraTST2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        lblinfotst2 = new javax.swing.JLabel();
-        lblPreloaderExport = new javax.swing.JLabel();
-        cboStatusIntg = new javax.swing.JComboBox<>();
-        jPanelUAT2 = new javax.swing.JPanel();
-        cboStatusIntg2 = new javax.swing.JComboBox<>();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tbl_int_uat2 = new javax.swing.JTable();
-        pb_uat2 = new javax.swing.JProgressBar();
-        lblIntegraUAT2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        lblinfoUat2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuConfig = new javax.swing.JMenu();
         itemCredenciales = new javax.swing.JMenuItem();
@@ -92,6 +88,14 @@ public class MainForm extends javax.swing.JFrame {
         mnuOicApi = new javax.swing.JMenu();
         itemList = new javax.swing.JMenuItem();
         itemConnections = new javax.swing.JMenuItem();
+
+        itemSeletedEnv.setText("Seleccionar");
+        itemSeletedEnv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemSeletedEnvActionPerformed(evt);
+            }
+        });
+        mnuTblAmbiente.add(itemSeletedEnv);
 
         itemMigrar_uat2.setText("Migrar a: UAT2");
         itemMigrar_uat2.addActionListener(new java.awt.event.ActionListener() {
@@ -105,6 +109,110 @@ public class MainForm extends javax.swing.JFrame {
         mnuTblTst2.add(itemMigrar_prd);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        tblEnvironment.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tblEnvironment.setComponentPopupMenu(mnuTblAmbiente);
+        jScrollPane5.setViewportView(tblEnvironment);
+
+        tbl_integraciones.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tbl_integraciones.setComponentPopupMenu(mnuTblTst2);
+        jScrollPane1.setViewportView(tbl_integraciones);
+
+        pb_tst2.setIndeterminate(true);
+
+        lblIntegraTST2.setText("Total Integraciones: 0");
+
+        jButton1.setText("Cargar Datos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        lblPreloaderExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1494.gif"))); // NOI18N
+
+        cboStatusIntg.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione Estado", "ACTIVATED", "CONFIGURED", "INPROGRESS" }));
+
+        lblCurEnv.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblCurEnv.setText("Ambiente Seleccionado:");
+
+        javax.swing.GroupLayout jpIntegrationsLayout = new javax.swing.GroupLayout(jpIntegrations);
+        jpIntegrations.setLayout(jpIntegrationsLayout);
+        jpIntegrationsLayout.setHorizontalGroup(
+            jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpIntegrationsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpIntegrationsLayout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jpIntegrationsLayout.createSequentialGroup()
+                                .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cboStatusIntg, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jpIntegrationsLayout.createSequentialGroup()
+                                        .addGap(60, 60, 60)
+                                        .addComponent(lblPreloaderExport))
+                                    .addGroup(jpIntegrationsLayout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(lblCurEnv, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(jpIntegrationsLayout.createSequentialGroup()
+                        .addComponent(lblIntegraTST2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(175, 175, 175)
+                        .addComponent(pb_tst2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 312, Short.MAX_VALUE))
+            .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpIntegrationsLayout.createSequentialGroup()
+                    .addGap(14, 14, 14)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 995, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(19, Short.MAX_VALUE)))
+        );
+        jpIntegrationsLayout.setVerticalGroup(
+            jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpIntegrationsLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpIntegrationsLayout.createSequentialGroup()
+                        .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cboStatusIntg)
+                            .addComponent(lblCurEnv, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jpIntegrationsLayout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblPreloaderExport, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 457, Short.MAX_VALUE)
+                .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pb_tst2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblIntegraTST2, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(36, 36, 36))
+            .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpIntegrationsLayout.createSequentialGroup()
+                    .addGap(135, 135, 135)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(104, Short.MAX_VALUE)))
+        );
 
         tabPaneConectoresEnv.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tabPaneConectoresEnv.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -288,194 +396,12 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(186, 186, 186)
                 .addComponent(jLabel1)
-                .addContainerGap(358, Short.MAX_VALUE))
+                .addContainerGap(425, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        jPanel1TST2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1TST2.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                jPanel1TST2ComponentShown(evt);
-            }
-        });
-
-        tbl_integraciones.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        tbl_integraciones.setComponentPopupMenu(mnuTblTst2);
-        jScrollPane1.setViewportView(tbl_integraciones);
-
-        pb_tst2.setIndeterminate(true);
-
-        lblIntegraTST2.setText("Total Integraciones: 0");
-
-        jButton1.setText("Cargar Datos");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        lblPreloaderExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1494.gif"))); // NOI18N
-
-        cboStatusIntg.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione Estado", "ACTIVATED", "CONFIGURED", "INPROGRESS" }));
-
-        javax.swing.GroupLayout jPanel1TST2Layout = new javax.swing.GroupLayout(jPanel1TST2);
-        jPanel1TST2.setLayout(jPanel1TST2Layout);
-        jPanel1TST2Layout.setHorizontalGroup(
-            jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1TST2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(jPanel1TST2Layout.createSequentialGroup()
-                        .addGroup(jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1TST2Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(lblIntegraTST2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(166, 166, 166)
-                                .addComponent(pb_tst2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1TST2Layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cboStatusIntg, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 274, Short.MAX_VALUE)
-                                .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(70, 70, 70)
-                                .addComponent(lblPreloaderExport)))
-                        .addContainerGap())))
-        );
-        jPanel1TST2Layout.setVerticalGroup(
-            jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1TST2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1TST2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cboStatusIntg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblPreloaderExport, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1TST2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pb_tst2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblIntegraTST2))
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("TST2", jPanel1TST2);
-
-        jPanelUAT2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanelUAT2.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                jPanelUAT2ComponentShown(evt);
-            }
-        });
-
-        cboStatusIntg2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione Estado", "ACTIVATED", "CONFIGURED", "INPROGRESS" }));
-
-        tbl_int_uat2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane2.setViewportView(tbl_int_uat2);
-
-        pb_uat2.setIndeterminate(true);
-
-        lblIntegraUAT2.setText("Total Integraciones: 0");
-
-        jButton2.setText("Cargar Datos");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanelUAT2Layout = new javax.swing.GroupLayout(jPanelUAT2);
-        jPanelUAT2.setLayout(jPanelUAT2Layout);
-        jPanelUAT2Layout.setHorizontalGroup(
-            jPanelUAT2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelUAT2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelUAT2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelUAT2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(lblIntegraUAT2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(166, 166, 166)
-                        .addComponent(pb_uat2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(372, Short.MAX_VALUE))
-                    .addGroup(jPanelUAT2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addContainerGap())
-                    .addGroup(jPanelUAT2Layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cboStatusIntg2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(155, 155, 155)
-                        .addComponent(lblinfoUat2, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
-        );
-        jPanelUAT2Layout.setVerticalGroup(
-            jPanelUAT2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelUAT2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelUAT2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelUAT2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lblinfoUat2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelUAT2Layout.createSequentialGroup()
-                        .addGroup(jPanelUAT2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cboStatusIntg2))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanelUAT2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pb_uat2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblIntegraUAT2))
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("UAT2", jPanelUAT2);
-
-        jTabbedPane1.setSelectedComponent(jPanel1TST2);
-
-        javax.swing.GroupLayout jpIntegrationsLayout = new javax.swing.GroupLayout(jpIntegrations);
-        jpIntegrations.setLayout(jpIntegrationsLayout);
-        jpIntegrationsLayout.setHorizontalGroup(
-            jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpIntegrationsLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 991, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
-        );
-        jpIntegrationsLayout.setVerticalGroup(
-            jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpIntegrationsLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
-
-        jpContent.setLayer(jpConectores, javax.swing.JLayeredPane.PALETTE_LAYER);
+        jpContent.setLayer(jpIntegrations, javax.swing.JLayeredPane.PALETTE_LAYER);
+        jpContent.setLayer(jpConectores, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jpContent.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jpContent.setLayer(jpIntegrations, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jpContentLayout = new javax.swing.GroupLayout(jpContent);
         jpContent.setLayout(jpContentLayout);
@@ -483,7 +409,7 @@ public class MainForm extends javax.swing.JFrame {
             jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jpIntegrations, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jpIntegrations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpContentLayout.createSequentialGroup()
                     .addContainerGap()
@@ -492,9 +418,13 @@ public class MainForm extends javax.swing.JFrame {
         );
         jpContentLayout.setVerticalGroup(
             jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jpContentLayout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 1, Short.MAX_VALUE))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jpIntegrations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jpContentLayout.createSequentialGroup()
+                    .addComponent(jpIntegrations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 49, Short.MAX_VALUE)))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpContentLayout.createSequentialGroup()
                     .addContainerGap()
@@ -568,45 +498,6 @@ public class MainForm extends javax.swing.JFrame {
 //        miHilo.start();      
     }//GEN-LAST:event_itemListActionPerformed
 
-    private void jPanel1TST2ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1TST2ComponentShown
-        if (tbl_integraciones.getRowCount() == 0) {
-            if (hiloOcupado) {
-                jTabbedPane1.setSelectedComponent(currentPanel);
-                lblinfotst2.setText("Espere a que el proceso termine para inicar otro");
-            } else {
-                MiHilo miHilo = new MiHilo("TST2", tbl_integraciones, lblIntegraTST2, pb_tst2, jPanel1TST2, "Seleccione Estado");
-                miHilo.start();
-            }
-        }
-
-    }//GEN-LAST:event_jPanel1TST2ComponentShown
-
-    private void jPanelUAT2ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanelUAT2ComponentShown
-        // TODO add your handling code here:
-        if (tbl_int_uat2.getRowCount() == 0) {
-            if (hiloOcupado) {
-                jTabbedPane1.setSelectedComponent(currentPanel);
-                lblinfoUat2.setText("Espere a que el proceso termine para inicar otro");
-            } else {
-                MiHilo miHilo = new MiHilo("UAT2", tbl_int_uat2, lblIntegraUAT2, pb_uat2, jPanelUAT2, "Seleccione Estado");
-                miHilo.start();
-            }
-        }
-    }//GEN-LAST:event_jPanelUAT2ComponentShown
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String status = cboStatusIntg.getSelectedItem().toString();
-        System.out.println("");
-        MiHilo miHilo = new MiHilo("TST2", tbl_integraciones, lblIntegraTST2, pb_tst2, jPanel1TST2, status);
-        miHilo.start();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String status = cboStatusIntg2.getSelectedItem().toString();
-        MiHilo miHilo = new MiHilo("UAT2", tbl_int_uat2, lblIntegraUAT2, pb_uat2, jPanelUAT2, status);
-        miHilo.start();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void itemMigrar_uat2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMigrar_uat2ActionPerformed
         int row = tbl_integraciones.getSelectedRow();
         if (row == -1) {
@@ -617,7 +508,7 @@ public class MainForm extends javax.swing.JFrame {
         String name = tbl_integraciones.getModel().getValueAt(row, 1).toString() + ".iar";
         String version = tbl_integraciones.getModel().getValueAt(row, 4).toString();
         tbl_integraciones.clearSelection();
-        ExportarIntegracion hexportar = new ExportarIntegracion(value, name.replaceAll(" ", "_"), "TST2", version);
+        ExportarIntegracion hexportar = new ExportarIntegracion(value, name.replaceAll(" ", "_"), selectedEnv, version);
         hexportar.start();
     }//GEN-LAST:event_itemMigrar_uat2ActionPerformed
 
@@ -657,6 +548,28 @@ public class MainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanelUAT3ComponentShown
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (selectedEnv.equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar un ambiente..!");
+            return;
+        }
+        String status = cboStatusIntg.getSelectedItem().toString();
+        System.out.println("Boton presionado");
+        MiHilo miHilo = new MiHilo(selectedEnv + "", tbl_integraciones, lblIntegraTST2, pb_tst2, status);
+        miHilo.start();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void itemSeletedEnvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSeletedEnvActionPerformed
+        int row = tblEnvironment.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+            return;
+        }
+        String value = tblEnvironment.getModel().getValueAt(row, 0).toString();
+        selectedEnv = value;
+        lblCurEnv.setText("Ambiente Seleccionado: " + value);
+    }//GEN-LAST:event_itemSeletedEnvActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -694,82 +607,84 @@ public class MainForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cboStatusIntg;
-    private javax.swing.JComboBox<String> cboStatusIntg2;
     private javax.swing.JMenuItem itemConnections;
     private javax.swing.JMenuItem itemCredenciales;
     private javax.swing.JMenuItem itemList;
     private javax.swing.JMenuItem itemMigrar_prd;
     private javax.swing.JMenuItem itemMigrar_uat2;
+    private javax.swing.JMenuItem itemSeletedEnv;
     private javax.swing.JMenuItem itemUrlOic;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel1TST2;
     private javax.swing.JPanel jPanel1TST3;
-    private javax.swing.JPanel jPanelUAT2;
     private javax.swing.JPanel jPanelUAT3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JPanel jpConectores;
     private javax.swing.JLayeredPane jpContent;
     private javax.swing.JPanel jpIntegrations;
+    private javax.swing.JLabel lblCurEnv;
     private javax.swing.JLabel lblIntegraTST2;
-    private javax.swing.JLabel lblIntegraUAT2;
     private javax.swing.JLabel lblIntegraUAT3;
     private javax.swing.JLabel lblPreloaderExport;
     private javax.swing.JLabel lblPreloaderUpdConector;
-    private javax.swing.JLabel lblinfoUat2;
     private javax.swing.JLabel lblinfoUat3;
     private javax.swing.JLabel lblinfotst2;
     private javax.swing.JLabel lblinfotstCon;
     private javax.swing.JLabel lboConectorsTST2;
     private javax.swing.JMenu mnuConfig;
     private javax.swing.JMenu mnuOicApi;
+    private javax.swing.JPopupMenu mnuTblAmbiente;
     private javax.swing.JPopupMenu mnuTblTst2;
     private javax.swing.JProgressBar pb_tst2;
     private javax.swing.JProgressBar pb_tst2_con;
-    private javax.swing.JProgressBar pb_uat2;
     private javax.swing.JProgressBar pb_uat3;
     private javax.swing.JTabbedPane tabPaneConectoresEnv;
     private javax.swing.JTable tblConectTST2;
     private javax.swing.JTable tblConectsUAT2;
-    private javax.swing.JTable tbl_int_uat2;
+    private javax.swing.JTable tblEnvironment;
     private javax.swing.JTable tbl_integraciones;
     // End of variables declaration//GEN-END:variables
 
     //CustomVars
-    boolean hiloOcupado = false;
-    JPanel currentPanel;
+    private String selectedEnv = "";
+
+    private void cargarTablaAmbientes() {
+        DefaultTableModel modeloTabla = new DefaultTableModel();
+// Agregar columnas a nuestro modelo de tabla
+        modeloTabla.addColumn("AMBIENTE");
+        Map<String, String> urlsMap = Utils.Utils.leerArchivoProperties();
+        for (Map.Entry<String, String> entry : urlsMap.entrySet()) {
+            modeloTabla.addRow(new Object[]{entry.getKey()});
+        }
+// Asignar el modelo de tabla a nuestro JTable
+        tblEnvironment.setModel(modeloTabla);
+    }
 
     private void hideElemnets() {
         jpIntegrations.setVisible(false);
         jpConectores.setVisible(false);
         pb_tst2.setVisible(false);
-        pb_uat2.setVisible(false);
         lblPreloaderExport.setVisible(false);
     }
 
-    private void cargarIntegraciones(String env, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel, String status) {
-
-        hiloOcupado = true;
-        if (currentPanel == null) {
-            currentPanel = curPanel;
-        }
-
+    private void cargarIntegraciones(String env, JTable table, JLabel lbl, JProgressBar pb, String status) {
+        System.out.println("cargando integarciones");
         pb.setVisible(true);
         IntegrationModel im = new IntegrationModel();
+        System.out.println("env " + env);
         Map<String, Object> respuesta = im.getIntegrations(env, status);
         int total = (int) respuesta.get("total");
         lbl.setText("Total Integraciones: " + total);
 
         JsonArray list = (JsonArray) respuesta.get("integraciones");
+        System.out.println("list " + list);
         DefaultTableModel modeloTabla = new DefaultTableModel();
         // Agregar columnas a nuestro modelo de tabla
         modeloTabla.addColumn("ID");
@@ -801,9 +716,6 @@ public class MainForm extends javax.swing.JFrame {
 
         table.setModel(modeloTabla);
         pb.setVisible(false);
-        hiloOcupado = false;
-        currentPanel = null;
-        lblinfoUat2.setText("");
         lblinfotst2.setText("");
 
     }
@@ -816,20 +728,19 @@ public class MainForm extends javax.swing.JFrame {
         JTable table;
         JLabel lbl;
         JProgressBar pb;
-        JPanel curPanel;
 
-        public MiHilo(String ambiente, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel, String status) {
+        public MiHilo(String ambiente, JTable table, JLabel lbl, JProgressBar pb, String status) {
+            System.out.println("Hilo llamado");
             this.ambiente = ambiente;
             this.table = table;
             this.lbl = lbl;
             this.pb = pb;
-            this.curPanel = curPanel;
             this.status = status;
         }
 
         @Override
         public void run() {
-            cargarIntegraciones(ambiente, table, lbl, pb, curPanel, status);
+            cargarIntegraciones(ambiente, table, lbl, pb, status);
         }
     }
 
@@ -990,11 +901,6 @@ public class MainForm extends javax.swing.JFrame {
 
     private void cargarConectores(String env, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel, String status) {
 
-        hiloOcupado = true;
-        if (currentPanel == null) {
-            currentPanel = curPanel;
-        }
-
         pb.setVisible(true);
         IntegrationModel im = new IntegrationModel();
         Map<String, Object> respuesta = im.getIntegrations(env, status);
@@ -1003,6 +909,7 @@ public class MainForm extends javax.swing.JFrame {
 
         JsonArray list = (JsonArray) respuesta.get("integraciones");
         DefaultTableModel modeloTabla = new DefaultTableModel();
+        System.out.println("Lista " + list);
         // Agregar columnas a nuestro modelo de tabla
         modeloTabla.addColumn("ID");
         modeloTabla.addColumn("NAME");
@@ -1033,9 +940,6 @@ public class MainForm extends javax.swing.JFrame {
 
         table.setModel(modeloTabla);
         pb.setVisible(false);
-        hiloOcupado = false;
-        currentPanel = null;
-        lblinfoUat2.setText("");
         lblinfotst2.setText("");
 
     }
