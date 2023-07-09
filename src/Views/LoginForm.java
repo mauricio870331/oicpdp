@@ -23,6 +23,7 @@ public class LoginForm extends javax.swing.JFrame {
     public LoginForm() {
         initComponents();
         setLocationRelativeTo(null);
+        cargarCboAmbiente();
     }
 
     /**
@@ -85,9 +86,6 @@ public class LoginForm extends javax.swing.JFrame {
         txtUserOic.setText("oic_connector");
 
         txtPass.setText("OicConnector360*$");
-
-        cboEnv.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECCIONE", "TST2", "UAT2", "PRD" }));
-        cboEnv.setSelectedIndex(1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -237,4 +235,17 @@ public class LoginForm extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtUserOic;
     // End of variables declaration//GEN-END:variables
+
+    private void cargarCboAmbiente() {
+        Map<String, String> urlsMap = Utils.Utils.leerArchivoProperties();
+        cboEnv.removeAllItems();
+        String[] cboModel = new String[urlsMap.size()+1];
+        cboModel[0] = "SELECCIONE";
+        int index = 1;
+        for (Map.Entry<String, String> entry : urlsMap.entrySet()) {
+            cboModel[index] = entry.getKey();
+            index++;
+        }
+        cboEnv.setModel(new javax.swing.DefaultComboBoxModel<>(cboModel));
+    }
 }

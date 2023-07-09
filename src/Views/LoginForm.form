@@ -169,14 +169,8 @@
         <Component class="javax.swing.JComboBox" name="cboEnv">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="SELECCIONE"/>
-                <StringItem index="1" value="TST2"/>
-                <StringItem index="2" value="UAT2"/>
-                <StringItem index="3" value="PRD"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
-            <Property name="selectedIndex" type="int" value="1"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>

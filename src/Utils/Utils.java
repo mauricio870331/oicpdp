@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import javax.swing.BorderFactory;
@@ -158,6 +157,21 @@ public class Utils {
             e.printStackTrace();
         }
         return r;
+    }
+
+    public static boolean clearDirectory(String directory) {
+        boolean delete = false;
+        File directorio = new File("src/" + directory);
+        if (directorio.isDirectory()) {
+            File[] archivos = directorio.listFiles();
+            if (archivos != null) {
+                for (File archivo : archivos) {
+                    archivo.delete();
+                    delete = true;
+                }
+            }
+        }
+        return delete;
     }
 
 }

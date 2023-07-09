@@ -6,10 +6,10 @@ package Views;
 
 import Models.IntegrationModel;
 import OICApi.OicRestApi;
+import Utils.Utils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
@@ -36,10 +36,9 @@ public class MainForm extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Benvenido: " + OicRestApi.user);
+        Utils.clearDirectory("downloads");
         hideElemnets();
-
         cargarTablaAmbientes();
-
     }
 
     /**
@@ -140,7 +139,7 @@ public class MainForm extends javax.swing.JFrame {
         cboStatusIntg.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione Estado", "ACTIVATED", "CONFIGURED", "INPROGRESS" }));
 
         lblCurEnv.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblCurEnv.setText("Ambiente Seleccionado:");
+        lblCurEnv.setText("Ambiente Seleccionado: --");
 
         javax.swing.GroupLayout jpIntegrationsLayout = new javax.swing.GroupLayout(jpIntegrations);
         jpIntegrations.setLayout(jpIntegrationsLayout);
@@ -185,7 +184,7 @@ public class MainForm extends javax.swing.JFrame {
                     .addGroup(jpIntegrationsLayout.createSequentialGroup()
                         .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cboStatusIntg)
-                            .addComponent(lblCurEnv, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE))
+                            .addComponent(lblCurEnv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jpIntegrationsLayout.createSequentialGroup()
@@ -193,8 +192,8 @@ public class MainForm extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(lblPreloaderExport, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 457, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 454, Short.MAX_VALUE)
                 .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pb_tst2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblIntegraTST2, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -415,7 +414,7 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpContentLayout.createSequentialGroup()
                     .addComponent(jpIntegrations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 49, Short.MAX_VALUE)))
+                    .addGap(0, 0, Short.MAX_VALUE)))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpContentLayout.createSequentialGroup()
                     .addContainerGap()
@@ -475,7 +474,9 @@ public class MainForm extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jpContent)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jpContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
         );
 
         pack();
@@ -534,16 +535,14 @@ public class MainForm extends javax.swing.JFrame {
         for (MenuElement menuItem : mnuTblTst2.getSubElements()) {
             if (menuItem instanceof MenuElement) {
                 JMenuItem item = (JMenuItem) menuItem;
-                if (item.getText().equals(selectedEnv)) {
+                if (item.getText().split(":")[1].trim().equals(selectedEnv)) {
                     item.setVisible(false);
                 } else {
                     item.setVisible(true);
                 }
             }
         }
-
         String status = cboStatusIntg.getSelectedItem().toString();
-        System.out.println("Boton presionado");
         MiHilo miHilo = new MiHilo(selectedEnv + "", tbl_integraciones, lblIntegraTST2, pb_tst2, status);
         miHilo.start();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -647,7 +646,18 @@ public class MainForm extends javax.swing.JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem menuItem = (JMenuItem) e.getSource();
-            System.out.println("texto menu " + menuItem.getText());
+            String[] souceEnvpart = menuItem.getText().split(":");
+            int row = tbl_integraciones.getSelectedRow();
+            if (row == -1) {
+                JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+                return;
+            }
+            String value = tbl_integraciones.getModel().getValueAt(row, 0).toString();
+            String name = tbl_integraciones.getModel().getValueAt(row, 1).toString() + ".iar";
+            String version = tbl_integraciones.getModel().getValueAt(row, 4).toString();
+            tbl_integraciones.clearSelection();
+            ExportarIntegracion hexportar = new ExportarIntegracion(value, name.replaceAll(" ", "_"), souceEnvpart[1].trim(), version);
+            hexportar.start();
         }
     }
 
@@ -657,10 +667,10 @@ public class MainForm extends javax.swing.JFrame {
         DefaultTableModel modeloTabla = new DefaultTableModel();
 // Agregar columnas a nuestro modelo de tabla
         modeloTabla.addColumn("AMBIENTE");
-        Map<String, String> urlsMap = Utils.Utils.leerArchivoProperties();
+        Map<String, String> urlsMap = Utils.leerArchivoProperties();
         for (Map.Entry<String, String> entry : urlsMap.entrySet()) {
             modeloTabla.addRow(new Object[]{entry.getKey()});
-            JMenuItem elemento = new JMenuItem(entry.getKey());
+            JMenuItem elemento = new JMenuItem("Migrar a: " + entry.getKey());
             elemento.addActionListener(listener);
             mnuTblTst2.add(elemento);
         }
@@ -677,10 +687,8 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     private void cargarIntegraciones(String env, JTable table, JLabel lbl, JProgressBar pb, String status) {
-        System.out.println("cargando integarciones");
         pb.setVisible(true);
         IntegrationModel im = new IntegrationModel();
-        System.out.println("env " + env);
         Map<String, Object> respuesta = im.getIntegrations(env, status);
         int total = (int) respuesta.get("total");
         lbl.setText("Total Integraciones: " + total);
@@ -732,7 +740,6 @@ public class MainForm extends javax.swing.JFrame {
         JProgressBar pb;
 
         public MiHilo(String ambiente, JTable table, JLabel lbl, JProgressBar pb, String status) {
-            System.out.println("Hilo llamado");
             this.ambiente = ambiente;
             this.table = table;
             this.lbl = lbl;
