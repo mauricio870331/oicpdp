@@ -5,8 +5,13 @@
 package test;
 
 import Models.AppCredentialsModel;
+import Models.PropertiesModel;
 import OICApi.OicRestApi;
+import com.google.gson.Gson;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -24,7 +29,26 @@ public class test {
 //        OicRestApi ora = new OicRestApi();
 //        ora.listIntegraciones();
 //        ora.login("mherrera@redclay.com", "Welcome@123_", "TST2");
-        System.out.println(Utils.Utils.leerProperties("PRD"));
+//        System.out.println(Utils.Utils.leerProperties("PRD"));
 
+ AppCredentialsModel ct = new AppCredentialsModel(); 
+        System.out.println(ct.getByFieldName("FIELD_SERVICE", "TST2"));
+        
+        ArrayList<PropertiesModel> lista = new ArrayList<>();
+        
+        lista.add(new PropertiesModel("prueba", "13"));
+        lista.add(new PropertiesModel("sdasfasf", "2222"));
+ 
+//      String fields = "[{\"propertyName\":\"username\",\"propertyValue\":\"esfera_epsa1test\"},{\"propertyName\":\"password\",\"propertyValue\":\"123456789\"}]";
+//
+//
+        Map<String, String> data = new HashMap<>();
+//     
+        data.put("securityProperties",lista.toString());
+//        
+//        
+//        
+        Gson gsonObj = new Gson();
+        System.out.println(gsonObj.toJson(data).replaceAll("\\\\", ""));
     }
 }

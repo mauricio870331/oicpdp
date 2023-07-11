@@ -65,7 +65,7 @@ public class ConfigCredentials extends javax.swing.JFrame {
 
         jLabel2.setText("Password:");
 
-        jLabel3.setText("Aplicacion:");
+        jLabel3.setText("Conector Id:");
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton1.setText("Cancelar");
@@ -254,7 +254,7 @@ public class ConfigCredentials extends javax.swing.JFrame {
         modeloTabla.addColumn("USER");
         modeloTabla.addColumn("PASSWORD");
         modeloTabla.addColumn("ENV");
-        modeloTabla.addColumn("APP");
+        modeloTabla.addColumn("CONECTOR ID");
         JsonArray list = ct.all();
         for (JsonElement jsonElement : list) {
             JsonObject jsonObject = jsonElement.getAsJsonObject();

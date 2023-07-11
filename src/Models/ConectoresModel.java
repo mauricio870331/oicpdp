@@ -6,12 +6,6 @@
 package Models;
 
 import OICApi.OicRestApi;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -20,7 +14,7 @@ import java.util.Map;
  */
 public class ConectoresModel extends Model {
 
-    private String id; 
+    private String id;
     private String name;
     private String status;
     private Map<String, String> data;
@@ -30,10 +24,13 @@ public class ConectoresModel extends Model {
     }
 
     public Map<String, Object> getConections(String env, String status) {
-        ArrayList<ConectoresModel> lista = new ArrayList<>();
-        OicRestApi oicra = new OicRestApi();              
-        return oicra.integrationsList(env, status);
+        OicRestApi oicra = new OicRestApi();
+        return oicra.conectoresList(env, status);
     }
 
-  
+    public Map<String, Object> updateConectionCredentials(String env, String conectorId) {
+        OicRestApi oicra = new OicRestApi();
+        return oicra.updateCredentialsConector(env, conectorId);
+    }
+
 }

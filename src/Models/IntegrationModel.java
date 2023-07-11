@@ -30,11 +30,10 @@ public class IntegrationModel extends Model {
 
     }
 
-    public Map<String, Object> getIntegrations(String env, String status) {
-        ArrayList<IntegrationModel> lista = new ArrayList<>();
+    public Map<String, Object> getIntegrations(String env, String status) {      
         OicRestApi oicra = new OicRestApi();              
         return oicra.integrationsList(env, status);
-    }
+    } 
 
     public void addTable(String table) {
         setTable(table);

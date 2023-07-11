@@ -4,6 +4,7 @@
  */
 package Views;
 
+import Models.ConectoresModel;
 import Models.IntegrationModel;
 import OICApi.OicRestApi;
 import Utils.Utils;
@@ -52,7 +53,23 @@ public class MainForm extends javax.swing.JFrame {
 
         mnuTblAmbiente = new javax.swing.JPopupMenu();
         itemSeletedEnv = new javax.swing.JMenuItem();
+        mnuTblAmbiente2 = new javax.swing.JPopupMenu();
+        itemSeletedEnv1 = new javax.swing.JMenuItem();
+        mnuTblConectores = new javax.swing.JPopupMenu();
+        itemConfigCredencial = new javax.swing.JMenuItem();
         jpContent = new javax.swing.JLayeredPane();
+        jpConectores = new javax.swing.JPanel();
+        cboStatusIntg1 = new javax.swing.JComboBox<>();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tblEnvironment2 = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblConectTST2 = new javax.swing.JTable();
+        pb_tst2_con = new javax.swing.JProgressBar();
+        lboConectorsTST2 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        lblinfotstCon = new javax.swing.JLabel();
+        lblPreloaderUpdConector = new javax.swing.JLabel();
+        lblCurEnv2 = new javax.swing.JLabel();
         jpIntegrations = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblEnvironment = new javax.swing.JTable();
@@ -65,23 +82,6 @@ public class MainForm extends javax.swing.JFrame {
         lblPreloaderExport = new javax.swing.JLabel();
         cboStatusIntg = new javax.swing.JComboBox<>();
         lblCurEnv = new javax.swing.JLabel();
-        jpConectores = new javax.swing.JPanel();
-        tabPaneConectoresEnv = new javax.swing.JTabbedPane();
-        jPanel1TST3 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblConectTST2 = new javax.swing.JTable();
-        pb_tst2_con = new javax.swing.JProgressBar();
-        lboConectorsTST2 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        lblinfotstCon = new javax.swing.JLabel();
-        lblPreloaderUpdConector = new javax.swing.JLabel();
-        jPanelUAT3 = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        tblConectsUAT2 = new javax.swing.JTable();
-        pb_uat3 = new javax.swing.JProgressBar();
-        lblIntegraUAT3 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        lblinfoUat3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -100,7 +100,122 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuTblAmbiente.add(itemSeletedEnv);
 
+        itemSeletedEnv1.setText("Seleccionar");
+        itemSeletedEnv1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemSeletedEnv1ActionPerformed(evt);
+            }
+        });
+        mnuTblAmbiente2.add(itemSeletedEnv1);
+
+        itemConfigCredencial.setText("Refrescar Credenciales");
+        itemConfigCredencial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemConfigCredencialActionPerformed(evt);
+            }
+        });
+        mnuTblConectores.add(itemConfigCredencial);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        cboStatusIntg1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione Estado", "ACTIVATED", "CONFIGURED", "INPROGRESS" }));
+
+        tblEnvironment2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tblEnvironment2.setComponentPopupMenu(mnuTblAmbiente2);
+        jScrollPane6.setViewportView(tblEnvironment2);
+
+        tblConectTST2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tblConectTST2.setComponentPopupMenu(mnuTblConectores);
+        jScrollPane3.setViewportView(tblConectTST2);
+
+        pb_tst2_con.setIndeterminate(true);
+
+        lboConectorsTST2.setText("Total Conectores: 0");
+
+        jButton3.setText("Cargar Datos");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        lblPreloaderUpdConector.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1494.gif"))); // NOI18N
+
+        lblCurEnv2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblCurEnv2.setText("Ambiente Seleccionado: --");
+
+        javax.swing.GroupLayout jpConectoresLayout = new javax.swing.GroupLayout(jpConectores);
+        jpConectores.setLayout(jpConectoresLayout);
+        jpConectoresLayout.setHorizontalGroup(
+            jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpConectoresLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
+                    .addGroup(jpConectoresLayout.createSequentialGroup()
+                        .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jpConectoresLayout.createSequentialGroup()
+                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jpConectoresLayout.createSequentialGroup()
+                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblPreloaderUpdConector))
+                                    .addComponent(lblinfotstCon, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jpConectoresLayout.createSequentialGroup()
+                                        .addComponent(cboStatusIntg1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(lblCurEnv2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jpConectoresLayout.createSequentialGroup()
+                                .addComponent(lboConectorsTST2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(167, 167, 167)
+                                .addComponent(pb_tst2_con, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 323, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jpConectoresLayout.setVerticalGroup(
+            jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpConectoresLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpConectoresLayout.createSequentialGroup()
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGap(13, 13, 13))
+                    .addGroup(jpConectoresLayout.createSequentialGroup()
+                        .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jpConectoresLayout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton3)
+                                    .addComponent(lblPreloaderUpdConector, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(lblinfotstCon, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cboStatusIntg1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblCurEnv2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pb_tst2_con, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lboConectorsTST2))
+                .addGap(27, 27, 27))
+        );
 
         tblEnvironment.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -205,171 +320,6 @@ public class MainForm extends javax.swing.JFrame {
                     .addContainerGap(104, Short.MAX_VALUE)))
         );
 
-        tabPaneConectoresEnv.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        tabPaneConectoresEnv.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        jPanel1TST3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1TST3.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                jPanel1TST3ComponentShown(evt);
-            }
-        });
-
-        tblConectTST2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane3.setViewportView(tblConectTST2);
-
-        pb_tst2_con.setIndeterminate(true);
-
-        lboConectorsTST2.setText("Total Conectores: 0");
-
-        jButton3.setText("Cargar Datos");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        lblPreloaderUpdConector.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1494.gif"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel1TST3Layout = new javax.swing.GroupLayout(jPanel1TST3);
-        jPanel1TST3.setLayout(jPanel1TST3Layout);
-        jPanel1TST3Layout.setHorizontalGroup(
-            jPanel1TST3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1TST3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1TST3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3)
-                    .addGroup(jPanel1TST3Layout.createSequentialGroup()
-                        .addGroup(jPanel1TST3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1TST3Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(lboConectorsTST2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(166, 166, 166)
-                                .addComponent(pb_tst2_con, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 366, Short.MAX_VALUE))
-                            .addGroup(jPanel1TST3Layout.createSequentialGroup()
-                                .addComponent(jButton3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblinfotstCon, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(70, 70, 70)
-                                .addComponent(lblPreloaderUpdConector)))
-                        .addContainerGap())))
-        );
-        jPanel1TST3Layout.setVerticalGroup(
-            jPanel1TST3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1TST3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1TST3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1TST3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lblinfotstCon, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton3)
-                    .addComponent(lblPreloaderUpdConector, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1TST3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pb_tst2_con, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lboConectorsTST2))
-                .addContainerGap())
-        );
-
-        tabPaneConectoresEnv.addTab("Conectores TST2", jPanel1TST3);
-
-        jPanelUAT3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanelUAT3.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                jPanelUAT3ComponentShown(evt);
-            }
-        });
-
-        tblConectsUAT2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane4.setViewportView(tblConectsUAT2);
-
-        pb_uat3.setIndeterminate(true);
-
-        lblIntegraUAT3.setText("Total Integraciones: 0");
-
-        jButton4.setText("Cargar Datos");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanelUAT3Layout = new javax.swing.GroupLayout(jPanelUAT3);
-        jPanelUAT3.setLayout(jPanelUAT3Layout);
-        jPanelUAT3Layout.setHorizontalGroup(
-            jPanelUAT3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelUAT3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelUAT3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelUAT3Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(lblIntegraUAT3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(166, 166, 166)
-                        .addComponent(pb_uat3, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(372, Short.MAX_VALUE))
-                    .addGroup(jPanelUAT3Layout.createSequentialGroup()
-                        .addComponent(jScrollPane4)
-                        .addContainerGap())
-                    .addGroup(jPanelUAT3Layout.createSequentialGroup()
-                        .addComponent(jButton4)
-                        .addGap(320, 320, 320)
-                        .addComponent(lblinfoUat3, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
-        );
-        jPanelUAT3Layout.setVerticalGroup(
-            jPanelUAT3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelUAT3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelUAT3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelUAT3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lblinfoUat3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanelUAT3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pb_uat3, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblIntegraUAT3))
-                .addContainerGap())
-        );
-
-        tabPaneConectoresEnv.addTab("Conectores UAT2", jPanelUAT3);
-
-        javax.swing.GroupLayout jpConectoresLayout = new javax.swing.GroupLayout(jpConectores);
-        jpConectores.setLayout(jpConectoresLayout);
-        jpConectoresLayout.setHorizontalGroup(
-            jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpConectoresLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(tabPaneConectoresEnv, javax.swing.GroupLayout.PREFERRED_SIZE, 991, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
-        );
-        jpConectoresLayout.setVerticalGroup(
-            jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpConectoresLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(tabPaneConectoresEnv, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         jLabel1.setText("HELLO WORDL");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -389,8 +339,8 @@ public class MainForm extends javax.swing.JFrame {
                 .addContainerGap(425, Short.MAX_VALUE))
         );
 
-        jpContent.setLayer(jpIntegrations, javax.swing.JLayeredPane.PALETTE_LAYER);
-        jpContent.setLayer(jpConectores, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jpContent.setLayer(jpConectores, javax.swing.JLayeredPane.PALETTE_LAYER);
+        jpContent.setLayer(jpIntegrations, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jpContent.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jpContentLayout = new javax.swing.GroupLayout(jpContent);
@@ -410,16 +360,15 @@ public class MainForm extends javax.swing.JFrame {
             jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpContentLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 1, Short.MAX_VALUE))
+                .addGap(0, 7, Short.MAX_VALUE))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpContentLayout.createSequentialGroup()
                     .addComponent(jpIntegrations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jpContentLayout.createSequentialGroup()
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpContentLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jpConectores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
+                    .addComponent(jpConectores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         mnuConfig.setText("Configuración");
@@ -452,7 +401,7 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuOicApi.add(itemList);
 
-        itemConnections.setText("Configura Conector");
+        itemConnections.setText("Configurar Conector");
         itemConnections.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemConnectionsActionPerformed(evt);
@@ -476,7 +425,7 @@ public class MainForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jpContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 6, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -504,27 +453,30 @@ public class MainForm extends javax.swing.JFrame {
         jPanel1.setVisible(false);
         jpIntegrations.setVisible(false);
         jpConectores.setVisible(true);
-
-        /*ConfigConector hconfig = new ConfigConector("", "");
-        hconfig.start();*/
+        selectedEnv = "";
     }//GEN-LAST:event_itemConnectionsActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        MiHiloCon cargarConectores = new MiHiloCon("TST2", tblConectTST2, lboConectorsTST2, pb_tst2_con, jpConectores, "");
+        if (selectedEnv.equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar un ambiente..!");
+            return;
+        }
+        for (MenuElement menuItem : mnuTblConTst2.getSubElements()) {
+            if (menuItem instanceof MenuElement) {
+                JMenuItem item = (JMenuItem) menuItem;
+                if (item.getText().split(":")[1].trim().equals(selectedEnv)) {
+                    item.setVisible(false);
+                } else {
+                    item.setVisible(true);
+                }
+            }
+        }
+        String status = cboStatusIntg1.getSelectedItem().toString();
+        MiHiloCon cargarConectores = new MiHiloCon(selectedEnv, status);
         cargarConectores.start();
+
+
     }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jPanel1TST3ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1TST3ComponentShown
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPanel1TST3ComponentShown
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jPanelUAT3ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanelUAT3ComponentShown
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPanelUAT3ComponentShown
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (selectedEnv.equals("")) {
@@ -557,6 +509,30 @@ public class MainForm extends javax.swing.JFrame {
         selectedEnv = value;
         lblCurEnv.setText("Ambiente Seleccionado: " + value);
     }//GEN-LAST:event_itemSeletedEnvActionPerformed
+
+    private void itemSeletedEnv1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSeletedEnv1ActionPerformed
+        int row = tblEnvironment2.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+            return;
+        }
+        String value = tblEnvironment2.getModel().getValueAt(row, 0).toString();
+        selectedEnv = value;
+        lblCurEnv2.setText("Ambiente Seleccionado: " + value);
+    }//GEN-LAST:event_itemSeletedEnv1ActionPerformed
+
+    private void itemConfigCredencialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConfigCredencialActionPerformed
+        int row = tblConectTST2.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+            return;
+        }
+        String id = tblConectTST2.getModel().getValueAt(row, 0).toString();
+        String env = tblConectTST2.getModel().getValueAt(row, 3).toString();
+
+        ConfigConector hiloUpdate = new ConfigConector(id, env);
+        hiloUpdate.start();
+    }//GEN-LAST:event_itemConfigCredencialActionPerformed
 
     /**
      * @param args the command line arguments
@@ -595,51 +571,51 @@ public class MainForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cboStatusIntg;
+    private javax.swing.JComboBox<String> cboStatusIntg1;
+    private javax.swing.JMenuItem itemConfigCredencial;
     private javax.swing.JMenuItem itemConnections;
     private javax.swing.JMenuItem itemCredenciales;
     private javax.swing.JMenuItem itemList;
     private javax.swing.JMenuItem itemSeletedEnv;
+    private javax.swing.JMenuItem itemSeletedEnv1;
     private javax.swing.JMenuItem itemUrlOic;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel1TST3;
-    private javax.swing.JPanel jPanelUAT3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JPanel jpConectores;
     private javax.swing.JLayeredPane jpContent;
     private javax.swing.JPanel jpIntegrations;
     private javax.swing.JLabel lblCurEnv;
+    private javax.swing.JLabel lblCurEnv2;
     private javax.swing.JLabel lblIntegraTST2;
-    private javax.swing.JLabel lblIntegraUAT3;
     private javax.swing.JLabel lblPreloaderExport;
     private javax.swing.JLabel lblPreloaderUpdConector;
-    private javax.swing.JLabel lblinfoUat3;
     private javax.swing.JLabel lblinfotst2;
     private javax.swing.JLabel lblinfotstCon;
     private javax.swing.JLabel lboConectorsTST2;
     private javax.swing.JMenu mnuConfig;
     private javax.swing.JMenu mnuOicApi;
     private javax.swing.JPopupMenu mnuTblAmbiente;
+    private javax.swing.JPopupMenu mnuTblAmbiente2;
+    private javax.swing.JPopupMenu mnuTblConectores;
     private javax.swing.JProgressBar pb_tst2;
     private javax.swing.JProgressBar pb_tst2_con;
-    private javax.swing.JProgressBar pb_uat3;
-    private javax.swing.JTabbedPane tabPaneConectoresEnv;
     private javax.swing.JTable tblConectTST2;
-    private javax.swing.JTable tblConectsUAT2;
     private javax.swing.JTable tblEnvironment;
+    private javax.swing.JTable tblEnvironment2;
     private javax.swing.JTable tbl_integraciones;
     // End of variables declaration//GEN-END:variables
 
     //CustomVars
     private String selectedEnv = "";
     JPopupMenu mnuTblTst2 = new JPopupMenu();
+    JPopupMenu mnuTblConTst2 = new JPopupMenu();
 
     class PopupMenuListener implements ActionListener {
 
@@ -663,9 +639,8 @@ public class MainForm extends javax.swing.JFrame {
 
     private void cargarTablaAmbientes() {
         PopupMenuListener listener = new PopupMenuListener();
-
         DefaultTableModel modeloTabla = new DefaultTableModel();
-// Agregar columnas a nuestro modelo de tabla
+        // Agregar columnas a nuestro modelo de tabla
         modeloTabla.addColumn("AMBIENTE");
         Map<String, String> urlsMap = Utils.leerArchivoProperties();
         for (Map.Entry<String, String> entry : urlsMap.entrySet()) {
@@ -675,15 +650,18 @@ public class MainForm extends javax.swing.JFrame {
             mnuTblTst2.add(elemento);
         }
         tbl_integraciones.setComponentPopupMenu(mnuTblTst2);
-// Asignar el modelo de tabla a nuestro JTable
+        // Asignar el modelo de tabla a nuestro JTable
         tblEnvironment.setModel(modeloTabla);
+        tblEnvironment2.setModel(modeloTabla);
     }
 
     private void hideElemnets() {
         jpIntegrations.setVisible(false);
         jpConectores.setVisible(false);
         pb_tst2.setVisible(false);
+        pb_tst2_con.setVisible(false);
         lblPreloaderExport.setVisible(false);
+        lblPreloaderUpdConector.setVisible(false);
     }
 
     private void cargarIntegraciones(String env, JTable table, JLabel lbl, JProgressBar pb, String status) {
@@ -758,23 +736,15 @@ public class MainForm extends javax.swing.JFrame {
 
         String ambiente;
         String status;
-        JTable table;
-        JLabel lbl;
-        JProgressBar pb;
-        JPanel curPanel;
 
-        public MiHiloCon(String ambiente, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel, String status) {
+        public MiHiloCon(String ambiente, String status) {
             this.ambiente = ambiente;
-            this.table = table;
-            this.lbl = lbl;
-            this.pb = pb;
-            this.curPanel = curPanel;
             this.status = status;
         }
 
         @Override
         public void run() {
-            cargarConectores(ambiente, table, lbl, pb, curPanel, status);
+            cargarConectores(ambiente, status);
         }
     }
 
@@ -900,55 +870,71 @@ public class MainForm extends javax.swing.JFrame {
 
         @Override
         public void run() {
-            lblinfotstCon.setText("Exportando integración..");
+            lblinfotstCon.setText("Actualizando credenciales");
             lblPreloaderUpdConector.setVisible(true);
-            OicRestApi oic = new OicRestApi();
-            Map<String, Object> r = oic.updateCredentialsConector(id, ambiente);
-
+            ConectoresModel cm = new ConectoresModel();
+            Map<String, Object> r = cm.updateConectionCredentials(ambiente, id);
+            String responseCode = r.get("response_code").toString();
+            lblPreloaderUpdConector.setVisible(false);
+            String Mensaje = "";
+            switch (responseCode) {
+                case "200":
+                    Mensaje = "Credenciales Actualizadas..!";
+                    break;
+                case "400":
+                    Mensaje = "Error en la solicitud..!";
+                    break;
+                case "423":
+                    Mensaje = "Conector Bloqueado, por favor desbloqueelo en OIC..!";
+                    break;
+                case "500":
+                    Mensaje = "Error en el servidor..!";
+                    break;
+            }
+            lblinfotstCon.setText(Mensaje);
+            JOptionPane.showMessageDialog(null, Mensaje);
+            lblinfotstCon.setText("");
+//            System.out.println("r = " + responseCode);
         }
     }
 
-    private void cargarConectores(String env, JTable table, JLabel lbl, JProgressBar pb, JPanel curPanel, String status) {
+    private void cargarConectores(String env, String status) {
 
-        pb.setVisible(true);
-        IntegrationModel im = new IntegrationModel();
-        Map<String, Object> respuesta = im.getIntegrations(env, status);
+        pb_tst2_con.setVisible(true);
+        ConectoresModel cm = new ConectoresModel();
+        Map<String, Object> respuesta = cm.getConections(env, status);
         int total = (int) respuesta.get("total");
-        lbl.setText("Total Conectores: " + total);
+        lboConectorsTST2.setText("Total Conectores: " + total);
 
-        JsonArray list = (JsonArray) respuesta.get("integraciones");
+        JsonArray list = (JsonArray) respuesta.get("conectores");
         DefaultTableModel modeloTabla = new DefaultTableModel();
-        System.out.println("Lista " + list);
+//        System.out.println("Lista " + list);
         // Agregar columnas a nuestro modelo de tabla
         modeloTabla.addColumn("ID");
         modeloTabla.addColumn("NAME");
-        modeloTabla.addColumn("CODE");
         modeloTabla.addColumn("STATUS");
         modeloTabla.addColumn("ENV");
-        modeloTabla.addColumn("VERSION");
         for (JsonElement jsonElement : list) {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             String ID = jsonObject.get("id").getAsString();
             String NAME = jsonObject.get("name").getAsString();
             String STATUS = jsonObject.get("status").getAsString();
-            String CODE = jsonObject.get("code").getAsString();
-            String VERSION = jsonObject.get("version").getAsString();
-            modeloTabla.addRow(new Object[]{ID, NAME, CODE, STATUS, env, VERSION});
+            modeloTabla.addRow(new Object[]{ID, NAME, STATUS, env});
         }
 // Asignar el modelo de tabla a nuestro JTable
-        table.setModel(modeloTabla);
-        table.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
-        table.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
-        table.getColumnModel().getColumn(0).setPreferredWidth(0);
-        table.getColumnModel().getColumn(0).setMaxWidth(0);
-        table.getColumnModel().getColumn(0).setMinWidth(0);
-        table.getColumnModel().getColumn(3).setMaxWidth(150);
-        table.getColumnModel().getColumn(3).setMinWidth(150);
-        table.getColumnModel().getColumn(4).setMaxWidth(120);
-        table.getColumnModel().getColumn(4).setMinWidth(120);
+        tblConectTST2.setModel(modeloTabla);
+        tblConectTST2.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+        tblConectTST2.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
+        tblConectTST2.getColumnModel().getColumn(0).setPreferredWidth(0);
+        tblConectTST2.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblConectTST2.getColumnModel().getColumn(0).setMinWidth(0);
+        tblConectTST2.getColumnModel().getColumn(3).setMaxWidth(150);
+        tblConectTST2.getColumnModel().getColumn(3).setMinWidth(150);
+//        tblConectTST2.getColumnModel().getColumn(4).setMaxWidth(120);
+//        tblConectTST2.getColumnModel().getColumn(4).setMinWidth(120);
 
-        table.setModel(modeloTabla);
-        pb.setVisible(false);
+        tblConectTST2.setModel(modeloTabla);
+        pb_tst2_con.setVisible(false);
         lblinfotst2.setText("");
 
     }

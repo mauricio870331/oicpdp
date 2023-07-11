@@ -36,13 +36,16 @@ public final class AppCredentialsModel extends Model {
         createTable(fields);
     }
 
-    public void addRecord(Map<String, String> data) throws SQLException {        
-        data.put("id", Long.toString(timestamp));       
+    public void addRecord(Map<String, String> data) throws SQLException {
+        data.put("id", Long.toString(timestamp));
         System.out.println(create(data));
         disconnect();
     }
-    
-    
+
+    public JsonObject getByFieldName(String APP, String ENV) {
+      JsonObject response = super.query("select * from APP_CREDENTIALS where APP = '"+APP+"' and ENV = '"+ENV+"'").first();
+      return response;
+    }
 
     public void getFirst() {
         super.query("select * from APP_CREDENTIALS where id = '1681412959'").first();
