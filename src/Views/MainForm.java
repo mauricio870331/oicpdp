@@ -591,6 +591,7 @@ public class MainForm extends javax.swing.JFrame {
         });
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cboStatusIntg;
     private javax.swing.JComboBox<String> cboStatusIntg1;
@@ -817,7 +818,6 @@ public class MainForm extends javax.swing.JFrame {
 
         @Override
         public void run() {
-
             //Refrescar el copnector con las credenciales
             //Activar integarcione
             lblinfotst2.setText("Importando integración...");
@@ -828,9 +828,8 @@ public class MainForm extends javax.swing.JFrame {
             if (response == 200) {
                 lblinfotst2.setText("Activando integración...");
                 r = oic.activateDeactivateIntg(id, "UAT2");
-                responseMessage((int) (r.get("response_code")), r.get("response"));
+                responseMessage(r.get("response_code").toString(), r.get("response"), "");
             }
-
             if (response == 409) {
                 int result = JOptionPane.showConfirmDialog(MainForm.this, "¿La integración " + nombre + " V(" + version + ") ya existe, desea reemplazarla?",
                         "Confirmación..!",
@@ -841,42 +840,23 @@ public class MainForm extends javax.swing.JFrame {
                     if (response == 200) {
                         lblinfotst2.setText("Activando integración...");
                         r = oic.activateDeactivateIntg(id, "UAT2");
-                        responseMessage((int) (r.get("response_code")), r.get("response"));
+                        responseMessage(r.get("response_code").toString(), r.get("response"), "");
                     }
                 }
-
             }
             lblinfotst2.setText("");
             lblPreloaderExport.setVisible(false);
         }
-
     }
 
-    public void responseMessage(int code, Object response) {
-        String message = "";
-        switch (code) {
-            case 200:
-                message = "Integración activada correctamente";
-                break;
-            case 404:
-                message = "Integración no encontrada";
-                break;
-            case 412:
-                message = "La integración ya esta activada o desactivada";
-                break;
-            case 500:
-                message = "Ocurio un error al tratar de activar la integarción, realice lo siguiene:"
-                        + "\n1.Verifique que las conexiones origen y destino funcionen correctamente."
-                        + "\n2.Reconfigure las credenciales en el conetor Origen."
-                        + "\n3.Haga una prueba del conector para confirmar su funcionalidad.";
-                break;
-        }
-        lblinfotst2.setText("");
-        lblPreloaderExport.setVisible(false);
-        if (code == 500) {
-
+    public void responseMessage(String code, Object response, String intId) {
+        String message = Utils.responseMessage(code);
+        message = message.replace("&&", intId);
+        if (code.equals("500")) {
+            message += "\n" + response.toString();
+            JOptionPane.showMessageDialog(MainForm.this, message, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(MainForm.this, message);
+            JOptionPane.showMessageDialog(MainForm.this, message, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -900,50 +880,14 @@ public class MainForm extends javax.swing.JFrame {
             lblPreloaderUpdConector.setVisible(true);
             ConectoresModel cm = new ConectoresModel();
             if (option == 1) {
-              r = cm.updateConectionCredentials(ambiente, id);  
+                r = cm.updateConectionCredentials(ambiente, id);
             }
             if (option == 2) {
-                  r = cm.testConection(ambiente, id);  
+                r = cm.testConection(ambiente, id);
             }
-             
             String responseCode = r.get("response_code").toString() + "-" + option;
             lblPreloaderUpdConector.setVisible(false);
-            String Mensaje = "";
-            switch (responseCode) {
-                case "200-1":
-                    Mensaje = "Credenciales Actualizadas..!";
-                    break;
-                case "200-2":
-                    Mensaje = "La conexión se encuentra ok..!";
-                    break;
-                case "400-1":
-                    Mensaje = "Error en la solicitud..!";
-                    break;
-                case "404-2":
-                    Mensaje = "Conexión no encontrada..!";
-                    break;
-                case "409-2":
-                    Mensaje = "Conexión no configurada..!";
-                    break;
-                case "412-2":
-                    Mensaje = "Conector Bloqueado, por favor desbloqueelo en OIC..!";
-                    break;
-                case "423-1":
-                    Mensaje = "Conector Bloqueado, por favor desbloqueelo en OIC..!";
-                    break;
-                case "500-1":
-                    Mensaje = "Error en el servidor..!";
-                    break;
-                case "500-2":
-                    Mensaje = "Error en el servidor..!";
-                    break;
-                default:
-                    Mensaje = "No existen credenciales configuradas para el conector:  " + id + ".\n"
-                            + "Configurelas en el menú: \"Configuración->Configurar credenciales de aplicación\"..!";
-                    break;
-            }
-            lblinfotstCon.setText(Mensaje);
-            JOptionPane.showMessageDialog(null, Mensaje, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            responseMessage(responseCode, r.get("response"), id);
             lblinfotstCon.setText("");
 //            System.out.println("r = " + responseCode);
         }

@@ -7,7 +7,6 @@ package OICApi;
 import Models.AppCredentialsModel;
 import Models.PropertiesModel;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -146,14 +145,14 @@ public class OicRestApi {
             httpCon.setRequestProperty("Authorization", basicAuth);
             if (data != null) {
 //                System.out.println("gsonObj.toJson(data) " + data);
-                try (OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
+                try ( OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
                     out.write(data);
                 }
             }
             resp.put("response_code", httpCon.getResponseCode());
 //            System.out.println("Response Code: " + httpCon.getResponseCode());
             StringBuilder respuesta;
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
                 while ((linea = in.readLine()) != null) {
@@ -190,7 +189,7 @@ public class OicRestApi {
             System.out.println("Response Code: " + httpCon.getResponseCode());
 //        System.out.print("Response Code: " + httpCon.getResponseMessage());
             StringBuilder respuesta;
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
 
@@ -285,7 +284,7 @@ public class OicRestApi {
             outputStream.writeBytes("\r\n");
 
             File file = new File(filePath);
-            try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            try ( FileInputStream fileInputStream = new FileInputStream(file)) {
                 byte[] buffer = new byte[4096];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {

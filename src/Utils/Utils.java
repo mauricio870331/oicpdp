@@ -173,5 +173,58 @@ public class Utils {
         }
         return delete;
     }
+    
+    public static String responseMessage(String code) {
+        String message = "";
+           switch (code) {
+                case "200":
+                    message = "Integración activada correctamente";
+                    break;
+                case "404":
+                    message = "Integración no encontrada";
+                    break;
+                case "412":
+                    message = "La integración ya esta activada o desactivada";
+                    break;
+                case "500":
+                    message = "Ocurio un error al tratar de activar la integarción, realice lo siguiene:"
+                            + "\n1.Verifique que las conexiones origen y destino funcionen correctamente."
+                            + "\n2.Reconfigure las credenciales en el conetor Origen."
+                            + "\n3.Haga una prueba del conector para confirmar su funcionalidad.";
+                    break;
+                case "200-1":
+                   message = "Credenciales Actualizadas..!";
+                   break;
+                case "200-2":
+                   message = "La conexión se encuentra configurada corrctamente..!";
+                   break;
+                case "400-1":
+                   message = "Error en la solicitud..!";
+                   break;
+                case "404-2":
+                   message = "Conexión no encontrada..!";
+                   break;
+                case "409-2":
+                   message = "Conexión no configurada..!";
+                   break;
+                case "412-2":
+                   message = "Conector Bloqueado, por favor desbloqueelo en OIC..!";
+                   break;
+                case "423-1":
+                   message = "Conector Bloqueado, por favor desbloqueelo en OIC..!";
+                   break;
+                case "500-1":
+                   message = "Error en el servidor..!";
+                   break;
+                case "500-2":
+                   message = "Error en el servidor..!";
+                   break;
+                default:
+                   message = "No existen credenciales configuradas para el conector: &&.\n"
+                           + "Configurelas en el menú: \"Configuración->Configurar credenciales de aplicación\"..!";
+                   break;
+           }
+           return message;
+    }
 
 }
