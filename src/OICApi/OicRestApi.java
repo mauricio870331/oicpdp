@@ -90,20 +90,26 @@ public class OicRestApi {
     }
 
     public Map<String, Object> updateCredentialsConector(String env, String conectorId) {
+        Map<String, Object> respuesta = new HashMap<>();
         System.out.println("Conector id = " + conectorId);
         AppCredentialsModel ct = new AppCredentialsModel();
         JsonObject jsonObject = ct.getByFieldName(conectorId, env);
-        Map<String, String> headers = new HashMap<>();
-        headers.put("X-HTTP-Method-Override", "PATCH");
-        //Data    
-        ArrayList<PropertiesModel> lista = new ArrayList<>();
-        lista.add(new PropertiesModel("username", jsonObject.get("user").getAsString()));
-        lista.add(new PropertiesModel("password", jsonObject.get("pass").getAsString()));
-        Map<String, String> data = new HashMap<>();
-        data.put("securityProperties", lista.toString());
-        Gson gsonObj = new Gson();
-        String srtJson = gsonObj.toJson(data).replaceAll("\\\\", "").replace("\"[", "[").replace("}\"", "}").replace("\"]\"", "]").replace("]\"", "]");
-        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + "/integration/v1/connections/" + conectorId, "POST", srtJson, headers);
+//         System.out.println("jsonObject " + jsonObject.toString());
+        if (!jsonObject.toString().equals("{}")) {//           
+            Map<String, String> headers = new HashMap<>();
+            headers.put("X-HTTP-Method-Override", "PATCH");
+            //Data    
+            ArrayList<PropertiesModel> lista = new ArrayList<>();
+            lista.add(new PropertiesModel("username", jsonObject.get("user").getAsString()));
+            lista.add(new PropertiesModel("password", jsonObject.get("pass").getAsString()));
+            Map<String, String> data = new HashMap<>();
+            data.put("securityProperties", lista.toString());
+            Gson gsonObj = new Gson();
+            String srtJson = gsonObj.toJson(data).replaceAll("\\\\", "").replace("\"[", "[").replace("}\"", "}").replace("\"]\"", "]").replace("]\"", "]");
+            respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + "/integration/v1/connections/" + conectorId, "POST", srtJson, headers);
+        } else {
+            respuesta.put("response_code", "-404");
+        }
         return respuesta;
     }
 
@@ -138,16 +144,16 @@ public class OicRestApi {
             String userCredentials = OicRestApi.user + ":" + OicRestApi.pass;
             String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
             httpCon.setRequestProperty("Authorization", basicAuth);
-            if (data != null) {                
+            if (data != null) {
 //                System.out.println("gsonObj.toJson(data) " + data);
-                try ( OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
+                try (OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
                     out.write(data);
                 }
             }
             resp.put("response_code", httpCon.getResponseCode());
 //            System.out.println("Response Code: " + httpCon.getResponseCode());
             StringBuilder respuesta;
-            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
                 while ((linea = in.readLine()) != null) {
@@ -184,7 +190,7 @@ public class OicRestApi {
             System.out.println("Response Code: " + httpCon.getResponseCode());
 //        System.out.print("Response Code: " + httpCon.getResponseMessage());
             StringBuilder respuesta;
-            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
 
@@ -279,7 +285,7 @@ public class OicRestApi {
             outputStream.writeBytes("\r\n");
 
             File file = new File(filePath);
-            try ( FileInputStream fileInputStream = new FileInputStream(file)) {
+            try (FileInputStream fileInputStream = new FileInputStream(file)) {
                 byte[] buffer = new byte[4096];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {
@@ -327,6 +333,11 @@ public class OicRestApi {
 
     public String getEnviromentUrl(String env) {
         return Utils.Utils.leerProperties(env);
+    }
+
+    public Map<String, Object> testConector(String env, String conectorId) {
+        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + "/integration/v1/connections/" + conectorId + "/test", "POST", "", null);
+        return respuesta;
     }
 
 }

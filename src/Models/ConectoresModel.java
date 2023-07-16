@@ -33,4 +33,9 @@ public class ConectoresModel extends Model {
         return oicra.updateCredentialsConector(env, conectorId);
     }
 
+    public Map<String, Object> testConection(String env, String conectorId) {
+       OicRestApi oicra = new OicRestApi();
+        return oicra.testConector(env, conectorId);
+    }
+
 }

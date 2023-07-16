@@ -42,10 +42,18 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="itemConfigCredencial">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Refrescar Credenciales"/>
+            <Property name="text" type="java.lang.String" value="Reconfigurar Credenciales"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemConfigCredencialActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="itemTestConection">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Probar Conexi&#xf3;n"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemTestConectionActionPerformed"/>
           </Events>
         </MenuItem>
       </SubComponents>
@@ -90,8 +98,11 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemConnections">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Configurar Conector"/>
+                <Property name="label" type="java.lang.String" value="Listar Conectores"/>
               </Properties>
+              <AccessibilityProperties>
+                <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
+              </AccessibilityProperties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemConnectionsActionPerformed"/>
               </Events>

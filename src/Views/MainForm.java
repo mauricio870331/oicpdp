@@ -17,7 +17,6 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JTable;
@@ -57,6 +56,7 @@ public class MainForm extends javax.swing.JFrame {
         itemSeletedEnv1 = new javax.swing.JMenuItem();
         mnuTblConectores = new javax.swing.JPopupMenu();
         itemConfigCredencial = new javax.swing.JMenuItem();
+        itemTestConection = new javax.swing.JMenuItem();
         jpContent = new javax.swing.JLayeredPane();
         jpConectores = new javax.swing.JPanel();
         cboStatusIntg1 = new javax.swing.JComboBox<>();
@@ -108,13 +108,21 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuTblAmbiente2.add(itemSeletedEnv1);
 
-        itemConfigCredencial.setText("Refrescar Credenciales");
+        itemConfigCredencial.setText("Reconfigurar Credenciales");
         itemConfigCredencial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemConfigCredencialActionPerformed(evt);
             }
         });
         mnuTblConectores.add(itemConfigCredencial);
+
+        itemTestConection.setText("Probar Conexión");
+        itemTestConection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTestConectionActionPerformed(evt);
+            }
+        });
+        mnuTblConectores.add(itemTestConection);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -401,13 +409,14 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuOicApi.add(itemList);
 
-        itemConnections.setText("Configurar Conector");
+        itemConnections.setLabel("Listar Conectores");
         itemConnections.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemConnectionsActionPerformed(evt);
             }
         });
         mnuOicApi.add(itemConnections);
+        itemConnections.getAccessibleContext().setAccessibleDescription("");
 
         jMenuBar1.add(mnuOicApi);
 
@@ -530,9 +539,22 @@ public class MainForm extends javax.swing.JFrame {
         String id = tblConectTST2.getModel().getValueAt(row, 0).toString();
         String env = tblConectTST2.getModel().getValueAt(row, 3).toString();
 
-        ConfigConector hiloUpdate = new ConfigConector(id, env);
+        ConfigConector hiloUpdate = new ConfigConector(id, env, 1);
         hiloUpdate.start();
     }//GEN-LAST:event_itemConfigCredencialActionPerformed
+
+    private void itemTestConectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTestConectionActionPerformed
+        int row = tblConectTST2.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+            return;
+        }
+        String id = tblConectTST2.getModel().getValueAt(row, 0).toString();
+        String env = tblConectTST2.getModel().getValueAt(row, 3).toString();
+
+        ConfigConector hiloUpdate = new ConfigConector(id, env, 2);
+        hiloUpdate.start();
+    }//GEN-LAST:event_itemTestConectionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -578,6 +600,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemList;
     private javax.swing.JMenuItem itemSeletedEnv;
     private javax.swing.JMenuItem itemSeletedEnv1;
+    private javax.swing.JMenuItem itemTestConection;
     private javax.swing.JMenuItem itemUrlOic;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
@@ -862,37 +885,65 @@ public class MainForm extends javax.swing.JFrame {
 
         String ambiente;
         String id;
+        int option;
 
-        public ConfigConector(String id, String ambiente) {
+        public ConfigConector(String id, String ambiente, int option) {
             this.ambiente = ambiente;
             this.id = id;
+            this.option = option;
         }
 
         @Override
         public void run() {
+            Map<String, Object> r = null;
             lblinfotstCon.setText("Actualizando credenciales");
             lblPreloaderUpdConector.setVisible(true);
             ConectoresModel cm = new ConectoresModel();
-            Map<String, Object> r = cm.updateConectionCredentials(ambiente, id);
-            String responseCode = r.get("response_code").toString();
+            if (option == 1) {
+              r = cm.updateConectionCredentials(ambiente, id);  
+            }
+            if (option == 2) {
+                  r = cm.testConection(ambiente, id);  
+            }
+             
+            String responseCode = r.get("response_code").toString() + "-" + option;
             lblPreloaderUpdConector.setVisible(false);
             String Mensaje = "";
             switch (responseCode) {
-                case "200":
+                case "200-1":
                     Mensaje = "Credenciales Actualizadas..!";
                     break;
-                case "400":
+                case "200-2":
+                    Mensaje = "La conexión se encuentra ok..!";
+                    break;
+                case "400-1":
                     Mensaje = "Error en la solicitud..!";
                     break;
-                case "423":
+                case "404-2":
+                    Mensaje = "Conexión no encontrada..!";
+                    break;
+                case "409-2":
+                    Mensaje = "Conexión no configurada..!";
+                    break;
+                case "412-2":
                     Mensaje = "Conector Bloqueado, por favor desbloqueelo en OIC..!";
                     break;
-                case "500":
+                case "423-1":
+                    Mensaje = "Conector Bloqueado, por favor desbloqueelo en OIC..!";
+                    break;
+                case "500-1":
                     Mensaje = "Error en el servidor..!";
+                    break;
+                case "500-2":
+                    Mensaje = "Error en el servidor..!";
+                    break;
+                default:
+                    Mensaje = "No existen credenciales configuradas para el conector:  " + id + ".\n"
+                            + "Configurelas en el menú: \"Configuración->Configurar credenciales de aplicación\"..!";
                     break;
             }
             lblinfotstCon.setText(Mensaje);
-            JOptionPane.showMessageDialog(null, Mensaje);
+            JOptionPane.showMessageDialog(null, Mensaje, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             lblinfotstCon.setText("");
 //            System.out.println("r = " + responseCode);
         }
