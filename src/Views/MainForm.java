@@ -13,7 +13,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -32,8 +37,13 @@ public class MainForm extends javax.swing.JFrame {
     /**
      * Creates new form MainForm
      */
-    public MainForm() {
+    public MainForm() {        
         initComponents();
+        try {
+            setIconImage(ImageIO.read(new File("src\\images\\Icono.png")));
+        } catch (IOException ex) {
+            System.out.println("error " + ex);
+        }
         setLocationRelativeTo(null);
         setTitle("Benvenido: " + OicRestApi.user);
         Utils.clearDirectory("downloads");
@@ -55,21 +65,9 @@ public class MainForm extends javax.swing.JFrame {
         mnuTblAmbiente2 = new javax.swing.JPopupMenu();
         itemSeletedEnv1 = new javax.swing.JMenuItem();
         mnuTblConectores = new javax.swing.JPopupMenu();
-        itemConfigCredencial = new javax.swing.JMenuItem();
         itemTestConection = new javax.swing.JMenuItem();
+        itemConfigCredencial = new javax.swing.JMenuItem();
         jpContent = new javax.swing.JLayeredPane();
-        jpConectores = new javax.swing.JPanel();
-        cboStatusIntg1 = new javax.swing.JComboBox<>();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        tblEnvironment2 = new javax.swing.JTable();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblConectTST2 = new javax.swing.JTable();
-        pb_tst2_con = new javax.swing.JProgressBar();
-        lboConectorsTST2 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        lblinfotstCon = new javax.swing.JLabel();
-        lblPreloaderUpdConector = new javax.swing.JLabel();
-        lblCurEnv2 = new javax.swing.JLabel();
         jpIntegrations = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblEnvironment = new javax.swing.JTable();
@@ -82,6 +80,20 @@ public class MainForm extends javax.swing.JFrame {
         lblPreloaderExport = new javax.swing.JLabel();
         cboStatusIntg = new javax.swing.JComboBox<>();
         lblCurEnv = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jpConectores = new javax.swing.JPanel();
+        cboStatusIntg1 = new javax.swing.JComboBox<>();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tblEnvironment2 = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblConectTST2 = new javax.swing.JTable();
+        pb_tst2_con = new javax.swing.JProgressBar();
+        lboConectorsTST2 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        lblinfotstCon = new javax.swing.JLabel();
+        lblPreloaderUpdConector = new javax.swing.JLabel();
+        lblCurEnv2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -89,8 +101,8 @@ public class MainForm extends javax.swing.JFrame {
         itemCredenciales = new javax.swing.JMenuItem();
         itemUrlOic = new javax.swing.JMenuItem();
         mnuOicApi = new javax.swing.JMenu();
-        itemList = new javax.swing.JMenuItem();
         itemConnections = new javax.swing.JMenuItem();
+        itemList = new javax.swing.JMenuItem();
 
         itemSeletedEnv.setText("Seleccionar");
         itemSeletedEnv.addActionListener(new java.awt.event.ActionListener() {
@@ -108,14 +120,6 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuTblAmbiente2.add(itemSeletedEnv1);
 
-        itemConfigCredencial.setText("Reconfigurar Credenciales");
-        itemConfigCredencial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemConfigCredencialActionPerformed(evt);
-            }
-        });
-        mnuTblConectores.add(itemConfigCredencial);
-
         itemTestConection.setText("Probar Conexión");
         itemTestConection.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,106 +128,15 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuTblConectores.add(itemTestConection);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        cboStatusIntg1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione Estado", "ACTIVATED", "CONFIGURED", "INPROGRESS" }));
-
-        tblEnvironment2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        tblEnvironment2.setComponentPopupMenu(mnuTblAmbiente2);
-        jScrollPane6.setViewportView(tblEnvironment2);
-
-        tblConectTST2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        tblConectTST2.setComponentPopupMenu(mnuTblConectores);
-        jScrollPane3.setViewportView(tblConectTST2);
-
-        pb_tst2_con.setIndeterminate(true);
-
-        lboConectorsTST2.setText("Total Conectores: 0");
-
-        jButton3.setText("Cargar Datos");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        itemConfigCredencial.setText("Reconfigurar Credenciales");
+        itemConfigCredencial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                itemConfigCredencialActionPerformed(evt);
             }
         });
+        mnuTblConectores.add(itemConfigCredencial);
 
-        lblPreloaderUpdConector.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1494.gif"))); // NOI18N
-
-        lblCurEnv2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblCurEnv2.setText("Ambiente Seleccionado: --");
-
-        javax.swing.GroupLayout jpConectoresLayout = new javax.swing.GroupLayout(jpConectores);
-        jpConectores.setLayout(jpConectoresLayout);
-        jpConectoresLayout.setHorizontalGroup(
-            jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpConectoresLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3)
-                    .addGroup(jpConectoresLayout.createSequentialGroup()
-                        .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpConectoresLayout.createSequentialGroup()
-                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jpConectoresLayout.createSequentialGroup()
-                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblPreloaderUpdConector))
-                                    .addComponent(lblinfotstCon, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jpConectoresLayout.createSequentialGroup()
-                                        .addComponent(cboStatusIntg1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(lblCurEnv2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jpConectoresLayout.createSequentialGroup()
-                                .addComponent(lboConectorsTST2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(167, 167, 167)
-                                .addComponent(pb_tst2_con, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 323, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jpConectoresLayout.setVerticalGroup(
-            jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpConectoresLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpConectoresLayout.createSequentialGroup()
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGap(13, 13, 13))
-                    .addGroup(jpConectoresLayout.createSequentialGroup()
-                        .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpConectoresLayout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton3)
-                                    .addComponent(lblPreloaderUpdConector, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(lblinfotstCon, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(cboStatusIntg1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblCurEnv2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)))
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pb_tst2_con, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lboConectorsTST2))
-                .addGap(27, 27, 27))
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         tblEnvironment.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -264,6 +177,9 @@ public class MainForm extends javax.swing.JFrame {
         lblCurEnv.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblCurEnv.setText("Ambiente Seleccionado: --");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setText("Listado de Integraciones");
+
         javax.swing.GroupLayout jpIntegrationsLayout = new javax.swing.GroupLayout(jpIntegrations);
         jpIntegrations.setLayout(jpIntegrationsLayout);
         jpIntegrationsLayout.setHorizontalGroup(
@@ -272,9 +188,8 @@ public class MainForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpIntegrationsLayout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jpIntegrationsLayout.createSequentialGroup()
@@ -287,45 +202,151 @@ public class MainForm extends javax.swing.JFrame {
                                         .addComponent(lblPreloaderExport))
                                     .addGroup(jpIntegrationsLayout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(lblCurEnv, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addComponent(lblCurEnv, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(47, 47, 47)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(jpIntegrationsLayout.createSequentialGroup()
                         .addComponent(lblIntegraTST2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(175, 175, 175)
                         .addComponent(pb_tst2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 312, Short.MAX_VALUE))
+                .addGap(0, 17, Short.MAX_VALUE))
             .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpIntegrationsLayout.createSequentialGroup()
-                    .addGap(14, 14, 14)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 995, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(19, Short.MAX_VALUE)))
+                    .addContainerGap()
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1016, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         jpIntegrationsLayout.setVerticalGroup(
             jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpIntegrationsLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addContainerGap()
                 .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpIntegrationsLayout.createSequentialGroup()
                         .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cboStatusIntg)
-                            .addComponent(lblCurEnv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblCurEnv, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jpIntegrationsLayout.createSequentialGroup()
                                 .addComponent(jButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblPreloaderExport, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 454, Short.MAX_VALUE)
+                                .addGap(4, 4, 4))
+                            .addComponent(lblPreloaderExport, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 486, Short.MAX_VALUE)
                 .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pb_tst2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblIntegraTST2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(36, 36, 36))
+                .addGap(28, 28, 28))
             .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpIntegrationsLayout.createSequentialGroup()
-                    .addGap(135, 135, 135)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(104, Short.MAX_VALUE)))
+                    .addGap(115, 115, 115)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(64, Short.MAX_VALUE)))
+        );
+
+        cboStatusIntg1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione Estado", "CONFIGURED", "INPROGRESS" }));
+
+        tblEnvironment2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tblEnvironment2.setComponentPopupMenu(mnuTblAmbiente2);
+        jScrollPane6.setViewportView(tblEnvironment2);
+
+        tblConectTST2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tblConectTST2.setComponentPopupMenu(mnuTblConectores);
+        jScrollPane3.setViewportView(tblConectTST2);
+
+        pb_tst2_con.setIndeterminate(true);
+
+        lboConectorsTST2.setText("Total Conectores: 0");
+
+        jButton3.setText("Cargar Datos");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        lblPreloaderUpdConector.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1494.gif"))); // NOI18N
+
+        lblCurEnv2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblCurEnv2.setText("Ambiente Seleccionado: --");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setText("Listado de Conectores");
+
+        javax.swing.GroupLayout jpConectoresLayout = new javax.swing.GroupLayout(jpConectores);
+        jpConectores.setLayout(jpConectoresLayout);
+        jpConectoresLayout.setHorizontalGroup(
+            jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpConectoresLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpConectoresLayout.createSequentialGroup()
+                        .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jpConectoresLayout.createSequentialGroup()
+                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jpConectoresLayout.createSequentialGroup()
+                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblPreloaderUpdConector))
+                                    .addComponent(lblinfotstCon, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jpConectoresLayout.createSequentialGroup()
+                                        .addComponent(cboStatusIntg1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(lblCurEnv2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jpConectoresLayout.createSequentialGroup()
+                                .addComponent(lboConectorsTST2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(167, 167, 167)
+                                .addComponent(pb_tst2_con, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18))
+                    .addGroup(jpConectoresLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3)
+                        .addContainerGap())))
+        );
+        jpConectoresLayout.setVerticalGroup(
+            jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpConectoresLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpConectoresLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(4, 4, 4)
+                        .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton3)
+                            .addComponent(lblPreloaderUpdConector, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblinfotstCon, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cboStatusIntg1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblCurEnv2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
+                .addGroup(jpConectoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pb_tst2_con, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lboConectorsTST2))
+                .addGap(27, 27, 27))
         );
 
         jLabel1.setText("HELLO WORDL");
@@ -347,8 +368,8 @@ public class MainForm extends javax.swing.JFrame {
                 .addContainerGap(425, Short.MAX_VALUE))
         );
 
-        jpContent.setLayer(jpConectores, javax.swing.JLayeredPane.PALETTE_LAYER);
         jpContent.setLayer(jpIntegrations, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jpContent.setLayer(jpConectores, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jpContent.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jpContentLayout = new javax.swing.GroupLayout(jpContent);
@@ -359,10 +380,7 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jpIntegrations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jpContentLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jpConectores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
+                .addComponent(jpConectores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpContentLayout.setVerticalGroup(
             jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,13 +388,9 @@ public class MainForm extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 7, Short.MAX_VALUE))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jpContentLayout.createSequentialGroup()
-                    .addComponent(jpIntegrations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jpIntegrations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpContentLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jpConectores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jpConectores, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mnuConfig.setText("Configuración");
@@ -401,14 +415,6 @@ public class MainForm extends javax.swing.JFrame {
 
         mnuOicApi.setText("Oic Api");
 
-        itemList.setText("Listar Integraciones");
-        itemList.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemListActionPerformed(evt);
-            }
-        });
-        mnuOicApi.add(itemList);
-
         itemConnections.setLabel("Listar Conectores");
         itemConnections.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -417,6 +423,14 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuOicApi.add(itemConnections);
         itemConnections.getAccessibleContext().setAccessibleDescription("");
+
+        itemList.setText("Listar Integraciones");
+        itemList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemListActionPerformed(evt);
+            }
+        });
+        mnuOicApi.add(itemList);
 
         jMenuBar1.add(mnuOicApi);
 
@@ -606,6 +620,8 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

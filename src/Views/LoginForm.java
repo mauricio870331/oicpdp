@@ -7,8 +7,10 @@ package Views;
 import OICApi.OicRestApi;
 import static Utils.Utils.validarCampos;
 import ds.desktop.notify.DesktopNotify;
-import ds.desktop.notify.NotifyTheme;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,6 +24,11 @@ public class LoginForm extends javax.swing.JFrame {
      */
     public LoginForm() {
         initComponents();
+        try {
+            setIconImage(ImageIO.read(new File("src\\images\\Icono.png")));
+        } catch (IOException ex) {
+            System.out.println("error " + ex);
+        }
         setLocationRelativeTo(null);
         cargarCboAmbiente();
     }
