@@ -7,6 +7,7 @@ package OICApi;
 import Models.AppCredentialsModel;
 import Models.PropertiesModel;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -87,6 +88,26 @@ public class OicRestApi {
         resp.put("total", jsonObject.get("totalResults").getAsInt());
         return resp;
     }
+    
+      public Map<String, Object> lookupsList(String env, String status) {
+        JsonParser parser = new JsonParser();
+        StringBuilder sb = new StringBuilder();
+        sb.append("/integration/v1/lookups/");   
+        if (!status.equals("Seleccione Estado") && !status.equals("")) {
+            sb.append("?q=%7B%20status%3A%20");
+            sb.append("'");
+            sb.append(status);
+            sb.append("'");
+            sb.append("%20%7D");
+        }
+        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + sb.toString(), "GET", null, null);
+        Map<String, Object> resp = new HashMap<>();
+        JsonElement element = (JsonElement) parser.parse((String) respuesta.get("response"));
+        JsonObject jsonObject = element.getAsJsonObject();
+        resp.put("lookups", (jsonObject.has("items")) ? jsonObject.get("items").getAsJsonArray() : new JsonArray());
+        resp.put("total", jsonObject.get("totalResults").getAsInt());
+        return resp;
+    }
 
     public Map<String, Object> updateCredentialsConector(String env, String conectorId) {
         Map<String, Object> respuesta = new HashMap<>();
@@ -128,6 +149,7 @@ public class OicRestApi {
         Map<String, Object> resp = new HashMap<>();
         try {
             URL url = new URL(route);
+//            System.out.println("route: "+route);
             HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
             httpCon.setRequestProperty("User-Agent", "insomnia/2023.1.0");
             httpCon.setRequestProperty("Acept", "*/*");
@@ -252,6 +274,54 @@ public class OicRestApi {
         }
         return response;
     }
+    
+    public boolean exportLookups(String name, String envSrc) {
+        boolean response = false;
+        int BUFFER_SIZE = 4096;
+        String fileURL = getEnviromentUrl(envSrc) + "/integration/v1/lookups/" + name + "/archive";
+        try {
+            URL url = new URL(fileURL);
+            HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+            String userCredentials = OicRestApi.user + ":" + OicRestApi.pass;
+            String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
+            httpConn.setRequestProperty("Authorization", basicAuth);
+            httpConn.setRequestMethod("GET");
+            int responseCode = httpConn.getResponseCode();
+            // always check HTTP response code first
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+//                String fileName = "";
+//                String disposition = httpConn.getHeaderField("Content-Disposition");
+//                String contentType = httpConn.getContentType();
+//                int contentLength = httpConn.getContentLength();
+//                System.out.println("Content-Type = " + contentType);
+//                System.out.println("Content-Disposition = " + disposition);
+//                System.out.println("Content-Length = " + contentLength);
+//                System.out.println("fileName = " + fileName);
+                // opens input stream from the HTTP connection
+                InputStream inputStream = httpConn.getInputStream();
+                String saveFilePath = "src/downloads/" + File.separator + name+".csv";
+                // opens an output stream to save into file
+                FileOutputStream outputStream = new FileOutputStream(saveFilePath);
+                int bytesRead = -1;
+                byte[] buffer = new byte[BUFFER_SIZE];
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                outputStream.close();
+                inputStream.close();
+//                System.out.println("File downloaded");
+                response = true;
+            } else {
+                System.out.println("No file to download. Server replied HTTP code: " + responseCode);
+            }
+            httpConn.disconnect();
+        } catch (MalformedURLException ex) {
+            System.out.println("error " + ex);
+        } catch (IOException ex) {
+            System.out.println("error " + ex);
+        }
+        return response;
+    }
 
     public int importIntegration(String intg, String env, String method) {
 
@@ -338,5 +408,6 @@ public class OicRestApi {
         Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + "/integration/v1/connections/" + conectorId + "/test", "POST", "", null);
         return respuesta;
     }
+
 
 }

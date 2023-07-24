@@ -6,6 +6,7 @@ package Views;
 
 import Models.ConectoresModel;
 import Models.IntegrationModel;
+import Models.LookupsModel;
 import OICApi.OicRestApi;
 import Utils.Utils;
 import com.google.gson.JsonArray;
@@ -37,7 +38,7 @@ public class MainForm extends javax.swing.JFrame {
     /**
      * Creates new form MainForm
      */
-    public MainForm() {        
+    public MainForm() {
         initComponents();
         try {
             setIconImage(ImageIO.read(new File("src\\images\\Icono.png")));
@@ -64,10 +65,26 @@ public class MainForm extends javax.swing.JFrame {
         itemSeletedEnv = new javax.swing.JMenuItem();
         mnuTblAmbiente2 = new javax.swing.JPopupMenu();
         itemSeletedEnv1 = new javax.swing.JMenuItem();
+        mnuTblAmbiente3 = new javax.swing.JPopupMenu();
+        itemSeletedEnv2 = new javax.swing.JMenuItem();
         mnuTblConectores = new javax.swing.JPopupMenu();
         itemTestConection = new javax.swing.JMenuItem();
         itemConfigCredencial = new javax.swing.JMenuItem();
+        mnuTblLookups = new javax.swing.JPopupMenu();
+        mnuItemExportLookup = new javax.swing.JMenuItem();
         jpContent = new javax.swing.JLayeredPane();
+        jpLookupTables = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tblEnvironment3 = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblLookups = new javax.swing.JTable();
+        pb_tst2_lookups = new javax.swing.JProgressBar();
+        lblLookups = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
+        lblinfotstLookups = new javax.swing.JLabel();
+        lblPreloaderLookups = new javax.swing.JLabel();
+        lblCurEnv3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jpIntegrations = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblEnvironment = new javax.swing.JTable();
@@ -102,6 +119,7 @@ public class MainForm extends javax.swing.JFrame {
         itemUrlOic = new javax.swing.JMenuItem();
         mnuOicApi = new javax.swing.JMenu();
         itemConnections = new javax.swing.JMenuItem();
+        itemListLookups = new javax.swing.JMenuItem();
         itemList = new javax.swing.JMenuItem();
 
         itemSeletedEnv.setText("Seleccionar");
@@ -120,6 +138,14 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuTblAmbiente2.add(itemSeletedEnv1);
 
+        itemSeletedEnv2.setText("Seleccionar");
+        itemSeletedEnv2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemSeletedEnv2ActionPerformed(evt);
+            }
+        });
+        mnuTblAmbiente3.add(itemSeletedEnv2);
+
         itemTestConection.setText("Probar Conexión");
         itemTestConection.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,7 +162,111 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuTblConectores.add(itemConfigCredencial);
 
+        mnuItemExportLookup.setText("Exportar Lookup");
+        mnuItemExportLookup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuItemExportLookupActionPerformed(evt);
+            }
+        });
+        mnuTblLookups.add(mnuItemExportLookup);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        tblEnvironment3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tblEnvironment3.setComponentPopupMenu(mnuTblAmbiente3);
+        jScrollPane7.setViewportView(tblEnvironment3);
+
+        tblLookups.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tblLookups.setComponentPopupMenu(mnuTblLookups);
+        jScrollPane4.setViewportView(tblLookups);
+
+        pb_tst2_lookups.setIndeterminate(true);
+
+        lblLookups.setText("Total Lookups: 0");
+
+        jButton4.setText("Cargar Datos");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        lblPreloaderLookups.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1494.gif"))); // NOI18N
+
+        lblCurEnv3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblCurEnv3.setText("Ambiente Seleccionado: --");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setText("Listado de Lookups");
+
+        javax.swing.GroupLayout jpLookupTablesLayout = new javax.swing.GroupLayout(jpLookupTables);
+        jpLookupTables.setLayout(jpLookupTablesLayout);
+        jpLookupTablesLayout.setHorizontalGroup(
+            jpLookupTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpLookupTablesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpLookupTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpLookupTablesLayout.createSequentialGroup()
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jpLookupTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jpLookupTablesLayout.createSequentialGroup()
+                                .addComponent(lblCurEnv3, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(102, 102, 102))
+                            .addGroup(jpLookupTablesLayout.createSequentialGroup()
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPreloaderLookups))
+                            .addComponent(lblinfotstLookups, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpLookupTablesLayout.createSequentialGroup()
+                        .addComponent(lblLookups, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(167, 167, 167)
+                        .addComponent(pb_tst2_lookups, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4))
+                .addContainerGap())
+        );
+        jpLookupTablesLayout.setVerticalGroup(
+            jpLookupTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpLookupTablesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpLookupTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpLookupTablesLayout.createSequentialGroup()
+                        .addComponent(lblCurEnv3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(3, 3, 3)
+                        .addGroup(jpLookupTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblPreloaderLookups, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblinfotstLookups, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
+                .addGroup(jpLookupTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pb_tst2_lookups, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLookups))
+                .addGap(27, 27, 27))
+        );
+
+        lblLookups.getAccessibleContext().setAccessibleName("Total Lookups: 0");
 
         tblEnvironment.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -188,7 +318,8 @@ public class MainForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpIntegrationsLayout.createSequentialGroup()
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -209,7 +340,7 @@ public class MainForm extends javax.swing.JFrame {
                         .addComponent(lblIntegraTST2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(175, 175, 175)
                         .addComponent(pb_tst2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 17, Short.MAX_VALUE))
+                .addGap(0, 33, Short.MAX_VALUE))
             .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpIntegrationsLayout.createSequentialGroup()
                     .addContainerGap()
@@ -228,9 +359,7 @@ public class MainForm extends javax.swing.JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jpIntegrationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpIntegrationsLayout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addGap(4, 4, 4))
+                            .addComponent(jButton1)
                             .addComponent(lblPreloaderExport, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblinfotst2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -358,7 +487,7 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(384, 384, 384)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addContainerGap(181, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,6 +497,7 @@ public class MainForm extends javax.swing.JFrame {
                 .addContainerGap(425, Short.MAX_VALUE))
         );
 
+        jpContent.setLayer(jpLookupTables, javax.swing.JLayeredPane.PALETTE_LAYER);
         jpContent.setLayer(jpIntegrations, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jpContent.setLayer(jpConectores, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jpContent.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -381,16 +511,23 @@ public class MainForm extends javax.swing.JFrame {
                 .addComponent(jpIntegrations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jpConectores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpContentLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jpLookupTables, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         jpContentLayout.setVerticalGroup(
             jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpContentLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 7, Short.MAX_VALUE))
+                .addGap(0, 23, Short.MAX_VALUE))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jpIntegrations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jpConectores, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jpLookupTables, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mnuConfig.setText("Configuración");
@@ -423,6 +560,15 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuOicApi.add(itemConnections);
         itemConnections.getAccessibleContext().setAccessibleDescription("");
+
+        itemListLookups.setText("Listar Lookups");
+        itemListLookups.setActionCommand("Listar Lookups");
+        itemListLookups.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemListLookupsActionPerformed(evt);
+            }
+        });
+        mnuOicApi.add(itemListLookups);
 
         itemList.setText("Listar Integraciones");
         itemList.addActionListener(new java.awt.event.ActionListener() {
@@ -457,6 +603,7 @@ public class MainForm extends javax.swing.JFrame {
     private void itemListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemListActionPerformed
         jPanel1.setVisible(false);
         jpConectores.setVisible(false);
+        jpLookupTables.setVisible(false);
         jpIntegrations.setVisible(true);
 //        MiHilo miHilo = new MiHilo("TST2", tbl_integraciones, lblIntegraTST2, pb_tst2);
 //        miHilo.start();      
@@ -475,6 +622,7 @@ public class MainForm extends javax.swing.JFrame {
     private void itemConnectionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConnectionsActionPerformed
         jPanel1.setVisible(false);
         jpIntegrations.setVisible(false);
+        jpLookupTables.setVisible(false);
         jpConectores.setVisible(true);
         selectedEnv = "";
     }//GEN-LAST:event_itemConnectionsActionPerformed
@@ -497,8 +645,6 @@ public class MainForm extends javax.swing.JFrame {
         String status = cboStatusIntg1.getSelectedItem().toString();
         MiHiloCon cargarConectores = new MiHiloCon(selectedEnv, status);
         cargarConectores.start();
-
-
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -570,6 +716,46 @@ public class MainForm extends javax.swing.JFrame {
         hiloUpdate.start();
     }//GEN-LAST:event_itemTestConectionActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        if (selectedEnv.equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar un ambiente..!");
+            return;
+        }
+        HiloLookups cargarLookups = new HiloLookups(selectedEnv, "");
+        cargarLookups.start();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void itemListLookupsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemListLookupsActionPerformed
+        jPanel1.setVisible(false);
+        jpIntegrations.setVisible(false);
+        jpConectores.setVisible(false);
+        jpLookupTables.setVisible(true);
+        selectedEnv = "";
+    }//GEN-LAST:event_itemListLookupsActionPerformed
+
+    private void itemSeletedEnv2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSeletedEnv2ActionPerformed
+        int row = tblEnvironment3.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+            return;
+        }
+        String value = tblEnvironment3.getModel().getValueAt(row, 0).toString();
+        selectedEnv = value;
+        lblCurEnv3.setText("Ambiente Seleccionado: " + value);
+    }//GEN-LAST:event_itemSeletedEnv2ActionPerformed
+
+    private void mnuItemExportLookupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuItemExportLookupActionPerformed
+        int row = tblLookups.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+            return;
+        }
+        System.out.println("value = " + selectedEnv);
+        String name = tblLookups.getModel().getValueAt(row, 1).toString();
+        ExportarLookup hexportar = new ExportarLookup(name,selectedEnv);
+        hexportar.start();        
+    }//GEN-LAST:event_mnuItemExportLookupActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -613,42 +799,59 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemConnections;
     private javax.swing.JMenuItem itemCredenciales;
     private javax.swing.JMenuItem itemList;
+    private javax.swing.JMenuItem itemListLookups;
     private javax.swing.JMenuItem itemSeletedEnv;
     private javax.swing.JMenuItem itemSeletedEnv1;
+    private javax.swing.JMenuItem itemSeletedEnv2;
     private javax.swing.JMenuItem itemTestConection;
     private javax.swing.JMenuItem itemUrlOic;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JPanel jpConectores;
     private javax.swing.JLayeredPane jpContent;
     private javax.swing.JPanel jpIntegrations;
+    private javax.swing.JPanel jpLookupTables;
     private javax.swing.JLabel lblCurEnv;
     private javax.swing.JLabel lblCurEnv2;
+    private javax.swing.JLabel lblCurEnv3;
     private javax.swing.JLabel lblIntegraTST2;
+    private javax.swing.JLabel lblLookups;
     private javax.swing.JLabel lblPreloaderExport;
+    private javax.swing.JLabel lblPreloaderLookups;
     private javax.swing.JLabel lblPreloaderUpdConector;
     private javax.swing.JLabel lblinfotst2;
     private javax.swing.JLabel lblinfotstCon;
+    private javax.swing.JLabel lblinfotstLookups;
     private javax.swing.JLabel lboConectorsTST2;
     private javax.swing.JMenu mnuConfig;
+    private javax.swing.JMenuItem mnuItemExportLookup;
     private javax.swing.JMenu mnuOicApi;
     private javax.swing.JPopupMenu mnuTblAmbiente;
     private javax.swing.JPopupMenu mnuTblAmbiente2;
+    private javax.swing.JPopupMenu mnuTblAmbiente3;
     private javax.swing.JPopupMenu mnuTblConectores;
+    private javax.swing.JPopupMenu mnuTblLookups;
     private javax.swing.JProgressBar pb_tst2;
     private javax.swing.JProgressBar pb_tst2_con;
+    private javax.swing.JProgressBar pb_tst2_lookups;
     private javax.swing.JTable tblConectTST2;
     private javax.swing.JTable tblEnvironment;
     private javax.swing.JTable tblEnvironment2;
+    private javax.swing.JTable tblEnvironment3;
+    private javax.swing.JTable tblLookups;
     private javax.swing.JTable tbl_integraciones;
     // End of variables declaration//GEN-END:variables
 
@@ -693,15 +896,19 @@ public class MainForm extends javax.swing.JFrame {
         // Asignar el modelo de tabla a nuestro JTable
         tblEnvironment.setModel(modeloTabla);
         tblEnvironment2.setModel(modeloTabla);
+        tblEnvironment3.setModel(modeloTabla);
     }
 
     private void hideElemnets() {
         jpIntegrations.setVisible(false);
         jpConectores.setVisible(false);
+        jpLookupTables.setVisible(false);
         pb_tst2.setVisible(false);
         pb_tst2_con.setVisible(false);
+        pb_tst2_lookups.setVisible(false);
         lblPreloaderExport.setVisible(false);
         lblPreloaderUpdConector.setVisible(false);
+        lblPreloaderLookups.setVisible(false);
     }
 
     private void cargarIntegraciones(String env, JTable table, JLabel lbl, JProgressBar pb, String status) {
@@ -785,6 +992,22 @@ public class MainForm extends javax.swing.JFrame {
         @Override
         public void run() {
             cargarConectores(ambiente, status);
+        }
+    }
+
+    public class HiloLookups extends Thread {
+
+        String ambiente;
+        String status;
+
+        public HiloLookups(String ambiente, String status) {
+            this.ambiente = ambiente;
+            this.status = status;
+        }
+
+        @Override
+        public void run() {
+            cargaLookups(ambiente, status);
         }
     }
 
@@ -948,6 +1171,72 @@ public class MainForm extends javax.swing.JFrame {
         pb_tst2_con.setVisible(false);
         lblinfotst2.setText("");
 
+    }
+
+    private void cargaLookups(String env, String status) {
+
+        pb_tst2_lookups.setVisible(true);
+        LookupsModel lm = new LookupsModel();
+        Map<String, Object> respuesta = lm.getLookups(env, status);
+        int total = (int) respuesta.get("total");
+        lblLookups.setText("Total Lookups: " + total);
+
+        JsonArray list = (JsonArray) respuesta.get("lookups");
+        DefaultTableModel modeloTabla = new DefaultTableModel();
+//        System.out.println("Lista " + list);
+//        System.exit(0);
+//         Agregar columnas a nuestro modelo de tabla
+        modeloTabla.addColumn("ID");
+        modeloTabla.addColumn("NAME");
+        modeloTabla.addColumn("STATUS");
+        modeloTabla.addColumn("ENV");
+        for (JsonElement jsonElement : list) {
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            String ID = jsonObject.get("id").getAsString();
+            String NAME = jsonObject.get("name").getAsString();
+            String STATUS = jsonObject.get("status").getAsString();
+            modeloTabla.addRow(new Object[]{ID, NAME, STATUS, env});
+        }
+// Asignar el modelo de tabla a nuestro JTable
+        tblLookups.setModel(modeloTabla);
+        tblLookups.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+        tblLookups.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
+        tblLookups.getColumnModel().getColumn(0).setPreferredWidth(0);
+        tblLookups.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblLookups.getColumnModel().getColumn(0).setMinWidth(0);
+        tblLookups.getColumnModel().getColumn(3).setMaxWidth(150);
+        tblLookups.getColumnModel().getColumn(3).setMinWidth(150);
+//        tblConectTST2.getColumnModel().getColumn(4).setMaxWidth(120);
+//        tblConectTST2.getColumnModel().getColumn(4).setMinWidth(120);
+
+        tblLookups.setModel(modeloTabla);
+        pb_tst2_lookups.setVisible(false);
+        lblinfotstLookups.setText("");
+
+    }
+
+    public class ExportarLookup extends Thread {
+
+        String ambiente;
+        String nombre;
+
+        public ExportarLookup(String nombre, String ambiente) {
+            this.ambiente = ambiente;
+            this.nombre = nombre;
+        }
+
+        @Override
+        public void run() {
+            lblinfotstLookups.setText("Exportando lookup..");
+            lblPreloaderLookups.setVisible(true);
+            LookupsModel lm = new LookupsModel();      
+            boolean r = lm.exportLookup(nombre, ambiente);
+            lblPreloaderLookups.setVisible(false);
+            lblinfotstLookups.setText("");
+            if (r) {
+                JOptionPane.showMessageDialog(MainForm.this, "Lookup Table Exportada correctamente.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
     }
 
 }
