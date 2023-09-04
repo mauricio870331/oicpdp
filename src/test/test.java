@@ -31,24 +31,25 @@ public class test {
 //        ora.login("mherrera@redclay.com", "Welcome@123_", "TST2");
 //        System.out.println(Utils.Utils.leerProperties("PRD"));
 
- AppCredentialsModel ct = new AppCredentialsModel(); 
-        System.out.println(ct.getByFieldName("FIELD_SERVICE", "TST2"));
-        
-        ArrayList<PropertiesModel> lista = new ArrayList<>();
-        
-        lista.add(new PropertiesModel("prueba", "13"));
-        lista.add(new PropertiesModel("sdasfasf", "2222"));
- 
-//      String fields = "[{\"propertyName\":\"username\",\"propertyValue\":\"esfera_epsa1test\"},{\"propertyName\":\"password\",\"propertyValue\":\"123456789\"}]";
-//
-//
-        Map<String, String> data = new HashMap<>();
-//     
-        data.put("securityProperties",lista.toString());
+// AppCredentialsModel ct = new AppCredentialsModel(); 
+//        System.out.println(ct.getByFieldName("FIELD_SERVICE", "TST2"));
 //        
+//        ArrayList<PropertiesModel> lista = new ArrayList<>();
 //        
-//        
-        Gson gsonObj = new Gson();
-        System.out.println(gsonObj.toJson(data).replaceAll("\\\\", ""));
+//        lista.add(new PropertiesModel("prueba", "13"));
+//        lista.add(new PropertiesModel("sdasfasf", "2222"));
+// 
+////      String fields = "[{\"propertyName\":\"username\",\"propertyValue\":\"esfera_epsa1test\"},{\"propertyName\":\"password\",\"propertyValue\":\"123456789\"}]";
+////
+////
+//        Map<String, String> data = new HashMap<>();
+////     
+//        data.put("securityProperties",lista.toString());
+////        
+////        
+////        
+//        Gson gsonObj = new Gson();
+//        System.out.println(gsonObj.toJson(data).replaceAll("\\\\", ""));
+System.out.println(Utils.Utils.leerProperties("UAT2"));
     }
 }

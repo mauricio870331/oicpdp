@@ -180,6 +180,12 @@ public class Utils {
                 case "200":
                     message = "Integración activada correctamente";
                     break;
+                case "204-3":
+                    message = "Lookup importada correctamente";
+                    break;
+                case "400-3":
+                    message = "No se subio ningun archivo";
+                    break;
                 case "404":
                     message = "Integración no encontrada";
                     break;
@@ -207,6 +213,9 @@ public class Utils {
                 case "409-2":
                    message = "Conexión no configurada..!";
                    break;
+                case "409-3":
+                   message = "Lookup ya existe..!";
+                   break;
                 case "412-2":
                    message = "Conector Bloqueado, por favor desbloqueelo en OIC..!";
                    break;
@@ -217,6 +226,9 @@ public class Utils {
                    message = "Error en el servidor..!";
                    break;
                 case "500-2":
+                   message = "Error en el servidor..!";
+                   break;
+                case "500-3":
                    message = "Error en el servidor..!";
                    break;
                 default:

@@ -17,8 +17,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -70,8 +68,6 @@ public class MainForm extends javax.swing.JFrame {
         mnuTblConectores = new javax.swing.JPopupMenu();
         itemTestConection = new javax.swing.JMenuItem();
         itemConfigCredencial = new javax.swing.JMenuItem();
-        mnuTblLookups = new javax.swing.JPopupMenu();
-        mnuItemExportLookup = new javax.swing.JMenuItem();
         jpContent = new javax.swing.JLayeredPane();
         jpLookupTables = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
@@ -162,14 +158,6 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuTblConectores.add(itemConfigCredencial);
 
-        mnuItemExportLookup.setText("Exportar Lookup");
-        mnuItemExportLookup.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuItemExportLookupActionPerformed(evt);
-            }
-        });
-        mnuTblLookups.add(mnuItemExportLookup);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         tblEnvironment3.setModel(new javax.swing.table.DefaultTableModel(
@@ -191,7 +179,6 @@ public class MainForm extends javax.swing.JFrame {
 
             }
         ));
-        tblLookups.setComponentPopupMenu(mnuTblLookups);
         jScrollPane4.setViewportView(tblLookups);
 
         pb_tst2_lookups.setIndeterminate(true);
@@ -224,9 +211,7 @@ public class MainForm extends javax.swing.JFrame {
                         .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jpLookupTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jpLookupTablesLayout.createSequentialGroup()
-                                .addComponent(lblCurEnv3, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(102, 102, 102))
+                            .addComponent(lblCurEnv3, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jpLookupTablesLayout.createSequentialGroup()
                                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -236,9 +221,9 @@ public class MainForm extends javax.swing.JFrame {
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jpLookupTablesLayout.createSequentialGroup()
                         .addComponent(lblLookups, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(167, 167, 167)
+                        .addGap(199, 199, 199)
                         .addComponent(pb_tst2_lookups, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 384, Short.MAX_VALUE))
                     .addComponent(jScrollPane4))
                 .addContainerGap())
         );
@@ -265,8 +250,6 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(lblLookups))
                 .addGap(27, 27, 27))
         );
-
-        lblLookups.getAccessibleContext().setAccessibleName("Total Lookups: 0");
 
         tblEnvironment.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -562,7 +545,6 @@ public class MainForm extends javax.swing.JFrame {
         itemConnections.getAccessibleContext().setAccessibleDescription("");
 
         itemListLookups.setText("Listar Lookups");
-        itemListLookups.setActionCommand("Listar Lookups");
         itemListLookups.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemListLookupsActionPerformed(evt);
@@ -632,16 +614,6 @@ public class MainForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Debes seleccionar un ambiente..!");
             return;
         }
-        for (MenuElement menuItem : mnuTblConTst2.getSubElements()) {
-            if (menuItem instanceof MenuElement) {
-                JMenuItem item = (JMenuItem) menuItem;
-                if (item.getText().split(":")[1].trim().equals(selectedEnv)) {
-                    item.setVisible(false);
-                } else {
-                    item.setVisible(true);
-                }
-            }
-        }
         String status = cboStatusIntg1.getSelectedItem().toString();
         MiHiloCon cargarConectores = new MiHiloCon(selectedEnv, status);
         cargarConectores.start();
@@ -652,7 +624,6 @@ public class MainForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Debes seleccionar un ambiente..!");
             return;
         }
-
         for (MenuElement menuItem : mnuTblTst2.getSubElements()) {
             if (menuItem instanceof MenuElement) {
                 JMenuItem item = (JMenuItem) menuItem;
@@ -721,6 +692,16 @@ public class MainForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Debes seleccionar un ambiente..!");
             return;
         }
+        for (MenuElement menuItem : mnuTblLookups.getSubElements()) {
+            if (menuItem instanceof MenuElement) {
+                JMenuItem item = (JMenuItem) menuItem;
+                if (item.getText().split(":")[1].trim().equals(selectedEnv)) {
+                    item.setVisible(false);
+                } else {
+                    item.setVisible(true);
+                }
+            }
+        }
         HiloLookups cargarLookups = new HiloLookups(selectedEnv, "");
         cargarLookups.start();
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -743,18 +724,6 @@ public class MainForm extends javax.swing.JFrame {
         selectedEnv = value;
         lblCurEnv3.setText("Ambiente Seleccionado: " + value);
     }//GEN-LAST:event_itemSeletedEnv2ActionPerformed
-
-    private void mnuItemExportLookupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuItemExportLookupActionPerformed
-        int row = tblLookups.getSelectedRow();
-        if (row == -1) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
-            return;
-        }
-        System.out.println("value = " + selectedEnv);
-        String name = tblLookups.getModel().getValueAt(row, 1).toString();
-        ExportarLookup hexportar = new ExportarLookup(name,selectedEnv);
-        hexportar.start();        
-    }//GEN-LAST:event_mnuItemExportLookupActionPerformed
 
     /**
      * @param args the command line arguments
@@ -837,13 +806,11 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JLabel lblinfotstLookups;
     private javax.swing.JLabel lboConectorsTST2;
     private javax.swing.JMenu mnuConfig;
-    private javax.swing.JMenuItem mnuItemExportLookup;
     private javax.swing.JMenu mnuOicApi;
     private javax.swing.JPopupMenu mnuTblAmbiente;
     private javax.swing.JPopupMenu mnuTblAmbiente2;
     private javax.swing.JPopupMenu mnuTblAmbiente3;
     private javax.swing.JPopupMenu mnuTblConectores;
-    private javax.swing.JPopupMenu mnuTblLookups;
     private javax.swing.JProgressBar pb_tst2;
     private javax.swing.JProgressBar pb_tst2_con;
     private javax.swing.JProgressBar pb_tst2_lookups;
@@ -858,14 +825,40 @@ public class MainForm extends javax.swing.JFrame {
     //CustomVars
     private String selectedEnv = "";
     JPopupMenu mnuTblTst2 = new JPopupMenu();
-    JPopupMenu mnuTblConTst2 = new JPopupMenu();
+    JPopupMenu mnuTblLookups = new JPopupMenu();//crear popou para la tabla de lookups  
+
+    //Cargar tablas Ambientes y popups
+    private void cargarTablaAmbientes() {
+        PopupMenuListener listener = new PopupMenuListener();
+        PopupMenuListenerLookups listenerLookups = new PopupMenuListenerLookups();
+        DefaultTableModel modeloTabla = new DefaultTableModel();
+        // Agregar columnas a nuestro modelo de tabla
+        modeloTabla.addColumn("AMBIENTE");
+        Map<String, String> urlsMap = Utils.leerArchivoProperties();
+        for (Map.Entry<String, String> entry : urlsMap.entrySet()) {
+            modeloTabla.addRow(new Object[]{entry.getKey()});
+            JMenuItem elemento = new JMenuItem("Migrar a: " + entry.getKey());
+            JMenuItem elemento2 = new JMenuItem("Migrar a: " + entry.getKey());
+            elemento.addActionListener(listener);
+            elemento2.addActionListener(listenerLookups);
+            mnuTblTst2.add(elemento);
+            mnuTblLookups.add(elemento2);
+        }
+        tbl_integraciones.setComponentPopupMenu(mnuTblTst2);
+        tblLookups.setComponentPopupMenu(mnuTblLookups);
+        // Asignar el modelo de tabla a nuestro JTable
+        tblEnvironment.setModel(modeloTabla);
+        tblEnvironment2.setModel(modeloTabla);
+        tblEnvironment3.setModel(modeloTabla);
+    }
 
     class PopupMenuListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem menuItem = (JMenuItem) e.getSource();
-            String[] souceEnvpart = menuItem.getText().split(":");
+            String[] targetEnvPart = menuItem.getText().split(":");
+            String[] sourceEnvpart = lblCurEnv.getText().split(":");
             int row = tbl_integraciones.getSelectedRow();
             if (row == -1) {
                 JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
@@ -875,28 +868,32 @@ public class MainForm extends javax.swing.JFrame {
             String name = tbl_integraciones.getModel().getValueAt(row, 1).toString() + ".iar";
             String version = tbl_integraciones.getModel().getValueAt(row, 4).toString();
             tbl_integraciones.clearSelection();
-            ExportarIntegracion hexportar = new ExportarIntegracion(value, name.replaceAll(" ", "_"), souceEnvpart[1].trim(), version);
+            System.out.println("souceEnvpart " + sourceEnvpart[1].trim());
+            System.out.println("targetEnvPart " + targetEnvPart[1].trim());
+            ExportarIntegracion hexportar = new ExportarIntegracion(value, name.replaceAll(" ", "_"), sourceEnvpart[1].trim(), version, targetEnvPart[1].trim());
             hexportar.start();
         }
     }
 
-    private void cargarTablaAmbientes() {
-        PopupMenuListener listener = new PopupMenuListener();
-        DefaultTableModel modeloTabla = new DefaultTableModel();
-        // Agregar columnas a nuestro modelo de tabla
-        modeloTabla.addColumn("AMBIENTE");
-        Map<String, String> urlsMap = Utils.leerArchivoProperties();
-        for (Map.Entry<String, String> entry : urlsMap.entrySet()) {
-            modeloTabla.addRow(new Object[]{entry.getKey()});
-            JMenuItem elemento = new JMenuItem("Migrar a: " + entry.getKey());
-            elemento.addActionListener(listener);
-            mnuTblTst2.add(elemento);
+    //Listener para menu tabla lookups
+    class PopupMenuListenerLookups implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JMenuItem menuItem = (JMenuItem) e.getSource();
+            String[] targetEnvPart = menuItem.getText().split(":");
+            String[] souceEnvpart  = lblCurEnv3.getText().split(":");
+            int row = tblLookups.getSelectedRow();
+            if (row == -1) {
+                JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+                return;
+            }
+            System.out.println("value = " + selectedEnv);
+
+            String name = tblLookups.getModel().getValueAt(row, 1).toString();
+            ExportarLookup hexportar = new ExportarLookup(name, selectedEnv.trim(), targetEnvPart[1].trim());
+            hexportar.start();
         }
-        tbl_integraciones.setComponentPopupMenu(mnuTblTst2);
-        // Asignar el modelo de tabla a nuestro JTable
-        tblEnvironment.setModel(modeloTabla);
-        tblEnvironment2.setModel(modeloTabla);
-        tblEnvironment3.setModel(modeloTabla);
     }
 
     private void hideElemnets() {
@@ -1013,13 +1010,15 @@ public class MainForm extends javax.swing.JFrame {
 
     public class ExportarIntegracion extends Thread {
 
-        String ambiente;
+        String ambienteOrigen;
+        String ambienteDestino;
         String id;
         String nombre;
         String version;
 
-        public ExportarIntegracion(String id, String nombre, String ambiente, String version) {
-            this.ambiente = ambiente;
+        public ExportarIntegracion(String id, String nombre, String ambienteOrigen, String version, String ambienteDestino) {
+            this.ambienteOrigen = ambienteOrigen;
+            this.ambienteDestino = ambienteDestino;
             this.id = id;
             this.nombre = nombre;
             this.version = version;
@@ -1030,11 +1029,11 @@ public class MainForm extends javax.swing.JFrame {
             lblinfotst2.setText("Exportando integración..");
             lblPreloaderExport.setVisible(true);
             OicRestApi oic = new OicRestApi();
-            boolean r = oic.exportIntegration(id, nombre, ambiente);
+            boolean r = oic.exportIntegration(id, nombre, ambienteOrigen);
             lblPreloaderExport.setVisible(false);
             lblinfotst2.setText("");
             if (r) {
-                ImportarIntegracion hiloImportar = new ImportarIntegracion(id, nombre, ambiente, version);
+                ImportarIntegracion hiloImportar = new ImportarIntegracion(id, nombre, ambienteDestino, version);
                 hiloImportar.start();
             }
         }
@@ -1062,11 +1061,11 @@ public class MainForm extends javax.swing.JFrame {
             lblinfotst2.setText("Importando integración...");
             lblPreloaderExport.setVisible(true);
             OicRestApi oic = new OicRestApi();
-            int response = oic.importIntegration(nombre, "UAT2", "POST");
+            int response = oic.importFileOIC(nombre, ambiente, "POST", "integrations");
             Map<String, Object> r;
             if (response == 200) {
                 lblinfotst2.setText("Activando integración...");
-                r = oic.activateDeactivateIntg(id, "UAT2");
+                r = oic.activateDeactivateIntg(id, ambiente);
                 responseMessage(r.get("response_code").toString(), r.get("response"), "");
             }
             if (response == 409) {
@@ -1075,10 +1074,10 @@ public class MainForm extends javax.swing.JFrame {
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
                 if (result == JOptionPane.YES_OPTION) {
-                    response = oic.importIntegration(nombre, "UAT2", "PUT");
+                    response = oic.importFileOIC(nombre, ambiente, "PUT", "integrations");
                     if (response == 200) {
                         lblinfotst2.setText("Activando integración...");
-                        r = oic.activateDeactivateIntg(id, "UAT2");
+                        r = oic.activateDeactivateIntg(id, ambiente);
                         responseMessage(r.get("response_code").toString(), r.get("response"), "");
                     }
                 }
@@ -1217,11 +1216,13 @@ public class MainForm extends javax.swing.JFrame {
 
     public class ExportarLookup extends Thread {
 
-        String ambiente;
+        String ambienteSrc;
+        String ambienteTarget;
         String nombre;
 
-        public ExportarLookup(String nombre, String ambiente) {
-            this.ambiente = ambiente;
+        public ExportarLookup(String nombre, String ambiente, String ambienteTarget) {
+            this.ambienteSrc = ambiente;
+            this.ambienteTarget = ambienteTarget;
             this.nombre = nombre;
         }
 
@@ -1229,12 +1230,19 @@ public class MainForm extends javax.swing.JFrame {
         public void run() {
             lblinfotstLookups.setText("Exportando lookup..");
             lblPreloaderLookups.setVisible(true);
-            LookupsModel lm = new LookupsModel();      
-            boolean r = lm.exportLookup(nombre, ambiente);
+            LookupsModel lm = new LookupsModel();
+            boolean r = lm.exportLookup(nombre, ambienteSrc);
             lblPreloaderLookups.setVisible(false);
             lblinfotstLookups.setText("");
             if (r) {
-                JOptionPane.showMessageDialog(MainForm.this, "Lookup Table Exportada correctamente.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                lblinfotstLookups.setText("Importando Lookup...");
+                lblPreloaderLookups.setVisible(true);
+                OicRestApi oic = new OicRestApi();
+                int response = oic.importFileOIC(nombre + ".csv", ambienteTarget, "POST", "lookups");
+                System.out.println("response " + response);
+                JOptionPane.showMessageDialog(MainForm.this, Utils.responseMessage(Integer.toString(response)+"-3"), "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                lblinfotstLookups.setText("");
+                lblPreloaderLookups.setVisible(false);
             }
         }
     }

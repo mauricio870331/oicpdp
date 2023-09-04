@@ -88,11 +88,11 @@ public class OicRestApi {
         resp.put("total", jsonObject.get("totalResults").getAsInt());
         return resp;
     }
-    
-      public Map<String, Object> lookupsList(String env, String status) {
+
+    public Map<String, Object> lookupsList(String env, String status) {
         JsonParser parser = new JsonParser();
         StringBuilder sb = new StringBuilder();
-        sb.append("/integration/v1/lookups/");   
+        sb.append("/integration/v1/lookups/");
         if (!status.equals("Seleccione Estado") && !status.equals("")) {
             sb.append("?q=%7B%20status%3A%20");
             sb.append("'");
@@ -231,6 +231,7 @@ public class OicRestApi {
     public boolean exportIntegration(String integration, String fileName, String envSrc) {
         boolean response = false;
         int BUFFER_SIZE = 4096;
+        System.out.println("Id " + integration);
         String fileURL = getEnviromentUrl(envSrc) + "/integration/v1/integrations/" + integration + "/archive";
         try {
             URL url = new URL(fileURL);
@@ -274,7 +275,7 @@ public class OicRestApi {
         }
         return response;
     }
-    
+
     public boolean exportLookups(String name, String envSrc) {
         boolean response = false;
         int BUFFER_SIZE = 4096;
@@ -299,7 +300,7 @@ public class OicRestApi {
 //                System.out.println("fileName = " + fileName);
                 // opens input stream from the HTTP connection
                 InputStream inputStream = httpConn.getInputStream();
-                String saveFilePath = "src/downloads/" + File.separator + name+".csv";
+                String saveFilePath = "src/downloads/" + File.separator + name + ".csv";
                 // opens an output stream to save into file
                 FileOutputStream outputStream = new FileOutputStream(saveFilePath);
                 int bytesRead = -1;
@@ -323,20 +324,19 @@ public class OicRestApi {
         return response;
     }
 
-    public int importIntegration(String intg, String env, String method) {
-
+    public int importFileOIC(String fileN, String env, String method, String apiPart) {
+        System.out.println("nombre " + fileN);
+        System.out.println("env " + env);
         String userCredentials = OicRestApi.user + ":" + OicRestApi.pass;
         String basicAuth = "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
-        String filePath = "src/downloads/" + intg;
-        String requestUrl = getEnviromentUrl(env) + "/integration/v1/integrations/archive";
-
+        String filePath = "src/downloads/" + fileN;
+        String requestUrl = getEnviromentUrl(env) + "/integration/v1/" + apiPart + "/archive";
+        System.out.println(requestUrl);
         String fileFieldName = "file";
-
         HttpURLConnection connection = null;
         DataOutputStream outputStream = null;
         BufferedReader reader = null;
-        int responsecode = 200;
-
+        int responsecode = -1;
         try {
             URL url = new URL(requestUrl);
             connection = (HttpURLConnection) url.openConnection();
@@ -344,15 +344,12 @@ public class OicRestApi {
             connection.setDoOutput(true);
             connection.setRequestProperty("Authorization", basicAuth);
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=---------------------------1234567890");
-
             outputStream = new DataOutputStream(connection.getOutputStream());
-
             // Escribir los datos del archivo
             outputStream.writeBytes("-----------------------------1234567890\r\n");
             outputStream.writeBytes("Content-Disposition: form-data; name=\"" + fileFieldName + "\"; filename=\"" + new File(filePath).getName() + "\"\r\n");
             outputStream.writeBytes("Content-Type: application/octet-stream\r\n");
             outputStream.writeBytes("\r\n");
-
             File file = new File(filePath);
             try ( FileInputStream fileInputStream = new FileInputStream(file)) {
                 byte[] buffer = new byte[4096];
@@ -361,21 +358,19 @@ public class OicRestApi {
                     outputStream.write(buffer, 0, bytesRead);
                 }
             }
-
             outputStream.writeBytes("\r\n");
             outputStream.writeBytes("-----------------------------1234567890--\r\n");
-
             // Leer la respuesta del servicio
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            responsecode = connection.getResponseCode();
             String line;
             StringBuilder response = new StringBuilder();
-
             while ((line = reader.readLine()) != null) {
                 response.append(line);
             }
-
             System.out.println(response.toString());
         } catch (IOException e) {
+            System.out.println("e.getMessage() " + e.getMessage());
             responsecode = Utils.Utils.getErrorHttpImport(e.getMessage());
         } finally {
             // Cerrar las conexiones y recursos
@@ -408,6 +403,5 @@ public class OicRestApi {
         Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + "/integration/v1/connections/" + conectorId + "/test", "POST", "", null);
         return respuesta;
     }
-
 
 }
