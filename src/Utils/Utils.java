@@ -163,7 +163,7 @@ public class Utils {
         boolean delete = false;
         File directorio = new File("src/" + directory);
         if (directorio.isDirectory()) {
-            File[] archivos = directorio.listFiles();
+            File[] archivos = directorio.listFiles();        
             if (archivos != null) {
                 for (File archivo : archivos) {
                     archivo.delete();
@@ -180,8 +180,11 @@ public class Utils {
                 case "200":
                     message = "Integración activada correctamente";
                     break;
+                case "200-3":
+                    message = "Lookup table actualizada correctamente";
+                    break;
                 case "204-3":
-                    message = "Lookup importada correctamente";
+                    message = "Lookup importadao actualizada correctamente";
                     break;
                 case "400-3":
                     message = "No se subio ningun archivo";

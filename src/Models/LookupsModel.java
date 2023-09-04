@@ -33,6 +33,11 @@ public class LookupsModel extends Model {
         return oicra.exportLookups(name, env);
     }
 
+    
+    public int importLookup(String filename, String env, String method, String urlPart) {
+        OicRestApi oicra = new OicRestApi();
+        return oicra.importFileOIC(filename + ".csv", env, method, urlPart);
+    }
    
 
 }

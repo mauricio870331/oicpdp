@@ -682,7 +682,6 @@ public class MainForm extends javax.swing.JFrame {
         }
         String id = tblConectTST2.getModel().getValueAt(row, 0).toString();
         String env = tblConectTST2.getModel().getValueAt(row, 3).toString();
-
         ConfigConector hiloUpdate = new ConfigConector(id, env, 2);
         hiloUpdate.start();
     }//GEN-LAST:event_itemTestConectionActionPerformed
@@ -882,7 +881,7 @@ public class MainForm extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             JMenuItem menuItem = (JMenuItem) e.getSource();
             String[] targetEnvPart = menuItem.getText().split(":");
-            String[] souceEnvpart  = lblCurEnv3.getText().split(":");
+            String[] souceEnvpart = lblCurEnv3.getText().split(":");
             int row = tblLookups.getSelectedRow();
             if (row == -1) {
                 JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
@@ -1114,13 +1113,14 @@ public class MainForm extends javax.swing.JFrame {
         @Override
         public void run() {
             Map<String, Object> r = null;
-            lblinfotstCon.setText("Actualizando credenciales");
             lblPreloaderUpdConector.setVisible(true);
             ConectoresModel cm = new ConectoresModel();
             if (option == 1) {
+                lblinfotstCon.setText("Actualizando credenciales");
                 r = cm.updateConectionCredentials(ambiente, id);
             }
             if (option == 2) {
+                lblinfotstCon.setText("Test de Conector");
                 r = cm.testConection(ambiente, id);
             }
             String responseCode = r.get("response_code").toString() + "-" + option;
@@ -1238,11 +1238,21 @@ public class MainForm extends javax.swing.JFrame {
                 lblinfotstLookups.setText("Importando Lookup...");
                 lblPreloaderLookups.setVisible(true);
                 OicRestApi oic = new OicRestApi();
-                int response = oic.importFileOIC(nombre + ".csv", ambienteTarget, "POST", "lookups");
+                int response = lm.importLookup(nombre, ambienteTarget, "POST", "lookups");
                 System.out.println("response " + response);
-                JOptionPane.showMessageDialog(MainForm.this, Utils.responseMessage(Integer.toString(response)+"-3"), "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                if (response == 409) {
+                    int result = JOptionPane.showConfirmDialog(MainForm.this, "¿La Lookup Table " + nombre + " ya existe, desea reemplazarla?",
+                            "Confirmación..!",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE);
+                    if (result == JOptionPane.YES_OPTION) {
+                        response = lm.importLookup(nombre, ambienteTarget, "PUT", "lookups");
+                    }
+                }
+                JOptionPane.showMessageDialog(MainForm.this, Utils.responseMessage(Integer.toString(response) + "-3"), "Mensaje", JOptionPane.INFORMATION_MESSAGE);
                 lblinfotstLookups.setText("");
                 lblPreloaderLookups.setVisible(false);
+                //Pendiente preguntar si se desea remplazar la lookup
             }
         }
     }
