@@ -1074,7 +1074,8 @@ public class MainForm extends javax.swing.JFrame {
                         JOptionPane.QUESTION_MESSAGE);
                 if (result == JOptionPane.YES_OPTION) {
                     response = oic.importFileOIC(nombre, ambiente, "PUT", "integrations");
-                    if (response == 200) {
+                    System.out.println("response update int ------------>" + response);
+                    if (response == 204) {
                         lblinfotst2.setText("Activando integración...");
                         r = oic.activateDeactivateIntg(id, ambiente);
                         responseMessage(r.get("response_code").toString(), r.get("response"), "");
@@ -1091,10 +1092,8 @@ public class MainForm extends javax.swing.JFrame {
         message = message.replace("&&", intId);
         if (code.equals("500")) {
             message += "\n" + response.toString();
-            JOptionPane.showMessageDialog(MainForm.this, message, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(MainForm.this, message, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
         }
+        JOptionPane.showMessageDialog(MainForm.this, message, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
     }
 
     //Hilo configura conectores

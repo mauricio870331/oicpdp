@@ -134,6 +134,7 @@ public class OicRestApi {
     }
 
     public Map<String, Object> activateDeactivateIntg(String intg, String env) {
+        System.out.println("Activar Integracion");
         Map<String, String> headers = new HashMap<>();
         headers.put("X-HTTP-Method-Override", "PATCH");
         //Data
@@ -142,6 +143,7 @@ public class OicRestApi {
         Gson gsonObj = new Gson();
         String srtJson = gsonObj.toJson(data);
         Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + "/integration/v1/integrations/" + intg, "POST", srtJson, headers);
+        System.out.println("respuesta " + respuesta);
         return respuesta;
     }
 
@@ -167,14 +169,14 @@ public class OicRestApi {
             httpCon.setRequestProperty("Authorization", basicAuth);
             if (data != null) {
 //                System.out.println("gsonObj.toJson(data) " + data);
-                try ( OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
+                try (OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
                     out.write(data);
                 }
             }
             resp.put("response_code", httpCon.getResponseCode());
 //            System.out.println("Response Code: " + httpCon.getResponseCode());
             StringBuilder respuesta;
-            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
                 while ((linea = in.readLine()) != null) {
@@ -211,7 +213,7 @@ public class OicRestApi {
             System.out.println("Response Code: " + httpCon.getResponseCode());
 //        System.out.print("Response Code: " + httpCon.getResponseMessage());
             StringBuilder respuesta;
-            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
 
@@ -351,7 +353,7 @@ public class OicRestApi {
             outputStream.writeBytes("Content-Type: application/octet-stream\r\n");
             outputStream.writeBytes("\r\n");
             File file = new File(filePath);
-            try ( FileInputStream fileInputStream = new FileInputStream(file)) {
+            try (FileInputStream fileInputStream = new FileInputStream(file)) {
                 byte[] buffer = new byte[4096];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {

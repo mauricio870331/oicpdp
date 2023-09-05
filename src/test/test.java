@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,6 +51,17 @@ public class test {
 ////        
 //        Gson gsonObj = new Gson();
 //        System.out.println(gsonObj.toJson(data).replaceAll("\\\\", ""));
-System.out.println(Utils.Utils.leerProperties("UAT2"));
+//System.out.println(Utils.Utils.leerProperties("UAT2"));
+        String datos = "Mauricio";
+        List<String> lista = new ArrayList<>();
+        lista.add("perro");
+        lista.add("gato");
+        for (int i = 0; i < lista.size(); i++) {
+            System.out.println("Letra "+lista.get(i));
+        }
+        
+        for (String string : lista) {
+            System.out.println("animal "+string);
+        }
     }
 }
