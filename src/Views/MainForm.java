@@ -4,8 +4,10 @@
  */
 package Views;
 
+import Hilos.HiloIntegraciones;
 import Models.ConectoresModel;
 import Models.IntegrationModel;
+import Models.LibrariesModel;
 import Models.LookupsModel;
 import OICApi.OicRestApi;
 import Utils.Utils;
@@ -65,10 +67,24 @@ public class MainForm extends javax.swing.JFrame {
         itemSeletedEnv1 = new javax.swing.JMenuItem();
         mnuTblAmbiente3 = new javax.swing.JPopupMenu();
         itemSeletedEnv2 = new javax.swing.JMenuItem();
+        mnuTblAmbiente4 = new javax.swing.JPopupMenu();
+        itemSeletedEnv4 = new javax.swing.JMenuItem();
         mnuTblConectores = new javax.swing.JPopupMenu();
         itemTestConection = new javax.swing.JMenuItem();
         itemConfigCredencial = new javax.swing.JMenuItem();
         jpContent = new javax.swing.JLayeredPane();
+        jpLibraries = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tblEnvironment4 = new javax.swing.JTable();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        tblLibraries = new javax.swing.JTable();
+        pb_libraries = new javax.swing.JProgressBar();
+        lblLibraries = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
+        lblinfotstLibraries = new javax.swing.JLabel();
+        lblPreloaderLibraries = new javax.swing.JLabel();
+        lblCurEnv4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jpLookupTables = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         tblEnvironment3 = new javax.swing.JTable();
@@ -117,6 +133,7 @@ public class MainForm extends javax.swing.JFrame {
         itemConnections = new javax.swing.JMenuItem();
         itemListLookups = new javax.swing.JMenuItem();
         itemList = new javax.swing.JMenuItem();
+        itemListLibraries = new javax.swing.JMenuItem();
 
         itemSeletedEnv.setText("Seleccionar");
         itemSeletedEnv.addActionListener(new java.awt.event.ActionListener() {
@@ -142,6 +159,14 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuTblAmbiente3.add(itemSeletedEnv2);
 
+        itemSeletedEnv4.setText("Seleccionar");
+        itemSeletedEnv4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemSeletedEnv4ActionPerformed(evt);
+            }
+        });
+        mnuTblAmbiente4.add(itemSeletedEnv4);
+
         itemTestConection.setText("Probar Conexión");
         itemTestConection.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,6 +184,97 @@ public class MainForm extends javax.swing.JFrame {
         mnuTblConectores.add(itemConfigCredencial);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        tblEnvironment4.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tblEnvironment4.setComponentPopupMenu(mnuTblAmbiente4);
+        jScrollPane8.setViewportView(tblEnvironment4);
+
+        tblLibraries.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane9.setViewportView(tblLibraries);
+
+        pb_libraries.setIndeterminate(true);
+
+        lblLibraries.setText("Total Bibliotecas: 0");
+
+        jButton5.setText("Cargar Datos");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        lblPreloaderLibraries.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/1494.gif"))); // NOI18N
+
+        lblCurEnv4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblCurEnv4.setText("Ambiente Seleccionado: --");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setText("Listado de Bibliotecas Js");
+
+        javax.swing.GroupLayout jpLibrariesLayout = new javax.swing.GroupLayout(jpLibraries);
+        jpLibraries.setLayout(jpLibrariesLayout);
+        jpLibrariesLayout.setHorizontalGroup(
+            jpLibrariesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpLibrariesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpLibrariesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpLibrariesLayout.createSequentialGroup()
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jpLibrariesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCurEnv4, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jpLibrariesLayout.createSequentialGroup()
+                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPreloaderLibraries))
+                            .addComponent(lblinfotstLibraries, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpLibrariesLayout.createSequentialGroup()
+                        .addComponent(lblLibraries, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(199, 199, 199)
+                        .addComponent(pb_libraries, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane9))
+                .addContainerGap())
+        );
+        jpLibrariesLayout.setVerticalGroup(
+            jpLibrariesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpLibrariesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpLibrariesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpLibrariesLayout.createSequentialGroup()
+                        .addComponent(lblCurEnv4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(3, 3, 3)
+                        .addGroup(jpLibrariesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblPreloaderLibraries, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblinfotstLibraries, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
+                .addGroup(jpLibrariesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pb_libraries, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLibraries))
+                .addGap(27, 27, 27))
+        );
 
         tblEnvironment3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -217,13 +333,13 @@ public class MainForm extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblPreloaderLookups))
                             .addComponent(lblinfotstLookups, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jpLookupTablesLayout.createSequentialGroup()
                         .addComponent(lblLookups, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(199, 199, 199)
                         .addComponent(pb_tst2_lookups, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 384, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane4))
                 .addContainerGap())
         );
@@ -470,7 +586,7 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(384, 384, 384)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(181, Short.MAX_VALUE))
+                .addContainerGap(191, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -480,7 +596,8 @@ public class MainForm extends javax.swing.JFrame {
                 .addContainerGap(425, Short.MAX_VALUE))
         );
 
-        jpContent.setLayer(jpLookupTables, javax.swing.JLayeredPane.PALETTE_LAYER);
+        jpContent.setLayer(jpLibraries, javax.swing.JLayeredPane.PALETTE_LAYER);
+        jpContent.setLayer(jpLookupTables, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jpContent.setLayer(jpIntegrations, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jpContent.setLayer(jpConectores, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jpContent.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -495,22 +612,23 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jpConectores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpContentLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jpLookupTables, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
+                .addComponent(jpLookupTables, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jpLibraries, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpContentLayout.setVerticalGroup(
             jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpContentLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 23, Short.MAX_VALUE))
+                .addGap(0, 39, Short.MAX_VALUE))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jpIntegrations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jpConectores, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jpLookupTables, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jpContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jpLibraries, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mnuConfig.setText("Configuración");
@@ -560,6 +678,14 @@ public class MainForm extends javax.swing.JFrame {
         });
         mnuOicApi.add(itemList);
 
+        itemListLibraries.setLabel("Listar Bibliotecas Js");
+        itemListLibraries.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemListLibrariesActionPerformed(evt);
+            }
+        });
+        mnuOicApi.add(itemListLibraries);
+
         jMenuBar1.add(mnuOicApi);
 
         setJMenuBar(jMenuBar1);
@@ -586,6 +712,7 @@ public class MainForm extends javax.swing.JFrame {
         jPanel1.setVisible(false);
         jpConectores.setVisible(false);
         jpLookupTables.setVisible(false);
+        jpLibraries.setVisible(false);
         jpIntegrations.setVisible(true);
 //        MiHilo miHilo = new MiHilo("TST2", tbl_integraciones, lblIntegraTST2, pb_tst2);
 //        miHilo.start();      
@@ -605,6 +732,7 @@ public class MainForm extends javax.swing.JFrame {
         jPanel1.setVisible(false);
         jpIntegrations.setVisible(false);
         jpLookupTables.setVisible(false);
+        jpLibraries.setVisible(false);
         jpConectores.setVisible(true);
         selectedEnv = "";
     }//GEN-LAST:event_itemConnectionsActionPerformed
@@ -635,8 +763,8 @@ public class MainForm extends javax.swing.JFrame {
             }
         }
         String status = cboStatusIntg.getSelectedItem().toString();
-        MiHilo miHilo = new MiHilo(selectedEnv + "", tbl_integraciones, lblIntegraTST2, pb_tst2, status);
-        miHilo.start();
+        HiloIntegraciones hiloIntg = new HiloIntegraciones(selectedEnv + "", tbl_integraciones, lblIntegraTST2, pb_tst2, status, lblinfotst2);
+        hiloIntg.start();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void itemSeletedEnvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSeletedEnvActionPerformed
@@ -709,6 +837,7 @@ public class MainForm extends javax.swing.JFrame {
         jPanel1.setVisible(false);
         jpIntegrations.setVisible(false);
         jpConectores.setVisible(false);
+        jpLibraries.setVisible(false);
         jpLookupTables.setVisible(true);
         selectedEnv = "";
     }//GEN-LAST:event_itemListLookupsActionPerformed
@@ -723,6 +852,44 @@ public class MainForm extends javax.swing.JFrame {
         selectedEnv = value;
         lblCurEnv3.setText("Ambiente Seleccionado: " + value);
     }//GEN-LAST:event_itemSeletedEnv2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if (selectedEnv.equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar un ambiente..!");
+            return;
+        }
+        for (MenuElement menuItem : mnuTblLibraries.getSubElements()) {
+            if (menuItem instanceof MenuElement) {
+                JMenuItem item = (JMenuItem) menuItem;
+                if (item.getText().split(":")[1].trim().equals(selectedEnv)) {
+                    item.setVisible(false);
+                } else {
+                    item.setVisible(true);
+                }
+            }
+        }
+        HiloLibraries cargarLibraies = new HiloLibraries(selectedEnv, "");
+        cargarLibraies.start();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void itemSeletedEnv4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSeletedEnv4ActionPerformed
+        int row = tblEnvironment4.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+            return;
+        }
+        String value = tblEnvironment4.getModel().getValueAt(row, 0).toString();
+        selectedEnv = value;
+        lblCurEnv4.setText("Ambiente Seleccionado: " + value);
+    }//GEN-LAST:event_itemSeletedEnv4ActionPerformed
+
+    private void itemListLibrariesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemListLibrariesActionPerformed
+        jPanel1.setVisible(false);
+        jpConectores.setVisible(false);
+        jpLookupTables.setVisible(false);
+        jpIntegrations.setVisible(false);
+        jpLibraries.setVisible(true);
+    }//GEN-LAST:event_itemListLibrariesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -767,19 +934,23 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemConnections;
     private javax.swing.JMenuItem itemCredenciales;
     private javax.swing.JMenuItem itemList;
+    private javax.swing.JMenuItem itemListLibraries;
     private javax.swing.JMenuItem itemListLookups;
     private javax.swing.JMenuItem itemSeletedEnv;
     private javax.swing.JMenuItem itemSeletedEnv1;
     private javax.swing.JMenuItem itemSeletedEnv2;
+    private javax.swing.JMenuItem itemSeletedEnv4;
     private javax.swing.JMenuItem itemTestConection;
     private javax.swing.JMenuItem itemUrlOic;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -788,20 +959,27 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JPanel jpConectores;
     private javax.swing.JLayeredPane jpContent;
     private javax.swing.JPanel jpIntegrations;
+    private javax.swing.JPanel jpLibraries;
     private javax.swing.JPanel jpLookupTables;
     private javax.swing.JLabel lblCurEnv;
     private javax.swing.JLabel lblCurEnv2;
     private javax.swing.JLabel lblCurEnv3;
+    private javax.swing.JLabel lblCurEnv4;
     private javax.swing.JLabel lblIntegraTST2;
+    private javax.swing.JLabel lblLibraries;
     private javax.swing.JLabel lblLookups;
     private javax.swing.JLabel lblPreloaderExport;
+    private javax.swing.JLabel lblPreloaderLibraries;
     private javax.swing.JLabel lblPreloaderLookups;
     private javax.swing.JLabel lblPreloaderUpdConector;
     private javax.swing.JLabel lblinfotst2;
     private javax.swing.JLabel lblinfotstCon;
+    private javax.swing.JLabel lblinfotstLibraries;
     private javax.swing.JLabel lblinfotstLookups;
     private javax.swing.JLabel lboConectorsTST2;
     private javax.swing.JMenu mnuConfig;
@@ -809,7 +987,9 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JPopupMenu mnuTblAmbiente;
     private javax.swing.JPopupMenu mnuTblAmbiente2;
     private javax.swing.JPopupMenu mnuTblAmbiente3;
+    private javax.swing.JPopupMenu mnuTblAmbiente4;
     private javax.swing.JPopupMenu mnuTblConectores;
+    private javax.swing.JProgressBar pb_libraries;
     private javax.swing.JProgressBar pb_tst2;
     private javax.swing.JProgressBar pb_tst2_con;
     private javax.swing.JProgressBar pb_tst2_lookups;
@@ -817,6 +997,8 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JTable tblEnvironment;
     private javax.swing.JTable tblEnvironment2;
     private javax.swing.JTable tblEnvironment3;
+    private javax.swing.JTable tblEnvironment4;
+    private javax.swing.JTable tblLibraries;
     private javax.swing.JTable tblLookups;
     private javax.swing.JTable tbl_integraciones;
     // End of variables declaration//GEN-END:variables
@@ -825,11 +1007,13 @@ public class MainForm extends javax.swing.JFrame {
     private String selectedEnv = "";
     JPopupMenu mnuTblTst2 = new JPopupMenu();
     JPopupMenu mnuTblLookups = new JPopupMenu();//crear popou para la tabla de lookups  
+    JPopupMenu mnuTblLibraries = new JPopupMenu();
 
     //Cargar tablas Ambientes y popups
     private void cargarTablaAmbientes() {
         PopupMenuListener listener = new PopupMenuListener();
         PopupMenuListenerLookups listenerLookups = new PopupMenuListenerLookups();
+        PopupMenuListenerLookups listenerLibraries = new PopupMenuListenerLookups();
         DefaultTableModel modeloTabla = new DefaultTableModel();
         // Agregar columnas a nuestro modelo de tabla
         modeloTabla.addColumn("AMBIENTE");
@@ -838,17 +1022,22 @@ public class MainForm extends javax.swing.JFrame {
             modeloTabla.addRow(new Object[]{entry.getKey()});
             JMenuItem elemento = new JMenuItem("Migrar a: " + entry.getKey());
             JMenuItem elemento2 = new JMenuItem("Migrar a: " + entry.getKey());
+            JMenuItem elemento3 = new JMenuItem("Migrar a: " + entry.getKey());
             elemento.addActionListener(listener);
             elemento2.addActionListener(listenerLookups);
+            elemento3.addActionListener(listenerLibraries);
             mnuTblTst2.add(elemento);
             mnuTblLookups.add(elemento2);
+            mnuTblLibraries.add(elemento3);
         }
         tbl_integraciones.setComponentPopupMenu(mnuTblTst2);
         tblLookups.setComponentPopupMenu(mnuTblLookups);
+        tblLibraries.setComponentPopupMenu(mnuTblLibraries);
         // Asignar el modelo de tabla a nuestro JTable
         tblEnvironment.setModel(modeloTabla);
         tblEnvironment2.setModel(modeloTabla);
         tblEnvironment3.setModel(modeloTabla);
+        tblEnvironment4.setModel(modeloTabla);
     }
 
     class PopupMenuListener implements ActionListener {
@@ -899,79 +1088,15 @@ public class MainForm extends javax.swing.JFrame {
         jpIntegrations.setVisible(false);
         jpConectores.setVisible(false);
         jpLookupTables.setVisible(false);
+        jpLibraries.setVisible(false);
         pb_tst2.setVisible(false);
         pb_tst2_con.setVisible(false);
         pb_tst2_lookups.setVisible(false);
+        pb_libraries.setVisible(false);
         lblPreloaderExport.setVisible(false);
         lblPreloaderUpdConector.setVisible(false);
         lblPreloaderLookups.setVisible(false);
-    }
-
-    private void cargarIntegraciones(String env, JTable table, JLabel lbl, JProgressBar pb, String status) {
-        pb.setVisible(true);
-        IntegrationModel im = new IntegrationModel();
-        Map<String, Object> respuesta = im.getIntegrations(env, status);
-        int total = (int) respuesta.get("total");
-        lbl.setText("Total Integraciones: " + total);
-
-        JsonArray list = (JsonArray) respuesta.get("integraciones");
-//        System.out.println("list " + list);
-        DefaultTableModel modeloTabla = new DefaultTableModel();
-        // Agregar columnas a nuestro modelo de tabla
-        modeloTabla.addColumn("ID");
-        modeloTabla.addColumn("NAME");
-        modeloTabla.addColumn("CODE");
-        modeloTabla.addColumn("STATUS");
-        modeloTabla.addColumn("ENV");
-        modeloTabla.addColumn("VERSION");
-        for (JsonElement jsonElement : list) {
-            JsonObject jsonObject = jsonElement.getAsJsonObject();
-            String ID = jsonObject.get("id").getAsString();
-            String NAME = jsonObject.get("name").getAsString();
-            String STATUS = jsonObject.get("status").getAsString();
-            String CODE = jsonObject.get("code").getAsString();
-            String VERSION = jsonObject.get("version").getAsString();
-            modeloTabla.addRow(new Object[]{ID, NAME, CODE, STATUS, env, VERSION});
-        }
-// Asignar el modelo de tabla a nuestro JTable
-        table.setModel(modeloTabla);
-        table.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
-        table.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
-        table.getColumnModel().getColumn(0).setPreferredWidth(0);
-        table.getColumnModel().getColumn(0).setMaxWidth(0);
-        table.getColumnModel().getColumn(0).setMinWidth(0);
-        table.getColumnModel().getColumn(3).setMaxWidth(150);
-        table.getColumnModel().getColumn(3).setMinWidth(150);
-        table.getColumnModel().getColumn(4).setMaxWidth(120);
-        table.getColumnModel().getColumn(4).setMinWidth(120);
-
-        table.setModel(modeloTabla);
-        pb.setVisible(false);
-        lblinfotst2.setText("");
-
-    }
-
-    //Hilos
-    public class MiHilo extends Thread {
-
-        String ambiente;
-        String status;
-        JTable table;
-        JLabel lbl;
-        JProgressBar pb;
-
-        public MiHilo(String ambiente, JTable table, JLabel lbl, JProgressBar pb, String status) {
-            this.ambiente = ambiente;
-            this.table = table;
-            this.lbl = lbl;
-            this.pb = pb;
-            this.status = status;
-        }
-
-        @Override
-        public void run() {
-            cargarIntegraciones(ambiente, table, lbl, pb, status);
-        }
+        lblPreloaderLibraries.setVisible(false);
     }
 
     //Hilos
@@ -1004,6 +1129,23 @@ public class MainForm extends javax.swing.JFrame {
         @Override
         public void run() {
             cargaLookups(ambiente, status);
+        }
+    }
+
+    //Hilo Bibliotecas
+    public class HiloLibraries extends Thread {
+
+        String ambiente;
+        String status;
+
+        public HiloLibraries(String ambiente, String status) {
+            this.ambiente = ambiente;
+            this.status = status;
+        }
+
+        @Override
+        public void run() {
+            cargarLibaries(ambiente, status);
         }
     }
 
@@ -1209,6 +1351,7 @@ public class MainForm extends javax.swing.JFrame {
 
         tblLookups.setModel(modeloTabla);
         pb_tst2_lookups.setVisible(false);
+        lblLookups.setText("Total Lookups: " + total);
         lblinfotstLookups.setText("");
 
     }
@@ -1254,6 +1397,43 @@ public class MainForm extends javax.swing.JFrame {
                 //Pendiente preguntar si se desea remplazar la lookup
             }
         }
+    }
+
+    private void cargarLibaries(String env, String status) {
+        pb_libraries.setVisible(true);
+        LibrariesModel lm = new LibrariesModel();
+        Map<String, Object> respuesta = lm.getLibraries(env, status);
+        int total = (int) respuesta.get("total");
+        JsonArray list = (JsonArray) respuesta.get("libraries");
+        DefaultTableModel modeloTabla = new DefaultTableModel();
+
+        modeloTabla.addColumn("ID");
+        modeloTabla.addColumn("CODE");
+        modeloTabla.addColumn("NAME");
+        modeloTabla.addColumn("STATUS");
+        modeloTabla.addColumn("ENV");
+        for (JsonElement jsonElement : list) {
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            String ID = jsonObject.get("id").getAsString();
+            String CODE = jsonObject.get("code").getAsString();
+            String NAME = jsonObject.get("displayName").getAsString();
+            String STATUS = jsonObject.get("status").getAsString();
+            modeloTabla.addRow(new Object[]{ID, CODE, NAME, STATUS, env});
+        }
+        // Asignar el modelo de tabla a nuestro JTable
+        tblLibraries.setModel(modeloTabla);
+        tblLibraries.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+        tblLibraries.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
+        tblLibraries.getColumnModel().getColumn(0).setPreferredWidth(0);
+        tblLibraries.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblLibraries.getColumnModel().getColumn(0).setMinWidth(0);
+        tblLibraries.getColumnModel().getColumn(3).setMaxWidth(150);
+        tblLibraries.getColumnModel().getColumn(3).setMinWidth(150);
+
+        tblLookups.setModel(modeloTabla);
+        lblLibraries.setText("Total Bibliotecas: " + total);
+        pb_libraries.setVisible(false);
+        lblinfotstLibraries.setText("");
     }
 
 }

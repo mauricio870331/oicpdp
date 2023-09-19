@@ -169,14 +169,14 @@ public class OicRestApi {
             httpCon.setRequestProperty("Authorization", basicAuth);
             if (data != null) {
 //                System.out.println("gsonObj.toJson(data) " + data);
-                try (OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
+                try ( OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream())) {
                     out.write(data);
                 }
             }
             resp.put("response_code", httpCon.getResponseCode());
 //            System.out.println("Response Code: " + httpCon.getResponseCode());
             StringBuilder respuesta;
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
                 while ((linea = in.readLine()) != null) {
@@ -213,7 +213,7 @@ public class OicRestApi {
             System.out.println("Response Code: " + httpCon.getResponseCode());
 //        System.out.print("Response Code: " + httpCon.getResponseMessage());
             StringBuilder respuesta;
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
+            try ( BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()))) {
                 String linea;
                 respuesta = new StringBuilder();
 
@@ -353,7 +353,7 @@ public class OicRestApi {
             outputStream.writeBytes("Content-Type: application/octet-stream\r\n");
             outputStream.writeBytes("\r\n");
             File file = new File(filePath);
-            try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            try ( FileInputStream fileInputStream = new FileInputStream(file)) {
                 byte[] buffer = new byte[4096];
                 int bytesRead;
                 while ((bytesRead = fileInputStream.read(buffer)) != -1) {
@@ -404,6 +404,19 @@ public class OicRestApi {
     public Map<String, Object> testConector(String env, String conectorId) {
         Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + "/integration/v1/connections/" + conectorId + "/test", "POST", "", null);
         return respuesta;
+    }
+
+    public Map<String, Object> librariesList(String env, String status) {
+        JsonParser parser = new JsonParser();
+        StringBuilder sb = new StringBuilder();
+        sb.append("/integration/v1/libraries");        
+        Map<String, Object> respuesta = (Map<String, Object>) apiOIC(getEnviromentUrl(env) + sb.toString(), "GET", null, null);
+        Map<String, Object> resp = new HashMap<>();
+        JsonElement element = (JsonElement) parser.parse((String) respuesta.get("response"));
+        JsonObject jsonObject = element.getAsJsonObject();
+        resp.put("libraries", (jsonObject.has("items")) ? jsonObject.get("items").getAsJsonArray() : new JsonArray());
+        resp.put("total", jsonObject.get("totalResults").getAsInt());
+        return resp;
     }
 
 }
